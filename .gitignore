@@ -6,6 +6,8 @@
 
 # Ignore bundler config.
 /.bundle
+/vendor/bundle/
+/vendor/ruby/
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -25,6 +27,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+
 
 # mac
 .DS_Store
