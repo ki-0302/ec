@@ -82,7 +82,38 @@ modelの作成
 - [ ] order：注文
 
 
+- [ ] AdminUser
+  - [ ] 新規登録
+    - [ ] 管理ユーザーが登録できること
+    - [ ] 管理ユーザーが複数登録できること
+  - [ ] 更新
+    - [ ] 管理ユーザーが更新できること
+    - [ ] 管理ユーザーが複数更新できること
+  - [ ] 削除
+    - [ ] 管理ユーザーが削除できること
+    - [ ] 管理ユーザーが複数削除できること
+  - [ ] バリデーションをおこなう
+    - [ ] ユーザー名の確認をおこなう
+      - [ ] ユーザー名が必須であること
+      - [ ] ユーザー名が2〜40文字であること
+    - [ ] メールアドレスの確認をおこなう
+      - [ ] メールアドレスが必須であること
+      - [ ] メールアドレスが半角であること
+      - [ ] メールアドレスが4〜64文字であること
+      - [ ] 有効なメールアドレスであること
+      - [ ] 重複したメールアドレスは許可しないこと
+    - [ ] パスワード項目の確認をおこなう
+      - [ ] パスワードが必須であること
+      - [ ] パスワードが半角英数字記号であること
+      - [ ] パスワードが6〜32文字であること
+      - [ ] パスワードがハッシュ化されていること
 
+
+
+id
+user_name
+email
+password
 
 
 
@@ -125,12 +156,12 @@ holding_Point
 class Address {
 id
 user_id
-postal_code_1
-postal_code_2
+postal_code1
+postal_code2
 region
-address_1
-address_2
-address_3
+address1
+address2
+address3
 phone_number
 }
 
@@ -145,7 +176,7 @@ class AdminUser {
 id
 user_name
 email
-password
+password_digest
 }
 
 class Item {
@@ -220,12 +251,12 @@ shipping_cost
 class GeneralSetting {
 id
 site_name
-postal_code_1
-postal_code_2
+postal_code1
+postal_code2
 region
-address_1
-address_2
-address_3
+address1
+address2
+address3
 phone_number
 tax_category
 }
@@ -269,7 +300,7 @@ Item -- TaxItem
 User -- Order
 Order -{ OrderLineItem
 Order -- ShippingOption
-
+OrderLineItem - Item
 
 
 @enduml
