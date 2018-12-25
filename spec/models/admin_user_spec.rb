@@ -5,7 +5,7 @@ RSpec.describe AdminUser, type: :model do
     let(:admin_user1) { FactoryBot.create(:admin_user) }
     let(:admin_user2) do
       FactoryBot.create(:admin_user, user_name: 'テストユーザー2', email: 'test2@example.com',
-                                     password: 'password2')
+                                     password: 'Password2')
     end
 
     describe '追加' do
@@ -59,15 +59,15 @@ RSpec.describe AdminUser, type: :model do
         admin_user = FactoryBot.build(:admin_user, user_name: 'A')
         admin_user.valid?
         expect(admin_user.errors[:user_name]).to include(I18n.t('errors.messages.too_short', count: 2))
-        admin_user_ja = FactoryBot.build(:admin_user, user_name: '１')
+        admin_user_ja = FactoryBot.build(:admin_user, user_name: 'Ａ')
         admin_user_ja.valid?
         expect(admin_user_ja.errors[:user_name]).to include(I18n.t('errors.messages.too_short', count: 2))
       end
       it 'ユーザー名が40文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, user_name: '12345678901234567890123456789012345678901')
+        admin_user = FactoryBot.build(:admin_user, user_name: 'A' * 41)
         admin_user.valid?
         expect(admin_user.errors[:user_name]).to include(I18n.t('errors.messages.too_long', count: 40))
-        admin_user_ja = FactoryBot.build(:admin_user, user_name: '１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１')
+        admin_user_ja = FactoryBot.build(:admin_user, user_name: 'Ａ' * 41)
         admin_user_ja.valid?
         expect(admin_user_ja.errors[:user_name]).to include(I18n.t('errors.messages.too_long', count: 40))
       end
@@ -80,7 +80,7 @@ RSpec.describe AdminUser, type: :model do
         expect(admin_user.errors[:email]).to include(I18n.t('errors.messages.blank'))
       end
       it 'メールアドレスが64文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, email: '12345678901234567890123456789012345678901234567890123@example.com')
+        admin_user = FactoryBot.build(:admin_user, email: '1' * 53 + '@example.com')
         admin_user.valid?
         expect(admin_user.errors[:email]).to include(I18n.t('errors.messages.too_long', count: 64))
       end
@@ -97,21 +97,59 @@ RSpec.describe AdminUser, type: :model do
         expect(duplicate_mail.errors[:email]).to include(I18n.t('errors.messages.taken'))
       end
     end
+
+    describe 'パスワード項目の確認をおこなう' do
+      it 'パスワードが未入力であれば無効であること' do
+        admin_user = FactoryBot.build(:admin_user, password: '')
+        admin_user.valid?
+        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.blank'))
+      end
+      it 'パスワードが半角英数字と特定の記号でなければ無効あること' do
+        admin_user = FactoryBot.build(:admin_user, password: '123456Aa!#$%&()@{}')
+        admin_user.valid?
+        expect(admin_user.errors[:password]).to_not include(I18n.t('errors.messages.invalid'))
+        admin_user = FactoryBot.build(:admin_user, password: '123456Aaあ')
+        admin_user.valid?
+        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.invalid'))
+
+        check_str = %w['"' ''' '=' '~' '^' '-' ':' ';' '\[' '\]' '{' '}' '_' '?'' '*' '+' '>' '<' '\' ' ' '“' '`']
+        check_str.each do |s|
+          admin_user = FactoryBot.build(:admin_user, password: '123456Aa' + s)
+          admin_user.valid?
+          expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.invalid'))
+        end
+      end
+      it 'パスワードが6文字以上でなければ無効であること' do
+        admin_user = FactoryBot.build(:admin_user, password: 'Aa123')
+        admin_user.valid?
+        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_short', count: 6))
+      end
+      it 'パスワードが32文字以内でなければ無効であること' do
+        admin_user = FactoryBot.build(:admin_user, password: 'Aa1' + '2' * 30)
+        admin_user.valid?
+        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_long', count: 32))
+      end
+      it '保存されるパスワードがハッシュ化されていなければ無効であること' do
+        admin_user = FactoryBot.create(:admin_user, password: 'Password1')
+        expect(admin_user).to be_valid
+        expect(AdminUser.find_by(user_name: 'テストユーザー').password_digest).to_not eq 'Password1'
+      end
+    end
   end
 
   # - [ ] バリデーションをおこなう
   #   - [ ] ユーザー名の確認をおこなう
   #     - [ ] ユーザー名が必須であること
   #     - [ ] ユーザー名が2〜40文字であること
-  - [ ] メールアドレスの確認をおこなう
-    - [ ] メールアドレスが未入力であれば無効であること
-    - [ ] メールアドレスが64文字以内でなければ無効であること
-    - [ ] 有効なメールアドレスでなければ無効であること
-    - [ ] メールアドレスが重複していれば無効であること
-  - [ ] パスワード項目の確認をおこなう
-    - [ ] パスワードが未入力であれば無効であること
-    - [ ] パスワードが半角英数字と特定の記号でなければ無効あること
-    - [ ] パスワードが6文字以上でなければ無効であること
-    - [ ] パスワードが32文字以内でなければ無効であること
-    - [ ] 保存されるパスワードがハッシュ化されていなければ無効であること
+  # - [ ] メールアドレスの確認をおこなう
+  #   - [ ] メールアドレスが未入力であれば無効であること
+  #   - [ ] メールアドレスが64文字以内でなければ無効であること
+  #   - [ ] 有効なメールアドレスでなければ無効であること
+  #   - [ ] メールアドレスが重複していれば無効であること
+  # - [ ] パスワード項目の確認をおこなう
+  #   - [ ] パスワードが未入力であれば無効であること
+  #   - [ ] パスワードが半角英数字と特定の記号でなければ無効あること
+  #   - [ ] パスワードが6文字以上でなければ無効であること
+  #   - [ ] パスワードが32文字以内でなければ無効であること
+  #   - [ ] 保存されるパスワードがハッシュ化されていなければ無効であること
 end
