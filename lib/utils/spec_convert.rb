@@ -1,6 +1,18 @@
 # installation: brew install nkf
+#
+# todo_to_spec クリップボードにあるTODOリストをspecに変換してコンソールへ出力。
+# spec_to_todo クリップボードにあるspecでの出力をTODOリストへ変換してコンソールへ出力。
+#
 class SpecConvert
-  def run
+  def spec_to_todo
+    clipboard = `pbpaste | /usr/local/bin/nkf -w`
+    clipboard.split(/\R/).each do |line|
+      m = line.match(/\A(\s*)(.*)\z/)
+      puts m[1] + '- [ ] ' + m[2]
+    end
+  end
+
+  def todo_to_spec
     first_line_indent_size = -1
     previous_indent_size = 0
 
@@ -45,5 +57,11 @@ end
 
 if $PROGRAM_NAME == __FILE__
   spec_convert = SpecConvert.new
-  spec_convert.run
+
+  if ARGV[0] == 'todo'
+    spec_convert.spec_to_todo
+  else
+    spec_convert.todo_to_spec
+  end
+
 end

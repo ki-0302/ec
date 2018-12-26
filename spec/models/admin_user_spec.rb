@@ -130,9 +130,10 @@ RSpec.describe AdminUser, type: :model do
         expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_long', count: 32))
       end
       it '保存されるパスワードがハッシュ化されていなければ無効であること' do
-        admin_user = FactoryBot.create(:admin_user, password: 'Password1')
+        password = 'Password1'
+        admin_user = FactoryBot.create(:admin_user, password: password)
         expect(admin_user).to be_valid
-        expect(AdminUser.find_by(user_name: 'テストユーザー').password_digest).to_not eq 'Password1'
+        expect(AdminUser.find_by(user_name: 'テストユーザー').password_digest).to_not eq password
       end
     end
   end
