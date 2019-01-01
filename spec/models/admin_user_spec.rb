@@ -4,40 +4,40 @@ RSpec.describe AdminUser, type: :model do
   describe '追加・更新・削除' do
     let(:admin_user1) { FactoryBot.create(:admin_user) }
     let(:admin_user2) do
-      FactoryBot.create(:admin_user, user_name: 'テストユーザー2', email: 'test2@example.com',
+      FactoryBot.create(:admin_user, name: 'テストユーザー2', email: 'test2@example.com',
                                      password: 'Password2')
     end
 
     describe '追加' do
       it '管理ユーザーが追加できること' do
         expect(admin_user1).to be_valid
-        expect(AdminUser.find_by(user_name: 'テストユーザー')).to be_truthy
+        expect(AdminUser.find_by(name: 'テストユーザー')).to be_truthy
       end
       it '管理ユーザーが複数追加できること' do
         expect(admin_user1).to be_valid
         expect(admin_user2).to be_valid
         expect(AdminUser.all.size).to eq 2
-        expect(AdminUser.find_by(user_name: 'テストユーザー')).to be_truthy
-        expect(AdminUser.find_by(user_name: 'テストユーザー2')).to be_truthy
+        expect(AdminUser.find_by(name: 'テストユーザー')).to be_truthy
+        expect(AdminUser.find_by(name: 'テストユーザー2')).to be_truthy
       end
     end
 
     describe '更新' do
       it '管理ユーザーが更新できること' do
         expect(admin_user1).to be_valid
-        update_admin_user1 = AdminUser.find_by(user_name: 'テストユーザー')
+        update_admin_user1 = AdminUser.find_by(name: 'テストユーザー')
         expect(update_admin_user1).to be_truthy
-        update_admin_user1.user_name = '更新ユーザー'
+        update_admin_user1.name = '更新ユーザー'
         update_admin_user1.save
         expect(update_admin_user1).to be_valid
-        expect(AdminUser.find_by(user_name: '更新ユーザー')).to be_truthy
+        expect(AdminUser.find_by(name: '更新ユーザー')).to be_truthy
       end
     end
 
     describe '削除' do
       it '管理ユーザーが削除できること' do
         expect(admin_user1).to be_valid
-        delete_admin_user1 = AdminUser.find_by(user_name: 'テストユーザー')
+        delete_admin_user1 = AdminUser.find_by(name: 'テストユーザー')
         expect(delete_admin_user1).to be_truthy
         delete_admin_user1.destroy
         expect(delete_admin_user1).to be_valid
@@ -51,25 +51,25 @@ RSpec.describe AdminUser, type: :model do
 
     describe 'ユーザー名の確認をおこなう' do
       it 'ユーザー名が未入力であれば無効であること' do
-        admin_user = FactoryBot.build(:admin_user, user_name: '')
+        admin_user = FactoryBot.build(:admin_user, name: '')
         admin_user.valid?
-        expect(admin_user.errors[:user_name]).to include(I18n.t('errors.messages.blank'))
+        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it 'ユーザー名が2文字以上でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, user_name: 'A')
+        admin_user = FactoryBot.build(:admin_user, name: 'A')
         admin_user.valid?
-        expect(admin_user.errors[:user_name]).to include(I18n.t('errors.messages.too_short', count: 2))
-        admin_user_ja = FactoryBot.build(:admin_user, user_name: 'Ａ')
+        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ')
         admin_user_ja.valid?
-        expect(admin_user_ja.errors[:user_name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
       end
       it 'ユーザー名が40文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, user_name: 'A' * 41)
+        admin_user = FactoryBot.build(:admin_user, name: 'A' * 41)
         admin_user.valid?
-        expect(admin_user.errors[:user_name]).to include(I18n.t('errors.messages.too_long', count: 40))
-        admin_user_ja = FactoryBot.build(:admin_user, user_name: 'Ａ' * 41)
+        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ' * 41)
         admin_user_ja.valid?
-        expect(admin_user_ja.errors[:user_name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
       end
     end
 
@@ -133,24 +133,8 @@ RSpec.describe AdminUser, type: :model do
         password = 'Password1'
         admin_user = FactoryBot.create(:admin_user, password: password)
         expect(admin_user).to be_valid
-        expect(AdminUser.find_by(user_name: 'テストユーザー').password_digest).to_not eq password
+        expect(AdminUser.find_by(name: 'テストユーザー').password_digest).to_not eq password
       end
     end
   end
-
-  # - [ ] バリデーションをおこなう
-  #   - [ ] ユーザー名の確認をおこなう
-  #     - [ ] ユーザー名が必須であること
-  #     - [ ] ユーザー名が2〜40文字であること
-  # - [ ] メールアドレスの確認をおこなう
-  #   - [ ] メールアドレスが未入力であれば無効であること
-  #   - [ ] メールアドレスが64文字以内でなければ無効であること
-  #   - [ ] 有効なメールアドレスでなければ無効であること
-  #   - [ ] メールアドレスが重複していれば無効であること
-  # - [ ] パスワード項目の確認をおこなう
-  #   - [ ] パスワードが未入力であれば無効であること
-  #   - [ ] パスワードが半角英数字と特定の記号でなければ無効あること
-  #   - [ ] パスワードが6文字以上でなければ無効であること
-  #   - [ ] パスワードが32文字以内でなければ無効であること
-  #   - [ ] 保存されるパスワードがハッシュ化されていなければ無効であること
 end

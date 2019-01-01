@@ -1,0 +1,23 @@
+h1 管理ユーザー一覧
+
+= link_to '新規登録', new_admin_admin_user_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= AdminUser.human_attribute_name(:name)
+      th= AdminUser.human_attribute_name(:email)
+      th= AdminUser.human_attribute_name(:created_at)
+      th= AdminUser.human_attribute_name(:updated_at)
+      th
+    tbody
+      - @admin_users.each do |admin_user|
+        tr
+          td= link_to admin_user.name, [:admin, admin_user]
+          td= admin_user.email
+          td= admin_user.created_at
+          td= admin_user.updated_at
+          td
+            = link_to '編集', edit_admin_admin_user_path(admin_user), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, admin_user], method: :delete, data: { confirm: "ユーザー「#{admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+

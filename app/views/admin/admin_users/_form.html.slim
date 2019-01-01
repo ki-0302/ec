@@ -1,0 +1,27 @@
+- if admin_user.errors.present?
+  ul#error_explanation
+    - admin_user.errors.full_messages.each do |message|
+      li= message
+
+= form_with model: [:admin, admin_user], local: true do |f|
+  .form-group
+    = f.label :name
+      = AdminUser.human_attribute_name(:name)
+      = render "common/label_required"
+    = f.text_field :name, class: 'form-control', id: 'admin_user_name'
+  .form-group
+    = f.label :email
+      = AdminUser.human_attribute_name(:email)
+      = render "common/label_required"
+    = f.text_field :email, class: 'form-control', id: 'admin_user_email'
+  .form-group
+    = f.label :password
+      = AdminUser.human_attribute_name(:password)
+      = render "common/label_required"
+    = f.password_field :password, class: 'form-control', id: 'admin_user_passwords'
+  .form-group
+    = f.label :password_confirmation
+      = AdminUser.human_attribute_name(:password_confirmation)
+      = render "common/label_required"
+    = f.password_field :password_confirmation, class: 'form-control', id: 'admin_user_password_confirmation'
+  = f.submit nil, class: 'btn btn-primary'

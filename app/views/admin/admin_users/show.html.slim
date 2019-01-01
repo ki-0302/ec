@@ -1,0 +1,25 @@
+h1 管理ユーザーの詳細
+
+.nav.justify-content-end
+  = link_to '一覧', admin_admin_users_path, class: 'nav-:link'
+table.table.table-hover
+  tbody
+    tr
+      th= AdminUser.human_attribute_name(:id)
+      td= @admin_user.id
+    tr
+      th= AdminUser.human_attribute_name(:name)
+      td= @admin_user.name
+    tr
+      th= AdminUser.human_attribute_name(:email)
+      td= @admin_user.email
+    tr
+      th= AdminUser.human_attribute_name(:created_at)
+      td= @admin_user.created_at
+    tr
+      th= AdminUser.human_attribute_name(:updated_at)
+      td= @admin_user.updated_at
+
+= link_to '編集', edit_admin_admin_user_path(@admin_user), class: 'btn btn-primary mr-3'
+= link_to '削除', [:admin, @admin_user], method: :delete, data: { confirm: "ユーザー「#{@admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+

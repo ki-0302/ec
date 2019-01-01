@@ -1,8 +1,9 @@
 class AdminUser < ApplicationRecord
   has_secure_password
+  before_validation :set_nameless_name
 
-  validates :user_name, presence: true
-  validates :user_name, length: { minimum: 2, maximum: 40 }
+  validates :name, presence: true
+  validates :name, length: { minimum: 2, maximum: 40 }
 
   validates :email, presence: true
   validates :email, length: { minimum: 5, maximum: 64 }
@@ -15,5 +16,9 @@ class AdminUser < ApplicationRecord
 
   def validate_password?
     password.present? || password_confirmation.present?
+  end
+
+  def set_nameless_name
+    self.name = '名前なし' if name.blank?
   end
 end

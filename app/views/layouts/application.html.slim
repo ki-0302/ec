@@ -1,8 +1,9 @@
 doctype html
-html
+html lang="ja"
   head
+    meta http-equiv="content-language" content="ja"
     title
-      | Ec
+      | Ecサイト
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
@@ -11,5 +12,7 @@ html
     .app-title.navbar.nabvar-expand-md.navbar-light.bg-light
       .nabvar-brand ec
     .container
+      -if flash.notice.present?
+        .alert.alert-success= flash.notice
       = yield
 
