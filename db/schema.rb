@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_24_150656) do
+ActiveRecord::Schema.define(version: 2019_01_02_063936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,27 @@ ActiveRecord::Schema.define(version: 2018_12_24_150656) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "category_id"
+    t.string "manufacture_name"
+    t.string "code"
+    t.integer "tax_item_id"
+    t.integer "sales_price"
+    t.integer "regular_price"
+    t.integer "number_of_stocks"
+    t.boolean "unlimited_stock", default: false, null: false
+    t.datetime "display_start_date"
+    t.datetime "display_end_date"
+    t.string "description"
+    t.string "search_term"
+    t.string "jan_code"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_items_on_code", unique: true
   end
 
 end

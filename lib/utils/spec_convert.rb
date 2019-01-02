@@ -20,7 +20,7 @@ class SpecConvert
     clipboard.split(/\R/).each do |line|
       if line.include?('- [ ] ')
         first_line_indent_size = line.index('-') if first_line_indent_size.negative?
-        previous_indent_size = puts_spec(line)
+        previous_indent_size = puts_spec(line, previous_indent_size)
       end
     end
 
@@ -30,8 +30,7 @@ class SpecConvert
     end
   end
 
-  def puts_spec(line)
-    previous_indent_size = 0
+  def puts_spec(line, previous_indent_size)
 
     line_index = line.index('-')
     puts ' ' * line_index + 'end' if previous_indent_size.positive? && previous_indent_size > line_index

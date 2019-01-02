@@ -12,7 +12,7 @@ ja:
     attributes:
       admin_user:
         id: ID
-        name: 名称
+        name: ユーザー名
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワードをもう一度入力してください

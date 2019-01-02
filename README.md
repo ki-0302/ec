@@ -152,8 +152,8 @@ skinparam classAttributeIconSize 0
 
 class User {
 id
-user_name
-user_kana
+name
+kana
 email
 password
 phone_number
@@ -187,25 +187,25 @@ item_quantity
 
 class AdminUser {
 id
-user_name
+name
 email
 password_digest
 }
 
 class Item {
 id
-item_name
+name
 category_id
 manufacture_name
-item_code
+code
 tax_item_id
 sales_price
 regular_price
-units_in_stock
-units_in_stock_is_unlimited
+number_of_stocks
+unlimited_stock
 display_start_date
 display_end_date
-item_description
+description
 search_term
 jan_code
 status
@@ -220,8 +220,8 @@ display_priority
 
 class Category {
 id
-parent_category_id
-category_name
+parent_id
+name
 display_start_date
 display_end_date
 }
@@ -254,7 +254,7 @@ is_canceled
 
 class ShippingOption {
 id
-shipping_option_name
+name
 shipping_cost
 }
 
@@ -318,3 +318,5 @@ OrderLineItem - Item
 
 @enduml
 ```
+
+bin/rails g model item name:string, category_id:integer, manufacture_name:string, code:string, tax_item_id:integer, sales_price:integer, regular_price:integer, number_of_stocks:integer, unlimited_stock:boolean, display_start_date:datetime, display_end_date:datetime, description:string, search_term:string, jan_code:string, status:integer
