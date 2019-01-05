@@ -1,4 +1,4 @@
-h1 管理ユーザーの詳細
+h1= AdminUser.model_name.human + 'の詳細'
 
 .nav.justify-content-end
   = link_to '一覧', admin_admin_users_path, class: 'nav-:link'
@@ -21,5 +21,5 @@ table.table.table-hover
       td= @admin_user.updated_at
 
 = link_to '編集', edit_admin_admin_user_path(@admin_user), class: 'btn btn-primary mr-3'
-= link_to '削除', [:admin, @admin_user], method: :delete, data: { confirm: "ユーザー「#{@admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+= link_to '削除', [:admin, @admin_user], method: :delete, data: { confirm: AdminUser.model_name.human + "「#{@admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
 

@@ -16,7 +16,7 @@ module Admin
       @admin_user = AdminUser.new(admin_user_params)
 
       if @admin_user.save
-        redirect_to admin_admin_users_path, notice: "ユーザー「#{@admin_user.name}」を登録しました。"
+        redirect_to admin_admin_users_path, notice: AdminUser.model_name.human + "「#{@admin_user.name}」を登録しました。"
       else
         render :new
       end
@@ -29,7 +29,7 @@ module Admin
     def update
       @admin_user = AdminUser.find(params[:id])
       if @admin_user.update(admin_user_params)
-        redirect_to admin_admin_users_url, notice: "タスク「#{@admin_user.name}」を更新しました。"
+        redirect_to admin_admin_users_url, notice: AdminUser.model_name.human + "「#{@admin_user.name}」を更新しました。"
       else
         render :edit
       end
@@ -38,7 +38,7 @@ module Admin
     def destroy
       admin_user = AdminUser.find(params[:id])
       admin_user.destroy
-      redirect_to admin_admin_users_url, notice:  "タスク「#{admin_user.name}」を削除しました。"
+      redirect_to admin_admin_users_url, notice: AdminUser.model_name.human + "「#{admin_user.name}」を削除しました。"
     end
 
     private

@@ -1,0 +1,27 @@
+h1= Category.model_name.human + '一覧'
+
+= link_to '新規登録', new_admin_category_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= Category.human_attribute_name(:name)
+      th= Category.human_attribute_name(:parent_id)
+      th= Category.human_attribute_name(:display_start_datetime)
+      th= Category.human_attribute_name(:display_end_datetime)
+      th= Category.human_attribute_name(:created_at)
+      th= Category.human_attribute_name(:updated_at)
+      th
+    tbody
+      - @categories.each do |category|
+        tr
+          td= link_to category.name, [:admin, category]
+          td= category.parent_id
+          td= category.display_start_datetime
+          td= category.display_end_datetime
+          td= category.created_at
+          td= category.updated_at
+          td
+            = link_to '編集', edit_admin_category_path(category), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, category], method: :delete, data: { confirm: Category.model_name.human + "「#{category.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
