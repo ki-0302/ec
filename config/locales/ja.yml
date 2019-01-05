@@ -9,6 +9,7 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
     models:
       admin_user: 管理ユーザー
+      category: カテゴリー
     attributes:
       admin_user:
         id: ID
@@ -16,6 +17,14 @@ ja:
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワードをもう一度入力してください
+        created_at: 登録日時
+        updated_at: 更新日時
+      category:
+        id: ID
+        parent_id: 親カテゴリーID
+        name: カテゴリー名
+        display_start_datetime: 掲載開始日時
+        display_end_datetime: 掲載終了日時
         created_at: 登録日時
         updated_at: 更新日時
   date:
@@ -130,6 +139,7 @@ ja:
       exclusion: は予約されています
       greater_than: は%{count}より大きい値にしてください
       greater_than_or_equal_to: は%{count}以上の値にしてください
+      invalid_foreign_key: 無効な外部キーです
       inclusion: は一覧にありません
       invalid: は不正な値です
       less_than: は%{count}より小さい値にしてください
@@ -137,6 +147,8 @@ ja:
       model_invalid: "バリデーションに失敗しました: %{errors}"
       not_a_number: は数値で入力してください
       not_an_integer: は整数で入力してください
+      not_a_date: は有効な日付（例：2019/01/01）で入力してください
+      not_a_datetime: は有効な日時（例：2019/01/01 10:01）で入力してください
       odd: は奇数にしてください
       required: を入力してください
       taken: はすでに存在します

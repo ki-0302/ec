@@ -31,9 +31,14 @@ class SpecConvert
   end
 
   def puts_spec(line, previous_indent_size)
-
     line_index = line.index('-')
-    puts ' ' * line_index + 'end' if previous_indent_size.positive? && previous_indent_size > line_index
+
+    if previous_indent_size.positive? && previous_indent_size > line_index
+      (previous_indent_size - 2).step(line_index, -2) do |indent_size|
+        puts ' ' * indent_size + 'end'
+      end
+    end
+
     previous_indent_size = line_index
 
     if /こと\Z/.match?(line)
