@@ -321,4 +321,9 @@ OrderLineItem - Item
 
 bin/rails g model item name:string, category_id:integer, manufacture_name:string, code:string, tax_item_id:integer, sales_price:integer, regular_price:integer, number_of_stocks:integer, unlimited_stock:boolean, display_start_date:datetime, display_end_date:datetime, description:string, search_term:string, jan_code:string, status:integer
 
-yarn add moment
+
+## Tempus Dominus
+カレンダーコントール用
+yarn add tempusdominus-bootstrap-4
+https://tempusdominus.github.io/bootstrap-4/
+

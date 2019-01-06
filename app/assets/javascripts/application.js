@@ -14,3 +14,9 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+//= require jquery/dist/jquery.min
+//= require popper.js/dist/popper.min
+//= require moment/min/moment.min
+//= require moment/locale/ja
+//= require tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4
+
