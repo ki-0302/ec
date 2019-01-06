@@ -1,29 +1,22 @@
-- if category.errors.present?
+- if category_form.errors.present?
   ul#error_explanation
-    - category.errors.full_messages.each do |message|
+    - category_form.errors.full_messages.each do |message|
       li= message
 
-
-= form_with model: [:admin, category], local: true do |f|
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載日時' }
+= form_with model: @category_form, url: '/admin/categories',local: true do |f|
   .form-group
     = f.label :name
       = Category.human_attribute_name(:name)
       = render "common/label_required"
-    = f.text_field :name, class: 'form-control', id: 'category_name'
+    = f.text_field :name, class: 'form-control', id: 'category_form_name'
   .form-group
     = f.label :parent_id
       = Category.human_attribute_name(:parent_id)
-    = f.text_field :parent_id, class: 'form-control', id: 'category_parent_id'
-  .form-group
-    = f.label :display_start_datetime
-      = Category.human_attribute_name(:display_start_datetime)
-    = f.datetime_select :display_start_datetime, {}, class: 'form-control ', id: 'category_display_start_datetime'
-  .form-group
-    = f.label :display_end_datetime
-      = Category.human_attribute_name(:display_end_datetime)
-    .date
-      = f.datetime_select :display_end_datetime, {}, class: 'form-control datetime', id: 'category_display_end_datetime'
+    = f.text_field :parent_id, class: 'form-control', id: 'category_form_parent_id'
+
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category_form', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category_form', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
   = f.submit nil, class: 'btn btn-primary'
 
 = render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn' }
+= render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn' }

@@ -37,7 +37,6 @@ RSpec.describe Category, type: :model do
         delete_category1 = Category.find_by(name: 'テストカテゴリー')
         expect(delete_category1).to be_truthy
         delete_category1.destroy
-        expect(delete_category1).to be_valid
         expect(Category.all.size).to eq 0
       end
     end
@@ -91,8 +90,8 @@ RSpec.describe Category, type: :model do
         expect(category2.errors[:display_start_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
       it '掲載開始日時が掲載終了日時より大きい場合無効であること' do
-        category = FactoryBot.build(:category, display_start_datetime: '2019-01-01 00:02',
-                                               display_end_datetime: '2019-01-01 00:01')
+        category = FactoryBot.create(:category, display_start_datetime: '2019-01-01 00:02:00',
+                                                display_end_datetime: '2019-01-01 00:01:00')
         expect(category).to_not be_valid
       end
     end

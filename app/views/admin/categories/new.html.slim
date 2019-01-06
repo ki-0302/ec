@@ -1,6 +1,6 @@
-h1= Category.model_name.human + '登録'
+#h1= CategoryForm.model_name.human + '登録'
 
 .nav.justify-content-end
   = link_to '一覧', admin_categories_path, class: 'nav-:link'
   
-= render partial: 'form', locals: { category: @category }
+= render partial: 'form', locals: { category_form: @category_form }

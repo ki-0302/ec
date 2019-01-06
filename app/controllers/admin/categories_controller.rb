@@ -9,14 +9,14 @@ module Admin
     end
 
     def new
-      @category = Category.new
+      @category_form = CategoryForm.new
     end
 
     def create
-      @category = Category.new(category_params)
+      @category_form = CategoryForm.new(category_form_params)
 
-      if @category.save
-        redirect_to admin_categories_path, notice: Category.model_name.human + "「#{@category.name}」を登録しました。"
+      if @category_form.save
+        redirect_to admin_categories_path, notice: Category.model_name.human + "「#{@category_form.name}」を登録しました。"
       else
         render :new
       end
@@ -45,6 +45,12 @@ module Admin
 
     def category_params
       params.require(:category).permit(:name, :parent_id, :display_start_datetime, :display_end_datetime)
+    end
+
+    def category_form_params
+      params.require(:category_form).permit(:name, :parent_id,
+                                            :display_start_datetime_ymd, :display_start_datetime_hn,
+                                            :display_end_datetime_ymd, :display_end_datetime_hn)
     end
   end
 end

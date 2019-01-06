@@ -6,7 +6,7 @@ class DatetimeValidator < ActiveModel::EachValidator
     else
       DateTime.parse(before_type_cast_value)
     end
-  rescue ArgumentError
+  rescue StandardError
     record.errors[attribute] << I18n.t('errors.messages.not_a_datetime')
   end
 end
