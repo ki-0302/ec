@@ -1,0 +1,7 @@
+=f.label ymd_control_id
+  = label
+  .input-group.date[id="#{ymd_control_id}" data-target-input="nearest"]
+    =f.text_field ymd_control_id, class: 'form-control datetimepicker-input', data: {target: '#' + ymd_control_id}, id: model + '_' + ymd_control_id
+    span.input-group-append[data-target="##{ymd_control_id}" data-toggle="datetimepicker"]
+      span.input-group-text
+        i.fa.fa-calendar

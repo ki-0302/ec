@@ -327,3 +327,10 @@ bin/rails g model item name:string, category_id:integer, manufacture_name:strin
 yarn add tempusdominus-bootstrap-4
 https://tempusdominus.github.io/bootstrap-4/
 
+参考URL：「Bootstrap 4でDatetimePickerを使いたい」
+https://qiita.com/yaju/items/2cbe5e5914c5be08820a
+
+# FontAwesome
+WebFont
+https://fontawesome.com/
+
