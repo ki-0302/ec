@@ -11,7 +11,7 @@ table.table.table-hover
       th= Category.human_attribute_name(:name)
       td= @category.name
     tr
-      th= Category.human_attribute_name(:parent_id)
+      th= Category.human_attribute_name(:parent_name)
       td= @category.parent_id
     tr
       th= Category.human_attribute_name(:display_start_datetime)

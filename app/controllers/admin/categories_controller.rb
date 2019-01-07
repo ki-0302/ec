@@ -2,6 +2,7 @@ module Admin
   class CategoriesController < ApplicationController
     def index
       @q = Category.ransack(params[:q])
+      @q.sorts = 'id desc'
       @categories = @q.result(distinct: true).page(params[:page])
     end
 

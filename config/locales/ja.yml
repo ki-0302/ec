@@ -31,6 +31,7 @@ ja:
         display_start_datetime_hn: 掲載開始時間
         display_end_datetime_ymd: 掲載終了日
         display_end_datetime_hn: 掲載終了時間
+        parent_name: 親カテゴリー
   date:
     abbr_day_names:
     - 日
