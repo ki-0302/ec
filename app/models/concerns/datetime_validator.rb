@@ -4,7 +4,7 @@ class DatetimeValidator < ActiveModel::EachValidator
     if before_type_cast_value.blank?
       nil
     else
-      DateTime.parse(before_type_cast_value)
+      Time.zone.parse(before_type_cast_value)
     end
   rescue StandardError
     record.errors[attribute] << I18n.t('errors.messages.not_a_datetime')

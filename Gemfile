@@ -74,3 +74,6 @@ gem 'html2slim'
 
 # BootStrap
 gem 'bootstrap'
+
+# Pagination
+gem 'kaminari'
