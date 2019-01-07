@@ -15,10 +15,10 @@ table.table.table-hover
       td= @admin_user.email
     tr
       th= AdminUser.human_attribute_name(:created_at)
-      td= @admin_user.created_at
+      td= l(@admin_user.created_at, format: :long) if @admin_user.created_at.present?
     tr
       th= AdminUser.human_attribute_name(:updated_at)
-      td= @admin_user.updated_at
+      td= l(@admin_user.updated_at, format: :long) if @admin_user.updated_at.present?
 
 = link_to '編集', edit_admin_admin_user_path(@admin_user), class: 'btn btn-primary mr-3'
 = link_to '削除', [:admin, @admin_user], method: :delete, data: { confirm: AdminUser.model_name.human + "「#{@admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

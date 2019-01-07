@@ -3,7 +3,7 @@
     - category_form.errors.full_messages.each do |message|
       li= message
 
-= form_with model: @category_form, url: '/admin/categories',local: true do |f|
+= form_with model: category_form, url: url, local: true do |f|
   .form-group
     = f.label :name
       = Category.human_attribute_name(:name)

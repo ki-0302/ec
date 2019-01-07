@@ -23,13 +23,13 @@ module Admin
     end
 
     def edit
-      @category = Category.find(params[:id])
+      @category_form = CategoryForm.find(params[:id])
     end
 
     def update
-      @category = Category.find(params[:id])
-      if @category.update(category_params)
-        redirect_to admin_categories_url, notice: Category.model_name.human + "「#{@category.name}」を更新しました。"
+      @category_form = CategoryForm.find(params[:id])
+      if @category_form.update(category_form_params)
+        redirect_to admin_categories_url, notice: Category.model_name.human + "「#{@category_form.name}」を更新しました。"
       else
         render :edit
       end

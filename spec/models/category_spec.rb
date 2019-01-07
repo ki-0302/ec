@@ -90,9 +90,12 @@ RSpec.describe Category, type: :model do
         expect(category2.errors[:display_start_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
       it '掲載開始日時が掲載終了日時より大きい場合無効であること' do
-        category = FactoryBot.create(:category, display_start_datetime: '2019-01-01 00:02:00',
-                                                display_end_datetime: '2019-01-01 00:01:00')
-        expect(category).to_not be_valid
+        category = FactoryBot.build(:category, display_start_datetime: '2019-01-01 00:02:00',
+                                               display_end_datetime: '2019-01-01 00:01:00')
+        category.valid?
+        comparison = Category.human_attribute_name(:display_start_datetime)
+        expect(category.errors[:display_end_datetime]).to include(I18n.t('errors.messages.greater_than',
+                                                                         count: comparison))
       end
     end
     describe '掲載終了日時の確認をおこなう' do

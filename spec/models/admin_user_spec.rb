@@ -40,7 +40,6 @@ RSpec.describe AdminUser, type: :model do
         delete_admin_user1 = AdminUser.find_by(name: 'テストユーザー')
         expect(delete_admin_user1).to be_truthy
         delete_admin_user1.destroy
-        expect(delete_admin_user1).to be_valid
         expect(AdminUser.all.size).to eq 0
       end
     end
