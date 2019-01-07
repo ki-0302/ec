@@ -11,6 +11,7 @@ module Admin
 
     def new
       @category = Category.new
+      @select_parent_id = Category.all
     end
 
     def create
@@ -25,6 +26,7 @@ module Admin
 
     def edit
       @category = Category.find(params[:id])
+      @select_parent_id = Category.where.not(id: params[:id])
     end
 
     def update
