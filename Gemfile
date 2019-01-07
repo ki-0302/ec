@@ -77,3 +77,6 @@ gem 'bootstrap'
 
 # Pagination
 gem 'kaminari'
+
+# Search
+gem 'ransack'

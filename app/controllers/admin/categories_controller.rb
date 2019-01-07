@@ -1,7 +1,8 @@
 module Admin
   class CategoriesController < ApplicationController
     def index
-      @categories = Category.page(params[:page]).per(ROW_PER_PAGE)
+      @q = Category.ransack(params[:q])
+      @categories = @q.result(distinct: true).page(params[:page])
     end
 
     def show
@@ -9,27 +10,27 @@ module Admin
     end
 
     def new
-      @category_form = CategoryForm.new
+      @category = Category.new
     end
 
     def create
-      @category_form = CategoryForm.new(category_form_params)
+      @category = Category.new(category_form_params)
 
-      if @category_form.save
-        redirect_to admin_categories_path, notice: Category.model_name.human + "「#{@category_form.name}」を登録しました。"
+      if @category.save
+        redirect_to admin_categories_path, notice: Category.model_name.human + "「#{@category.name}」を登録しました。"
       else
         render :new
       end
     end
 
     def edit
-      @category_form = CategoryForm.find(params[:id])
+      @category = Category.find(params[:id])
     end
 
     def update
-      @category_form = CategoryForm.find(params[:id])
-      if @category_form.update(category_form_params)
-        redirect_to admin_categories_url, notice: Category.model_name.human + "「#{@category_form.name}」を更新しました。"
+      @category = Category.find(params[:id])
+      if @category.update(category_form_params)
+        redirect_to admin_categories_url, notice: Category.model_name.human + "「#{@category.name}」を更新しました。"
       else
         render :edit
       end
@@ -44,13 +45,15 @@ module Admin
     private
 
     def category_params
-      params.require(:category).permit(:name, :parent_id, :display_start_datetime, :display_end_datetime)
+      params.require(:category).permit(:name, :parent_id, :display_start_datetime,
+                                       :display_end_datetime).merge(is_divide_by_date_and_time: false)
     end
 
     def category_form_params
-      params.require(:category_form).permit(:name, :parent_id,
-                                            :display_start_datetime_ymd, :display_start_datetime_hn,
-                                            :display_end_datetime_ymd, :display_end_datetime_hn)
+      params.require(:category).permit(:name, :parent_id,
+                                       :display_start_datetime_ymd, :display_start_datetime_hn,
+                                       :display_end_datetime_ymd,
+                                       :display_end_datetime_hn).merge(is_divide_by_date_and_time: true)
     end
   end
 end

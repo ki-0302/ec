@@ -24,4 +24,7 @@ table.table.table-hover
           td
             = link_to '編集', edit_admin_category_path(category), class: 'btn btn-primary mr-3'
             = link_to '削除', [:admin, category], method: :delete, data: { confirm: Category.model_name.human + "「#{category.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
-= paginate @categories
+
+.mb-3
+  = paginate @categories
+  = page_entries_info @categories

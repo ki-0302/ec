@@ -3,4 +3,4 @@
 .nav.justify-content-end
   = link_to '一覧', admin_categories_path, class: 'nav-:link'
   
-= render partial: 'form', locals: { category_form: @category_form, url: '/admin/categories' }
+= render partial: 'form', locals: { category: @category }

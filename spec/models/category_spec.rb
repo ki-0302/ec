@@ -115,4 +115,126 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
+  describe '追加・更新・削除　日・時に別れた場合' do
+    let(:category1) { FactoryBot.create(:category, is_divide_by_date_and_time: true) }
+
+    describe '追加' do
+      it 'カテゴリーが追加できること' do
+        expect(category1).to be_valid
+        expect(CategoryForm.find_by(name: 'テストカテゴリー')).to be_truthy
+      end
+      it 'カテゴリーが複数追加できること' do
+        expect(category1).to be_valid
+
+        category_child = FactoryBot.create(:category, parent_id: CategoryForm.find_by(name: 'テストカテゴリー').id,
+                                                      name: 'テストカテゴリー2',
+                                                      display_start_datetime_ymd: '2019-01-20',
+                                                      display_start_datetime_hn: '10:00',
+                                                      display_end_datetime_ymd: '2019-01-31',
+                                                      display_end_datetime_hn: '12:22',
+                                                      is_divide_by_date_and_time: true)
+        expect(category_child).to be_valid
+        expect(CategoryForm.find_by(name: 'テストカテゴリー2')).to be_truthy
+      end
+    end
+
+    describe '更新' do
+      it 'カテゴリーが更新できること' do
+        expect(category1).to be_valid
+        update_category1 = CategoryForm.find_by(name: 'テストカテゴリー')
+        expect(update_category1).to be_truthy
+        update_category1.name = '更新カテゴリー'
+        update_category1.is_divide_by_date_and_time = true
+        update_category1.save
+        expect(update_category1).to be_valid
+        expect(CategoryForm.find_by(name: '更新カテゴリー')).to be_truthy
+      end
+    end
+    describe '削除' do
+      it 'カテゴリーが削除できること' do
+        expect(category1).to be_valid
+        delete_category1 = CategoryForm.find_by(name: 'テストカテゴリー')
+        expect(delete_category1).to be_truthy
+        delete_category1.destroy
+        expect(CategoryForm.all.size).to eq 0
+      end
+    end
+  end
+
+  describe 'バリデーション 日・時に別れた場合' do
+    describe '掲載開始日時の確認をおこなう' do
+      it '掲載開始日・時がnilを許容すること' do
+        category = FactoryBot.build(:category, display_start_datetime_ymd: nil,
+                                               display_start_datetime_hn: nil,
+                                               is_divide_by_date_and_time: true)
+        expect(category).to be_valid
+      end
+      it '掲載開始日・時がnilでも日・時でもなければ無効であること' do
+        category = FactoryBot.build(:category, display_start_datetime_ymd: '2018-01-01',
+                                               display_start_datetime_hn: '10:20',
+                                               display_end_datetime_ymd: '2018-01-02',
+                                               display_end_datetime_hn: '10:20',
+                                               is_divide_by_date_and_time: true)
+        category.valid?
+        expect(category.errors[:display_start_datetime_ymd]).to_not include(I18n.t('errors.messages.not_a_date'))
+        category2 = FactoryBot.build(:category, display_start_datetime_ymd: '2018-31-01',
+                                                display_start_datetime_hn: '20:11',
+                                                display_end_datetime_ymd: '2018-01-02',
+                                                display_end_datetime_hn: '10:20',
+                                                is_divide_by_date_and_time: true)
+        category2.valid?
+        expect(category2.errors[:display_start_datetime_ymd]).to include(I18n.t('errors.messages.not_a_date'))
+        category3 = FactoryBot.build(:category, display_start_datetime_ymd: '2018-01-01',
+                                                display_start_datetime_hn: '30:70',
+                                                display_end_datetime_ymd: '2018-01-02',
+                                                display_end_datetime_hn: '10:20',
+                                                is_divide_by_date_and_time: true)
+        category3.valid?
+        expect(category3.errors[:display_start_datetime_hn]).to include(I18n.t('errors.messages.not_a_time'))
+      end
+      it '掲載開始日時が掲載終了日時より大きい場合無効であること' do
+        category = FactoryBot.build(:category, display_start_datetime_ymd: '2018-01-03',
+                                               display_start_datetime_hn: '20:20',
+                                               display_end_datetime_ymd: '2018-01-02',
+                                               display_end_datetime_hn: '10:20',
+                                               is_divide_by_date_and_time: true)
+        category.valid?
+        comparison = Category.human_attribute_name(:display_start_datetime)
+        expect(category.errors[:display_end_datetime]).to include(I18n.t('errors.messages.greater_than',
+                                                                         count: comparison))
+      end
+    end
+    describe '掲載終了日時の確認をおこなう' do
+      it '掲載終了日時がnilを許容すること' do
+        category = FactoryBot.build(:category, display_end_datetime_ymd: nil,
+                                               display_end_datetime_hn: nil,
+                                               is_divide_by_date_and_time: true)
+        expect(category).to be_valid
+      end
+      it '掲載終了日時がnilでも日時でなければ無効であること' do
+        category = FactoryBot.build(:category, display_start_datetime_ymd: '2018-01-01',
+                                               display_start_datetime_hn: '10:20',
+                                               display_end_datetime_ymd: '2018-01-02',
+                                               display_end_datetime_hn: '10:20',
+                                               is_divide_by_date_and_time: true)
+        category.valid?
+        expect(category.errors[:display_end_datetime_ymd]).to_not include(I18n.t('errors.messages.not_a_date'))
+        category2 = FactoryBot.build(:category, display_start_datetime_ymd: '2018-31-01',
+                                                display_start_datetime_hn: '20:11',
+                                                display_end_datetime_ymd: '2018-31-02',
+                                                display_end_datetime_hn: '10:20',
+                                                is_divide_by_date_and_time: true)
+        category2.valid?
+        expect(category2.errors[:display_end_datetime_ymd]).to include(I18n.t('errors.messages.not_a_date'))
+        category3 = FactoryBot.build(:category, display_start_datetime_ymd: '2018-01-01',
+                                                display_start_datetime_hn: '11:22',
+                                                display_end_datetime_ymd: '2018-01-02',
+                                                display_end_datetime_hn: '30:20',
+                                                is_divide_by_date_and_time: true)
+        category3.valid?
+        expect(category3.errors[:display_end_datetime_hn]).to include(I18n.t('errors.messages.not_a_time'))
+      end
+    end
+  end
 end

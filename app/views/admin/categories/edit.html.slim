@@ -3,4 +3,4 @@ h1= Category.model_name.human + 'の編集'
 .nav.justify-content-end
   = link_to '一覧', admin_categories_path, class: 'nav-:link'
 
-= render partial: 'form', locals: { category_form: @category_form, url: '/admin/categories/' + @category_form.id.to_s }
+= render partial: 'form', locals: { category: @category }

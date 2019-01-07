@@ -1,21 +1,21 @@
-- if category_form.errors.present?
+- if category.errors.present?
   ul#error_explanation
-    - category_form.errors.full_messages.each do |message|
+    - category.errors.full_messages.each do |message|
       li= message
 
-= form_with model: category_form, url: url, local: true do |f|
+= form_with model: [:admin, category], local: true do |f|
   .form-group
     = f.label :name
       = Category.human_attribute_name(:name)
       = render "common/label_required"
-    = f.text_field :name, class: 'form-control', id: 'category_form_name'
+    = f.text_field :name, class: 'form-control', id: 'category_name'
   .form-group
     = f.label :parent_id
       = Category.human_attribute_name(:parent_id)
-    = f.text_field :parent_id, class: 'form-control', id: 'category_form_parent_id'
+    = f.text_field :parent_id, class: 'form-control', id: 'category_parent_id'
 
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category_form', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category_form', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
   = f.submit nil, class: 'btn btn-primary'
 
 = render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn' }
