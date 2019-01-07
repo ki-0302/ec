@@ -30,4 +30,3 @@ table.table.table-hover
             = link_to '削除', [:admin, category], method: :delete, data: { confirm: Category.model_name.human + "「#{category.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
 
 = render partial: 'common/pagenation', locals: { model_instance: @categories }
-

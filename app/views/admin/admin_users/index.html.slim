@@ -1,5 +1,7 @@
 h1= AdminUser.model_name.human + '一覧'
 
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: AdminUser.human_attribute_name(:name) }
+
 = link_to '新規登録', new_admin_admin_user_path, class: 'btn btn-primary'
 .mb-3
 table.table.table-hover
@@ -21,3 +23,4 @@ table.table.table-hover
             = link_to '編集', edit_admin_admin_user_path(admin_user), class: 'btn btn-primary mr-3'
             = link_to '削除', [:admin, admin_user], method: :delete, data: { confirm: AdminUser.model_name.human + "「#{admin_user.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
 
+= render partial: 'common/pagenation', locals: { model_instance: @admin_users }

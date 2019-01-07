@@ -1,7 +1,9 @@
 module Admin
   class AdminUsersController < ApplicationController
     def index
-      @admin_users = AdminUser.all
+      @q = AdminUser.ransack(params[:q])
+      @q.sorts = 'id desc'
+      @admin_users = @q.result(distinct: true).page(params[:page])
     end
 
     def show
