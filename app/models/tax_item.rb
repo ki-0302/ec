@@ -1,0 +1,2 @@
+class TaxItem < ApplicationRecord
+end
