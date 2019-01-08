@@ -41,14 +41,44 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
   describe 'バリデーション' do
     describe '親カテゴリーの確認をおこなう' do
       it '親カテゴリーがnilを許容すること' do
-        category = FactoryBot.create(:category, parent_id: nil)
+        category = FactoryBot.build(:category, parent_id: nil)
         expect(category).to be_valid
       end
       it '親カテゴリーがnilでなくマスタに存在しなければ無効であること' do
         is_expected.to be_invalid_foreign_key('parent_id').value(1)
+      end
+      it '親カテゴリーが自身のIDの場合、無効であること' do
+        category = FactoryBot.create(:category)
+        expect(category).to be_valid
+
+        update_category = Category.find_by(name: 'テストカテゴリー')
+        expect(update_category).to be_truthy
+        update_category.parent_id = update_category.id
+        update_category.valid?
+        expect(update_category.errors[:parent_id]).to include(I18n.t('errors.messages.assigned_by_self'))
+      end
+      it '自身より親のカテゴリーに自身IDが親カテゴリーとして登録されている場合、無効であること' do
+        category = FactoryBot.create(:category)
+        expect(category).to be_valid
+
+        category2 = FactoryBot.create(:category, parent_id: category.id)
+        expect(category2).to be_valid
+        category.parent_id = category2.id
+        category.valid?
+        expect(category.errors[:parent_id]).to include(I18n.t('errors.messages.exists_as_a_parent',
+                                                              parent: Category.human_attribute_name(:parent_name)))
+
+        category3 = FactoryBot.create(:category, parent_id: category2.id)
+        expect(category3).to be_valid
+
+        category.parent_id = category3.id
+        category.valid?
+        expect(category.errors[:parent_id]).to include(I18n.t('errors.messages.exists_as_a_parent',
+                                                              parent: Category.human_attribute_name(:parent_name)))
       end
     end
     describe 'カテゴリー名の確認をおこなう' do
@@ -122,12 +152,12 @@ RSpec.describe Category, type: :model do
     describe '追加' do
       it 'カテゴリーが追加できること' do
         expect(category1).to be_valid
-        expect(CategoryForm.find_by(name: 'テストカテゴリー')).to be_truthy
+        expect(Category.find_by(name: 'テストカテゴリー')).to be_truthy
       end
       it 'カテゴリーが複数追加できること' do
         expect(category1).to be_valid
 
-        category_child = FactoryBot.create(:category, parent_id: CategoryForm.find_by(name: 'テストカテゴリー').id,
+        category_child = FactoryBot.create(:category, parent_id: Category.find_by(name: 'テストカテゴリー').id,
                                                       name: 'テストカテゴリー2',
                                                       display_start_datetime_ymd: '2019-01-20',
                                                       display_start_datetime_hn: '10:00',
@@ -135,29 +165,29 @@ RSpec.describe Category, type: :model do
                                                       display_end_datetime_hn: '12:22',
                                                       is_divide_by_date_and_time: true)
         expect(category_child).to be_valid
-        expect(CategoryForm.find_by(name: 'テストカテゴリー2')).to be_truthy
+        expect(Category.find_by(name: 'テストカテゴリー2')).to be_truthy
       end
     end
 
     describe '更新' do
       it 'カテゴリーが更新できること' do
         expect(category1).to be_valid
-        update_category1 = CategoryForm.find_by(name: 'テストカテゴリー')
+        update_category1 = Category.find_by(name: 'テストカテゴリー')
         expect(update_category1).to be_truthy
         update_category1.name = '更新カテゴリー'
         update_category1.is_divide_by_date_and_time = true
         update_category1.save
         expect(update_category1).to be_valid
-        expect(CategoryForm.find_by(name: '更新カテゴリー')).to be_truthy
+        expect(Category.find_by(name: '更新カテゴリー')).to be_truthy
       end
     end
     describe '削除' do
       it 'カテゴリーが削除できること' do
         expect(category1).to be_valid
-        delete_category1 = CategoryForm.find_by(name: 'テストカテゴリー')
+        delete_category1 = Category.find_by(name: 'テストカテゴリー')
         expect(delete_category1).to be_truthy
         delete_category1.destroy
-        expect(CategoryForm.all.size).to eq 0
+        expect(Category.all.size).to eq 0
       end
     end
   end

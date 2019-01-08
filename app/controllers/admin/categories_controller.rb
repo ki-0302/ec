@@ -21,6 +21,7 @@ module Admin
       if @category.save
         redirect_to admin_categories_path, notice: Category.model_name.human + "「#{@category.name}」を登録しました。"
       else
+        @select_parent_id = Category.all
         render :new
       end
     end
@@ -35,6 +36,7 @@ module Admin
       if @category.update(category_form_params)
         redirect_to admin_categories_url, notice: Category.model_name.human + "「#{@category.name}」を更新しました。"
       else
+        @select_parent_id = Category.where.not(id: params[:id])
         render :edit
       end
     end
