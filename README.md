@@ -149,6 +149,23 @@ email
 ```plantuml
 @startuml
 skinparam classAttributeIconSize 0
+ 
+class AdminUser {
+id
+name
+email
+password_digest
+}
+
+class Category {
+id
+parent_id
+name
+display_start_date
+display_end_date
+}
+
+
 
 class User {
 id
@@ -185,14 +202,9 @@ item_id
 item_quantity
 }
 
-class AdminUser {
-id
-name
-email
-password_digest
-}
 
-class Item {
+
+class Product {
 id
 name
 category_id
@@ -211,20 +223,14 @@ jan_code
 status
 }
 
-class ItemImage {
+class ProductImage {
 id
-item_id
+product_id
 image_file_path
 display_priority
 }
 
-class Category {
-id
-parent_id
-name
-display_start_date
-display_end_date
-}
+
 
 class Order {
 id
@@ -327,7 +333,7 @@ bin/rails g model item name:string, category_id:integer, manufacture_name:strin
 yarn add tempusdominus-bootstrap-4
 https://tempusdominus.github.io/bootstrap-4/
 
-参考URL：「Bootstrap 4でDatetimePickerを使いたい」
+参考URL
 https://qiita.com/yaju/items/2cbe5e5914c5be08820a
 
 # FontAwesome
