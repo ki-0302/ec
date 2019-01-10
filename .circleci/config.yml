@@ -69,7 +69,7 @@ jobs:
     steps:
       - run:
           name: Install ca-certificates
-          command: RUN apk add --no-cache ca-certificates
+          command: eval "apk add --no-cache ca-certificates"
       - restore_cache:
           key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
