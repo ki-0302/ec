@@ -13,9 +13,10 @@ executors:
     docker:
       - image: circleci/postgres:11.1
         environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle_ruby_test
-          POSTGRES_PASSWORD: ""
+          # POSTGRES_USER: root
+          # POSTGRES_DB: circle_ruby_test
+          # POSTGRES_PASSWORD: ""
+          DOCKERIZE_VERSION v0.6.1
     working_directory: /home/circleci/ec
 
 
@@ -71,11 +72,18 @@ jobs:
           name: Install ca-certificates
           command: |
             apt update
-            apt install ca-certificates
+            apt install -y ca-certificates
       - restore_cache:
           key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Install dockerize
+          command: |
+            apt install -y wget
+            wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+            && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+            && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
       - run:
           name: Wait for activation of Database
           command: |
