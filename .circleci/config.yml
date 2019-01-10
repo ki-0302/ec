@@ -72,22 +72,22 @@ jobs:
   test_rspec:
     executor: with_db
     steps:
-      - run:
-          name: Install ca-certificates
-          command: |
-            apt update
-            apt install -y ca-certificates
+      # - run:
+      #     name: Install ca-certificates
+      #     command: |
+      #       apt update
+      #       apt install -y ca-certificates
       - restore_cache:
           key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Install dockerize
-          command: |
-            apt install -y wget
-            wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-            && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-            && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+      # - run:
+      #     name: Install dockerize
+      #     command: |
+      #       apt install -y wget
+      #       wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+      #       && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+      #       && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
       - run:
           name: Wait for activation of Database
           command: |
