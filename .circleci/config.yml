@@ -98,6 +98,6 @@ workflows:
       - test_rails_best_practices:
           requires: # bundle_dependencies の後に実行するように指定
             - bundle_dependencies
-      - test_rubocop:
+      - test_rpec:
           requires: # bundle_dependencies の後に実行するように指定
             - bundle_dependencies
