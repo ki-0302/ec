@@ -11,7 +11,7 @@ executors:
     working_directory: ~/ec
   with_db: # 同時に起動するDB用のDockerも定義
     docker:
-      - image: circleci/postgres:11.1-alpine
+      - image: circleci/postgres:11.1
         environment:
           POSTGRES_USER: circleci-ec-ruby
           POSTGRES_DB: circle_ruby_test
