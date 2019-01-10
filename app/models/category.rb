@@ -37,6 +37,10 @@ class Category < ApplicationRecord
   after_find :set_display_start_datetime_ymd_and_hn
   after_find :set_display_end_datetime_ymd_and_hn
 
+  def parrent_name
+    parent.name
+  end
+
   private
 
   def set_display_datetime
