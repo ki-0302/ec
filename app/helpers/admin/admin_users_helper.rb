@@ -1,2 +1,4 @@
-module Admin::AdminUsersHelper
+module Admin
+  module AdminUsersHelper
+  end
 end
