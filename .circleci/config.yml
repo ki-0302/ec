@@ -1,3 +1,4 @@
+version: 2.1
 executors:
   default:
     docker:
@@ -17,7 +18,7 @@ executors:
           POSTGRES_PASSWORD: ""
     working_directory: ~/ec
 
-version: 2.1
+
 jobs:
   checkout_code: # ソースコードの取得
     executor: default
@@ -39,7 +40,7 @@ jobs:
           command: bundle check || bundle install
       - save_cache: # vendor/bundleをキャッシュする
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
-          pathes:
+          paths:
             - vendor/bundle
   test_rubocop:
     executor: default
@@ -87,7 +88,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - checkout_code:
+      - checkout_code
       - bundle_dependencies:
           requires: # checkout_code の後に実行するように指定
             - checkout_code
