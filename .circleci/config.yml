@@ -8,7 +8,7 @@ executors:
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
-    working_directory: ~/ec
+    working_directory: /home/circleci/ec
   with_db: # 同時に起動するDB用のDockerも定義
     docker:
       - image: circleci/postgres:11.1
@@ -16,7 +16,7 @@ executors:
           POSTGRES_USER: root
           POSTGRES_DB: circle_ruby_test
           POSTGRES_PASSWORD: ""
-    working_directory: ~/ec
+    working_directory: /home/circleci/ec
 
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - save_cache: # ソースコードをキャッシュする
           key: v1-ec-{{ .Environment.CIRCLE_SHA1}}
           paths:
-            - ~/ec
+            - /home/circleci/ec
   bundle_dependencies: # bundleの依存関係を定義
     executor: default
     steps:
