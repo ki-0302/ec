@@ -34,7 +34,7 @@
 .DS_Store
 
 # RuboCop
-.rubocop.yml
+# .rubocop.yml
 
 # rbenv
 .ruby-version
