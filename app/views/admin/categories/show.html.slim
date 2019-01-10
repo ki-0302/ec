@@ -15,15 +15,15 @@ table.table.table-hover
       td= @category.parent_id
     tr
       th= Category.human_attribute_name(:display_start_datetime)
-      td= l(@category.display_start_datetime, format: :long) if @category.display_start_datetime.present?
+      td= l(@category.display_start_datetime, format: :long) if @category.display_start_datetime?
     tr
       th= Category.human_attribute_name(:display_end_datetime)
-      td= l(@category.display_end_datetime, format: :long) if @category.display_end_datetime.present?
+      td= l(@category.display_end_datetime, format: :long) if @category.display_end_datetime?
     tr
       th= Category.human_attribute_name(:start_)
-      td= l(@category.created_at, format: :long) if @category.created_at.present?
+      td= l(@category.created_at, format: :long) if @category.created_at?
     tr
       th= Category.human_attribute_name(:updated_at)
-      td= l(@category.updated_at, format: :long) if @category.updated_at.present?
+      td= l(@category.updated_at, format: :long) if @category.updated_at?
 = link_to '編集', edit_admin_category_path(@category), class: 'btn btn-primary mr-3'
 = link_to '削除', [:admin, @category], method: :delete, data: { confirm: Category.model_name.human + "「#{@category.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

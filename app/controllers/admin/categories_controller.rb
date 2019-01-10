@@ -49,10 +49,10 @@ module Admin
 
     private
 
-    def category_params
-      params.require(:category).permit(:name, :parent_id, :display_start_datetime,
-                                       :display_end_datetime).merge(is_divide_by_date_and_time: false)
-    end
+    # def category_params
+    #   params.require(:category).permit(:name, :parent_id, :display_start_datetime,
+    #                                    :display_end_datetime).merge(is_divide_by_date_and_time: false)
+    # end
 
     def category_form_params
       params.require(:category).permit(:name, :parent_id,
