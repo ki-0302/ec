@@ -88,15 +88,15 @@ workflows:
   build:
     jobs:
       - checkout_code
-      - bundle_dependencies
+      - bundle_dependencies:
           requires: # checkout_code の後に実行するように指定
             - checkout_code
-      - test_rubocop
+      - test_rubocop:
           requires: # bundle_dependencies の後に実行するように指定
             - bundle_dependencies
-      - test_rails_best_practices
+      - test_rails_best_practices:
           requires: # bundle_dependencies の後に実行するように指定
             - bundle_dependencies
-      - test_rubocop
+      - test_rubocop:
           requires: # bundle_dependencies の後に実行するように指定
             - bundle_dependencies
