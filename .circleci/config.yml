@@ -69,7 +69,10 @@ jobs:
     steps:
       - run:
           name: Install ca-certificates
-          command: cat /etc/issue #eval "apt install ca-certificates"
+          command: |
+            yum install ca-certificates
+            apt update
+            apt install ca-certificates
       - restore_cache:
           key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
