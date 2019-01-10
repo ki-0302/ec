@@ -72,6 +72,9 @@ jobs:
       - restore_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
       - run:
+          name: ex
+          command: RUN apk add --no-cache ca-certificates
+      - run:
           name: Wait for activation of Database
           command: |
             dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
