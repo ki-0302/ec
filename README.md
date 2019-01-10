@@ -285,7 +285,7 @@ tax_category
 }
 
  
- 
+
 class TaxRate {
 id
 tax_rate_name
