@@ -165,7 +165,11 @@ display_start_date
 display_end_date
 }
 
-
+class TaxItem {
+id
+name
+tax_class
+}
 
 class User {
 id
@@ -280,11 +284,7 @@ phone_number
 tax_category
 }
 
-class TaxItem {
-id
-name
-tax_class
-}
+
 
 class TaxRate {
 id
