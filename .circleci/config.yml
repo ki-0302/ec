@@ -11,6 +11,10 @@ executors:
     working_directory: /home/circleci/ec
   with_db: # 同時に起動するDB用のDockerも定義
     docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
       - image: circleci/postgres:11.1
         environment:
           # POSTGRES_USER: root
