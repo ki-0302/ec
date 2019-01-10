@@ -13,7 +13,7 @@ executors:
     docker:
       - image: circleci/postgres:11.1
         environment:
-          POSTGRES_USER: circleci-ec-ruby
+          POSTGRES_USER: root
           POSTGRES_DB: circle_ruby_test
           POSTGRES_PASSWORD: ""
     working_directory: ~/ec
@@ -67,13 +67,13 @@ jobs:
   test_rspec:
     executor: with_db
     steps:
+      - run:
+          name: Install ca-certificates
+          command: apk add --no-cache ca-certificates
       - restore_cache:
           key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: ex
-          command: RUN apk add --no-cache ca-certificates
       - run:
           name: Wait for activation of Database
           command: |
