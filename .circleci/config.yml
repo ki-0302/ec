@@ -18,7 +18,7 @@ executors:
           PGHOST: 127.0.0.1
       - image: circleci/postgres:11.1
         environment:
-          PG_USER: circleci
+          # PG_USER: circleci
           POSTGRES_USER: circleci
           POSTGRES_DB: ec_test
           POSTGRES_PASSWORD: ""
