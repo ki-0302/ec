@@ -18,9 +18,9 @@ executors:
           PGHOST: 127.0.0.1
       - image: circleci/postgres:11.1
         environment:
-          # POSTGRES_USER: root
-          POSTGRES_DB: circle_ruby_test
-          # POSTGRES_PASSWORD: ""
+          POSTGRES_USER: ec
+          POSTGRES_DB: ec_test
+          POSTGRES_PASSWORD: ""
           DOCKERIZE_VERSION: v0.6.1
     working_directory: /home/circleci/ec
 
