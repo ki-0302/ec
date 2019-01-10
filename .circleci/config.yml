@@ -18,12 +18,10 @@ executors:
           PGHOST: 127.0.0.1
       - image: circleci/postgres:11.1
         environment:
-          # PG_USER: circleci
           POSTGRES_USER: circleci
           POSTGRES_DB: ec_test
           POSTGRES_PASSWORD: ""
     working_directory: /home/circleci/ec
-
 
 jobs:
   checkout_code: # ソースコードの取得
@@ -83,7 +81,9 @@ jobs:
             dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
       - run:
           name: Database Setup
-          command: bin/rails db:schema:load --trace
+          command: |
+            bin/rails db:schema:load --trace
+            bin/rails db:migrate RAILS_ENV=test
       - run:
           name: Run Rspec
           command: bundle exec rspec
