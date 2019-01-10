@@ -21,26 +21,26 @@ version: 2.1
 jobs:
   checkout_code: # ソースコードの取得
     executor: default
-      steps:
-        - checkout
-        - save_cache: # ソースコードをキャッシュする
-            key: v1-ec-{{ .Environment.CIRCLE_SHA1}}
-            paths:
-              - ~/ec
+    steps:
+      - checkout
+      - save_cache: # ソースコードをキャッシュする
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1}}
+          paths:
+            - ~/ec
   bundle_dependencies: # bundleの依存関係を定義
     executor: default
-      steps:
-        - restore_cache: # キャッシュしたソースコードの復元
-            key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
-        - restore_cache:
-            key: v1-bundle-{{ checksum "Gemfile.lock" }}
-        - run: # 実行するコマンドを指定
-            name: Bundle Install
-            command: bundle check || bundle install
-        - save_cache: # vendor/bundleをキャッシュする
-            key: v1-bundle-{{ checksum "Gemfile.lock" }}
-            pathes:
-             - vendor/bundle
+    steps:
+      - restore_cache: # キャッシュしたソースコードの復元
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: # 実行するコマンドを指定
+          name: Bundle Install
+          command: bundle check || bundle install
+      - save_cache: # vendor/bundleをキャッシュする
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+          pathes:
+            - vendor/bundle
   test_rubocop:
     executor: default
     steps:
