@@ -284,7 +284,7 @@ phone_number
 tax_category
 }
 
-
+ 
  
 class TaxRate {
 id

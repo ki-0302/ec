@@ -13,7 +13,7 @@ executors:
       - image: circleci/postgres:11.1-alpine
         environment:
           POSTGRES_USER: circleci-ec-ruby
-          POSTGRES_DB: ec_test
+          POSTGRES_DB: circle_ruby_test
           POSTGRES_PASSWORD: ""
     working_directory: ~/ec
 
@@ -89,5 +89,14 @@ workflows:
     jobs:
       - checkout_code
       - bundle_dependencies
-        requires: # checkout_codeの後に実行するように指定
+        requires: # checkout_code の後に実行するように指定
           - checkout_code
+      - test_rubocop
+        requires: # bundle_dependencies の後に実行するように指定
+          - bundle_dependencies
+      - test_rails_best_practices
+        requires: # bundle_dependencies の後に実行するように指定
+          - bundle_dependencies
+      - test_rubocop
+        requires: # bundle_dependencies の後に実行するように指定
+          - bundle_dependencies
