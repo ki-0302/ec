@@ -1,4 +1,6 @@
 class TaxClass < ApplicationRecord
+  has_many :tax_items, dependent: :restrict_with_error
+
   validates :name, presence: true
   validates :name, length: { minimum: 2, maximum: 40 }
 
