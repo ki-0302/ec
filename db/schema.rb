@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_034610) do
+ActiveRecord::Schema.define(version: 2019_01_12_130547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,5 +34,21 @@ ActiveRecord::Schema.define(version: 2019_01_05_034610) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
+  create_table "tax_classes", force: :cascade do |t|
+    t.string "name"
+    t.float "tax_rate", default: 0.0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tax_items", force: :cascade do |t|
+    t.string "name"
+    t.bigint "tax_class_id", default: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tax_class_id"], name: "index_tax_items_on_tax_class_id"
+  end
+
   add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "tax_items", "tax_classes"
 end
