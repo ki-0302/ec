@@ -230,7 +230,7 @@ display_end_datetime
 description
 search_term
 jan_code
-status
+status_code
 }
 
 class ProductImage {
