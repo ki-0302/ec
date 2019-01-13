@@ -84,6 +84,7 @@ jobs:
           command: |
             bin/rails db:schema:load --trace
             bin/rails db:migrate RAILS_ENV=test
+            bin/rails db:seed RAILS_ENV=test
       - run:
           name: Run Rspec
           command: bundle exec rspec
