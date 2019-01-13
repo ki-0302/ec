@@ -20,11 +20,11 @@ table.table.table-hover
         tr
           td= link_to category.id, [:admin, category]
           td= category.name
-          td= category.parent.name if category.parent.present?
-          td= l(category.display_start_datetime, format: :long) if category.display_start_datetime.present?
-          td= l(category.display_end_datetime, format: :long) if category.display_end_datetime.present?
-          td= l(category.created_at, format: :long) if category.created_at.present?
-          td= l(category.updated_at, format: :long) if category.updated_at.present?
+          td= category.parrent_name if category.parent_id?
+          td= l(category.display_start_datetime, format: :long) if category.display_start_datetime?
+          td= l(category.display_end_datetime, format: :long) if category.display_end_datetime?
+          td= l(category.created_at, format: :long) if category.created_at?
+          td= l(category.updated_at, format: :long) if category.updated_at?
           td
             = link_to '編集', edit_admin_category_path(category), class: 'btn btn-primary mr-3'
             = link_to '削除', [:admin, category], method: :delete, data: { confirm: Category.model_name.human + "「#{category.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

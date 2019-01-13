@@ -19,4 +19,3 @@
 //= require moment/min/moment.min
 //= require moment/locale/ja
 //= require tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4
-

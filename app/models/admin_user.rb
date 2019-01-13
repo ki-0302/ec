@@ -1,6 +1,7 @@
 class AdminUser < ApplicationRecord
   has_secure_password
-  # before_validation :set_nameless_name
+
+  before_destroy :before_destroy_can_not_be_deleted
 
   validates :name, presence: true
   validates :name, length: { minimum: 2, maximum: 40 }
@@ -10,15 +11,19 @@ class AdminUser < ApplicationRecord
   validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates :email, uniqueness: true
 
-  # validates :password, presence: true
   validates :password, length: { minimum: 6, maximum: 32 }, if: :validate_password?
   validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d!#$%&\(\)@{}]*\z/ }, if: :validate_password?
 
-  def validate_password?
-    password.present? || password_confirmation.present?
+  private
+
+  def before_destroy_can_not_be_deleted
+    return if AdminUser.count > 1
+
+    errors.add(:admin_user, I18n.t('errors.messages.need_to_leave_at_least_one'))
+    throw(:abort)
   end
 
-  def set_nameless_name
-    self.name = '名前なし' if name.blank?
+  def validate_password?
+    password.present? || password_confirmation.present?
   end
 end

@@ -37,6 +37,10 @@ class Category < ApplicationRecord
   after_find :set_display_start_datetime_ymd_and_hn
   after_find :set_display_end_datetime_ymd_and_hn
 
+  def parrent_name
+    parent.name
+  end
+
   private
 
   def set_display_datetime
@@ -114,7 +118,7 @@ class Category < ApplicationRecord
     search_parent_id = parent_id
 
     10.times do
-      parent = Category.find(search_parent_id)
+      parent = Category.find_by(id: search_parent_id)
       return if parent.nil? || parent.parent_id.nil?
 
       if parent.parent_id == id

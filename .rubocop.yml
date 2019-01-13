@@ -1,0 +1,62 @@
+AllCops:
+  TargetRubyVersion: 2.5.3
+  Include:
+    - 'app/**/*.rb'
+    - 'config/**/*.rb'
+    - 'db/migrate/**/*.rb'
+    - 'db/seed_data/**/*.rb'
+    - 'db/seeders/**/*.rb'
+    - 'db/seeds.rb'
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+    - 'spec/**/*.rb'
+    - 'config.ru'
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'Brewfile'
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'node_modules/**/*'
+    - 'db/schema.rb'
+    - 'client/node_modules/**/.*'
+    - 'client/node_modules/**/*'
+    - 'bin/**/*'
+
+#１行の文字数。デフォルトの80文字は短すぎるため
+# Disabled "Line is too long."
+Metrics/LineLength:
+  Max: 128
+
+# クラスの説明用のコメントの強制を無効化。
+# Disabled "Missing top-level class documentation comment."
+Style/Documentation:
+  Enabled: false
+
+# Ruby2.3以上だと文字列リテラルが不定になり警告がでてしまうため無効に。
+# Disabled "Missing frozen string literal comment."
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+  Enabled: false
+
+# 引用符がダブルクォート以外の場合警告
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Specで警告が出るのを防ぐ
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Use only ascii symbols in comments.
+AsciiComments:
+ Enabled: false
+
+Metrics/AbcSize:
+  Max: 24
+
+Metrics/MethodLength:
+  Max: 40
+Metrics/PerceivedComplexity:
+  Max: 8
+

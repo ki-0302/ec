@@ -1,0 +1,110 @@
+version: 2.1
+executors:
+  default:
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+    working_directory: /home/circleci/ec
+  with_db: # 同時に起動するDB用のDockerも定義
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:11.1
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: ec_test
+          POSTGRES_PASSWORD: ""
+    working_directory: /home/circleci/ec
+
+jobs:
+  checkout_code: # ソースコードの取得
+    executor: default
+    steps:
+      - checkout
+      - save_cache: # ソースコードをキャッシュする
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1}}
+          paths:
+            - /home/circleci/ec
+  bundle_dependencies: # bundleの依存関係を定義
+    executor: default
+    steps:
+      - restore_cache: # キャッシュしたソースコードの復元
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: # 実行するコマンドを指定
+          name: Bundle Install
+          command: bundle check || bundle install
+      - save_cache: # vendor/bundleをキャッシュする
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+  test_rubocop:
+    executor: default
+    steps:
+      - restore_cache:
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Run RuboCop
+          command: bundle exec rubocop
+
+  test_rails_best_practices:
+    executor: default
+    steps:
+      - restore_cache:
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Run Rails Best Practices
+          command: bundle exec rails_best_practices
+
+  test_rspec:
+    executor: with_db
+    steps:
+      - restore_cache:
+          key: v1-ec-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Wait for activation of Database
+          command: |
+            dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
+      - run:
+          name: Database Setup
+          command: |
+            bin/rails db:schema:load --trace
+            bin/rails db:migrate RAILS_ENV=test
+            bin/rails db:seed RAILS_ENV=test
+      - run:
+          name: Run Rspec
+          command: bundle exec rspec
+
+# workflowを設定。
+# 上で設定したcheckout_codeとbundle_dependenciesのジョブを定義
+workflows:
+  version: 2
+  build:
+    jobs:
+      - checkout_code
+      - bundle_dependencies:
+          requires: # checkout_code の後に実行するように指定
+            - checkout_code
+      - test_rubocop:
+          requires: # bundle_dependencies の後に実行するように指定
+            - bundle_dependencies
+      - test_rails_best_practices:
+          requires: # bundle_dependencies の後に実行するように指定
+            - bundle_dependencies
+      - test_rspec:
+          requires: # bundle_dependencies の後に実行するように指定
+            - bundle_dependencies

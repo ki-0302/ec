@@ -10,8 +10,11 @@ ja:
     models:
       admin_user: 管理ユーザー
       category: カテゴリー
+      tax_class: 税区分
+      tax_item: 税率対象品目
     attributes:
       admin_user:
+        admin_user: 管理ユーザー
         id: ID
         name: ユーザー名
         email: メールアドレス
@@ -20,6 +23,7 @@ ja:
         created_at: 登録日時
         updated_at: 更新日時
       category:
+        category: カテゴリー
         id: ID
         parent_id: 親カテゴリーID
         name: カテゴリー名
@@ -32,6 +36,20 @@ ja:
         display_end_datetime_ymd: 掲載終了日
         display_end_datetime_hn: 掲載終了時間
         parent_name: 親カテゴリー
+      tax_class:
+        tax_class: 税区分
+        id: ID
+        name: 税区分名
+        tax_rate: 税率
+        created_at: 登録日時
+        updated_at: 更新日時
+      tax_item:
+        tax_item: 税率対象品目
+        id: ID
+        name: 税率対象品目名
+        tax_class_id: 税区分ID
+        created_at: 登録日時
+        updated_at: 更新日時
   date:
     abbr_day_names:
     - 日
@@ -164,6 +182,8 @@ ja:
       other_than: は%{count}以外の値にしてください
       exists_as_a_parent: は%{parent}としてすでに割り当てられています
       assigned_by_self: に自身を割り当てられません
+      can_not_be_deleted: は削除することはできません
+      need_to_leave_at_least_one: は１つ以上残す必要があります
     template:
       body: 次の項目を確認してください
       header:
@@ -236,3 +256,7 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  admin_user:
+    name_default: ユーザー
+  tax_class:
+    name_default: 消費税8%

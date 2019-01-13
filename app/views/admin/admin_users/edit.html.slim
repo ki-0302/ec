@@ -3,4 +3,4 @@ h1= AdminUser.model_name.human + 'の編集'
 .nav.justify-content-end
   = link_to '一覧', admin_admin_users_path, class: 'nav-:link'
 
-= render partial: 'form', locals: { admin_user: @admin_user }
+= render 'form', admin_user: @admin_user

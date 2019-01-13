@@ -38,12 +38,21 @@ module Admin
     end
 
     def destroy
-      admin_user = AdminUser.find(params[:id])
-      admin_user.destroy
-      redirect_to admin_admin_users_url, notice: AdminUser.model_name.human + "「#{admin_user.name}」を削除しました。"
+      admin_user = AdminUser.find_by(id: params[:id])
+      if admin_user.nil?
+        redirect_index '削除に失敗しました。対象の' + AdminUser.model_name.human + 'は存在しません。'
+      elsif admin_user.destroy
+        redirect_index AdminUser.model_name.human + "「#{admin_user.name}」を削除しました。"
+      else
+        redirect_index '削除に失敗しました。' + fetch_errors(admin_user)
+      end
     end
 
     private
+
+    def redirect_index(message)
+      redirect_to admin_admin_users_url, notice: message
+    end
 
     def admin_user_params
       params.require(:admin_user).permit(:name, :email, :admin, :password, :password_confirmation)

@@ -28,13 +28,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-
-
 # mac
 .DS_Store
-
-# RuboCop
-.rubocop.yml
 
 # rbenv
 .ruby-version
