@@ -1,2 +1,24 @@
-h1 Admin::TaxItems#show
-p Find me in app/views/admin/tax_items/show.html.slim
+h1= TaxItem.model_name.human + 'の詳細'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_tax_items_path, class: 'nav-:link'
+table.table.table-hover
+  tbody
+    tr
+      th= TaxItem.human_attribute_name(:id)
+      td= @tax_item.id
+    tr
+      th= TaxItem.human_attribute_name(:name)
+      td= @tax_item.name
+    tr
+      th= TaxClass.model_name.human
+      td= @tax_item.tax_class_name
+    tr
+      th= TaxItem.human_attribute_name(:created_at)
+      td= l(@tax_item.created_at, format: :long) if @tax_item.created_at?
+    tr
+      th= TaxItem.human_attribute_name(:updated_at)
+      td= l(@tax_item.updated_at, format: :long) if @tax_item.updated_at?
+
+= link_to '編集', edit_admin_tax_item_path(@tax_item), class: 'btn btn-primary mr-3'
+= link_to '削除', [:admin, @tax_item], method: :delete, data: { confirm: TaxItem.model_name.human + "「#{@tax_item.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

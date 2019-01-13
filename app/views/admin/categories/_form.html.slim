@@ -1,7 +1,4 @@
-- if category.errors.present?
-  ul#error_explanation
-    - category.errors.full_messages.each do |message|
-      li= message
+= render 'common/error_messages', target_class: category
 
 = form_with model: [:admin, category], local: true do |f|
   .form-group

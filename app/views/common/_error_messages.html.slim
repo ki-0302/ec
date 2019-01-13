@@ -1,0 +1,4 @@
+- if target_class.errors.present?
+  ul#error_explanation
+    - target_class.errors.full_messages.each do |message|
+      li= message

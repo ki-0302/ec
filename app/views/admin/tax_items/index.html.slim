@@ -1,2 +1,28 @@
-h1 Admin::TaxItems#index
-p Find me in app/views/admin/tax_items/index.html.slim
+h1= TaxItem.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: TaxItem.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_tax_item_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= sort_link(@q, :id)
+      th= sort_link(@q, :name)
+      th= sort_link(@q, :tax_class_id, TaxClass.model_name.human)
+      th= sort_link(@q, :created_at)
+      th= sort_link(@q, :updated_at)
+      th
+    tbody
+      - @tax_items.each do |tax_item|
+        tr
+          td= link_to tax_item.id, [:admin, tax_item]
+          td= tax_item.name
+          td= tax_item.tax_class_name if tax_item.tax_class_id?
+          td= l(tax_item.created_at, format: :long) if tax_item.created_at?
+          td= l(tax_item.updated_at, format: :long) if tax_item.updated_at?
+          td
+            = link_to '編集', edit_admin_tax_item_path(tax_item), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, tax_item], method: :delete, data: { confirm: TaxItem.model_name.human + "「#{tax_item.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @tax_items }

@@ -1,2 +1,6 @@
-h1 Admin::TaxItems#edit
-p Find me in app/views/admin/tax_items/edit.html.slim
+h1= TaxItem.model_name.human + 'の編集'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_tax_items_path, class: 'nav-:link'
+
+= render 'form', tax_item: @tax_item, select_tax_class_id: @select_tax_class_id

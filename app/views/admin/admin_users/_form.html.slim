@@ -1,7 +1,4 @@
-- if admin_user.errors.present?
-  ul#error_explanation
-    - admin_user.errors.full_messages.each do |message|
-      li= message
+= render 'common/error_messages', target_class: admin_user
 
 = form_with model: [:admin, admin_user], local: true do |f|
   .form-group
