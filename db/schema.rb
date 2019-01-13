@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2019_01_12_130547) do
 
   create_table "tax_items", force: :cascade do |t|
     t.string "name"
-    t.bigint "tax_class_id", default: 1
+    t.bigint "tax_class_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tax_class_id"], name: "index_tax_items_on_tax_class_id"

@@ -178,7 +178,7 @@ ja:
       other_than: は%{count}以外の値にしてください
       exists_as_a_parent: は%{parent}としてすでに割り当てられています
       assigned_by_self: に自身を割り当てられません
-      can_not_be_deleted: ：%{target}は削除することはできません
+      can_not_be_deleted: は削除することはできません
     template:
       body: 次の項目を確認してください
       header:
@@ -251,3 +251,5 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  tax_class:
+    name_default: 消費税8%

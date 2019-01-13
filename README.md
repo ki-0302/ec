@@ -165,6 +165,12 @@ display_start_date
 display_end_date
 }
 
+class TaxClass {
+id
+name
+tax_rate
+}
+
 class TaxItem {
 id
 name
@@ -316,6 +322,7 @@ Cart -- Item
 Item - Category
 Item --{ ItemImage
 Item -- TaxItem
+TaxClass -{ TaxItem
 User -- Order
 Order -{ OrderLineItem
 Order -- ShippingOption
@@ -339,4 +346,6 @@ https://qiita.com/yaju/items/2cbe5e5914c5be08820a
 # FontAwesome
 WebFont
 https://fontawesome.com/
+
+
 

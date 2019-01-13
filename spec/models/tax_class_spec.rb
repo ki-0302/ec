@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe TaxClass, type: :model do
   describe '追加・更新・削除' do
-    let(:tax_class1_name) { '消費税１０％' }
-    let(:tax_class2_name) { '消費税８％(軽)' }
+    let(:tax_class1_name) { '消費税10%' }
+    let(:tax_class2_name) { '消費税8%(軽)' }
 
     let(:tax_class1) { FactoryBot.create(:tax_class) }
     let(:tax_class2) do
@@ -46,27 +46,53 @@ RSpec.describe TaxClass, type: :model do
         expect(Category.find_by(id: delete_tax_class1_id)).to be nil
       end
       it '税区分のIDが1であれば削除は無効であること' do
-        delete_tax_class1 = TaxClass.find_by(id: TaxClass::DEFAULT_TAX_CLASS_ID)
+        delete_tax_class1 = TaxClass.find_by(name: I18n.t('tax_class.name_default'))
         expect(delete_tax_class1).to be_truthy
         delete_tax_class1.destroy
-        expect(delete_tax_class1.errors[:id]).to include(I18n.t('errors.messages.can_not_be_deleted',
-                                                                target: delete_tax_class1.id))
+        expect(delete_tax_class1.errors[:name]).to include(I18n.t('errors.messages.can_not_be_deleted'))
       end
     end
   end
   describe 'バリデーション' do
     describe '税区分名の確認をおこなう' do
       it '税区分名が未入力であれば無効であること' do
+        tax_class = FactoryBot.build(:tax_class, name: '')
+        tax_class.valid?
+        expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it '税区分名が2文字以上でなければ無効であること' do
+        tax_class = FactoryBot.build(:tax_class, name: 'A')
+        tax_class.valid?
+        expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
       end
       it '税区分名が40文字以内でなければ無効であること' do
+        tax_class = FactoryBot.build(:tax_class, name: 'A' * 41)
+        tax_class.valid?
+        expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
       end
     end
     describe '税率の確認をおこなう' do
       it '税率が未入力であれば無効であること' do
+        tax_class = FactoryBot.build(:tax_class, tax_rate: nil)
+        tax_class.valid?
+        expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.blank'))
       end
       it '税率が数値でなければ無効であること' do
+        tax_class = FactoryBot.build(:tax_class, tax_rate: '１')
+        tax_class.valid?
+        expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.not_a_number'))
+      end
+      it '税率が0より小さければ無効であること' do
+        tax_class = FactoryBot.build(:tax_class, tax_rate: '-0.01')
+        tax_class.valid?
+        expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.greater_than_or_equal_to',
+                                                              count: 0))
+      end
+      it '税率が1より大きければ無効であること' do
+        tax_class = FactoryBot.build(:tax_class, tax_rate: '1.1')
+        tax_class.valid?
+        expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.less_than_or_equal_to',
+                                                              count: 1))
       end
     end
   end
