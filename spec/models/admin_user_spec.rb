@@ -2,42 +2,45 @@ require 'rails_helper'
 
 RSpec.describe AdminUser, type: :model do
   describe '追加・更新・削除' do
+    let(:admin_user1_name) { 'テストユーザー' }
+    let(:admin_user2_name) { 'テストユーザー2' }
     let(:admin_user1) { FactoryBot.create(:admin_user) }
     let(:admin_user2) do
-      FactoryBot.create(:admin_user, name: 'テストユーザー2', email: 'test2@example.com',
+      FactoryBot.create(:admin_user, name: admin_user2_name, email: 'test2@example.com',
                                      password: 'Password2')
     end
 
     describe '追加' do
       it '管理ユーザーが追加できること' do
         expect(admin_user1).to be_valid
-        expect(AdminUser.find_by(name: 'テストユーザー')).to be_truthy
+        expect(AdminUser.find_by(name: admin_user1_name)).to be_truthy
       end
       it '管理ユーザーが複数追加できること' do
         expect(admin_user1).to be_valid
         expect(admin_user2).to be_valid
         expect(AdminUser.all.size).to eq 2
-        expect(AdminUser.find_by(name: 'テストユーザー')).to be_truthy
-        expect(AdminUser.find_by(name: 'テストユーザー2')).to be_truthy
+        expect(AdminUser.find_by(name: admin_user1_name)).to be_truthy
+        expect(AdminUser.find_by(name: admin_user2_name)).to be_truthy
       end
     end
 
     describe '更新' do
       it '管理ユーザーが更新できること' do
         expect(admin_user1).to be_valid
-        update_admin_user1 = AdminUser.find_by(name: 'テストユーザー')
+        update_admin_user1 = AdminUser.find_by(name: admin_user1_name)
         expect(update_admin_user1).to be_truthy
-        update_admin_user1.name = '更新ユーザー'
+        update_admin_user1_name = '更新ユーザー'
+        update_admin_user1.name = update_admin_user1_name
         update_admin_user1.save
         expect(update_admin_user1).to be_valid
-        expect(AdminUser.find_by(name: '更新ユーザー')).to be_truthy
+        expect(AdminUser.find_by(name: update_admin_user1_name)).to be_truthy
       end
     end
 
     describe '削除' do
       it '管理ユーザーが削除できること' do
         expect(admin_user1).to be_valid
-        delete_admin_user1 = AdminUser.find_by(name: 'テストユーザー')
+        delete_admin_user1 = AdminUser.find_by(name: admin_user1_name)
         expect(delete_admin_user1).to be_truthy
         delete_admin_user1.destroy
         expect(AdminUser.all.size).to eq 0

@@ -2,39 +2,42 @@ require 'rails_helper'
 
 RSpec.describe Category, type: :model do
   describe '追加・更新・削除' do
+    let(:category1_name) { 'テストカテゴリー' }
     let(:category1) { FactoryBot.create(:category) }
 
     describe '追加' do
       it 'カテゴリーが追加できること' do
         expect(category1).to be_valid
-        expect(Category.find_by(name: 'テストカテゴリー')).to be_truthy
+        expect(Category.find_by(name: category1_name)).to be_truthy
       end
       it 'カテゴリーが複数追加できること' do
         expect(category1).to be_valid
 
-        category_child = FactoryBot.create(:category, parent_id: Category.find_by(name: 'テストカテゴリー').id, name: 'テストカテゴリー2',
+        category_child_name = 'テストカテゴリー2'
+        category_child = FactoryBot.create(:category, parent_id: Category.find_by(name: category1_name).id, name: category_child_name,
                                                       display_start_datetime: '2019-01-20 10:00:10',
                                                       display_end_datetime: '2019-01-31 10:00:10')
         expect(category_child).to be_valid
-        expect(Category.find_by(name: 'テストカテゴリー2')).to be_truthy
+        expect(Category.find_by(name: category_child_name)).to be_truthy
       end
     end
 
     describe '更新' do
       it 'カテゴリーが更新できること' do
         expect(category1).to be_valid
-        update_category1 = Category.find_by(name: 'テストカテゴリー')
+        update_category1 = Category.find_by(name: category1_name)
         expect(update_category1).to be_truthy
-        update_category1.name = '更新カテゴリー'
+        update_category1_name = '更新カテゴリー'
+        update_category1.name = update_category1_name
         update_category1.save
         expect(update_category1).to be_valid
-        expect(Category.find_by(name: '更新カテゴリー')).to be_truthy
+        expect(Category.find_by(name: update_category1_name)).to be_truthy
       end
     end
     describe '削除' do
       it 'カテゴリーが削除できること' do
         expect(category1).to be_valid
-        delete_category1 = Category.find_by(name: 'テストカテゴリー')
+        delete_category1 = Category.find_by(name: category1_name)
         expect(delete_category1).to be_truthy
         delete_category1.destroy
         expect(Category.all.size).to eq 0

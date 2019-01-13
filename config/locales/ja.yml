@@ -10,6 +10,8 @@ ja:
     models:
       admin_user: 管理ユーザー
       category: カテゴリー
+      tax_class: 税区分
+      tax_item: 税率対象品目
     attributes:
       admin_user:
         id: ID
@@ -32,6 +34,18 @@ ja:
         display_end_datetime_ymd: 掲載終了日
         display_end_datetime_hn: 掲載終了時間
         parent_name: 親カテゴリー
+      tax_class:
+        id: ID
+        name: 税区分名
+        tax_rate: 税率
+        created_at: 登録日時
+        updated_at: 更新日時
+      tax_item:
+        id: ID
+        name: 税率対象品目名
+        tax_class_id: 税区分ID
+        created_at: 登録日時
+        updated_at: 更新日時
   date:
     abbr_day_names:
     - 日
