@@ -18,7 +18,9 @@ RSpec.describe AdminUser, type: :model do
       it '管理ユーザーが複数追加できること' do
         expect(admin_user1).to be_valid
         expect(admin_user2).to be_valid
-        expect(AdminUser.all.size).to eq 2
+
+        # 初期データを登録しているため件数を+1
+        expect(AdminUser.all.size).to eq 3
         expect(AdminUser.find_by(name: admin_user1_name)).to be_truthy
         expect(AdminUser.find_by(name: admin_user2_name)).to be_truthy
       end
@@ -43,7 +45,8 @@ RSpec.describe AdminUser, type: :model do
         delete_admin_user1 = AdminUser.find_by(name: admin_user1_name)
         expect(delete_admin_user1).to be_truthy
         delete_admin_user1.destroy
-        expect(AdminUser.all.size).to eq 0
+        # 初期データを登録しているため件数を+1
+        expect(AdminUser.all.size).to eq 1
       end
     end
   end

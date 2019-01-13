@@ -18,7 +18,7 @@ RSpec.describe TaxClass, type: :model do
       it '税区分が複数追加できること' do
         expect(tax_class1).to be_valid
         expect(tax_class2).to be_valid
-        # 初期データでid:1を登録しているため件数を+1
+        # 初期データを登録しているため件数を+1
         expect(TaxClass.all.size).to eq 3
         expect(TaxClass.find_by(name: tax_class1_name)).to be_truthy
         expect(TaxClass.find_by(name: tax_class2_name)).to be_truthy
@@ -41,9 +41,9 @@ RSpec.describe TaxClass, type: :model do
         expect(tax_class1).to be_valid
         delete_tax_class1 = TaxClass.find_by(name: tax_class1_name)
         expect(delete_tax_class1).to be_truthy
-        delete_tax_class1_id = delete_tax_class1.id
         delete_tax_class1.destroy
-        expect(Category.find_by(id: delete_tax_class1_id)).to be nil
+        # 初期データを登録しているため件数を+1
+        expect(TaxClass.all.size).to eq 1
       end
       it '税区分のIDが1であれば削除は無効であること' do
         delete_tax_class1 = TaxClass.find_by(name: I18n.t('tax_class.name_default'))
