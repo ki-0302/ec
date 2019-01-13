@@ -1,7 +1,4 @@
-- if tax_class.errors.present?
-  ul#error_explanation
-    - tax_class.errors.full_messages.each do |message|
-      li= message
+= render 'common/error_messages', target_class: tax_class
 
 = form_with model: [:admin, tax_class], local: true do |f|
   .form-group
