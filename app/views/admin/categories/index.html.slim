@@ -20,7 +20,7 @@ table.table.table-hover
         tr
           td= link_to category.id, [:admin, category]
           td= category.name
-          td= category.parrent_name if category.parent?
+          td= category.parrent_name if category.parent_id?
           td= l(category.display_start_datetime, format: :long) if category.display_start_datetime?
           td= l(category.display_end_datetime, format: :long) if category.display_end_datetime?
           td= l(category.created_at, format: :long) if category.created_at?

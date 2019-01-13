@@ -13,10 +13,9 @@ class TaxClass < ApplicationRecord
   private
 
   def before_destroy_can_not_be_deleted
-    class_name_default = I18n.t('tax_class.name_default')
+    return if TaxClass.count > 1
 
-    return if name != class_name_default
-
-    errors.add(:name, I18n.t('errors.messages.can_not_be_deleted'))
+    errors.add(:tax_class, I18n.t('errors.messages.need_to_leave_at_least_one'))
+    throw(:abort)
   end
 end

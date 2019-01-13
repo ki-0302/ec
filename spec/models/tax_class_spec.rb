@@ -49,7 +49,7 @@ RSpec.describe TaxClass, type: :model do
         delete_tax_class1 = TaxClass.find_by(name: I18n.t('tax_class.name_default'))
         expect(delete_tax_class1).to be_truthy
         delete_tax_class1.destroy
-        expect(delete_tax_class1.errors[:name]).to include(I18n.t('errors.messages.can_not_be_deleted'))
+        expect(delete_tax_class1.errors[:tax_class]).to include(I18n.t('errors.messages.need_to_leave_at_least_one'))
       end
     end
   end

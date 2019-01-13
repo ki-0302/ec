@@ -42,12 +42,21 @@ module Admin
     end
 
     def destroy
-      category = Category.find(params[:id])
-      category.destroy
-      redirect_to admin_categories_url, notice: Category.model_name.human + "「#{category.name}」を削除しました。"
+      category = Category.find_by(id: params[:id])
+      if category.nil?
+        redirect_index '削除に失敗しました。対象の' + Category.model_name.human + 'は存在しません。'
+      elsif category.destroy
+        redirect_index Category.model_name.human + "「#{category.name}」を削除しました。"
+      else
+        redirect_index '削除に失敗しました。' + fetch_errors(category)
+      end
     end
 
     private
+
+    def redirect_index(message)
+      redirect_to admin_categories_url, notice: message
+    end
 
     # def category_params
     #   params.require(:category).permit(:name, :parent_id, :display_start_datetime,

@@ -1,0 +1,28 @@
+h1= TaxClass.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: TaxClass.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_tax_class_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= TaxClass.human_attribute_name(:id)
+      th= TaxClass.human_attribute_name(:name)
+      th= TaxClass.human_attribute_name(:tax_rate)
+      th= TaxClass.human_attribute_name(:created_at)
+      th= TaxClass.human_attribute_name(:updated_at)
+      th
+    tbody
+      - @tax_classes.each do |tax_class|
+        tr
+          td= link_to tax_class.id, [:admin, tax_class]
+          td= tax_class.name
+          td= tax_class.tax_rate
+          td= l(tax_class.created_at, format: :long) if tax_class.created_at?
+          td= l(tax_class.updated_at, format: :long) if tax_class.updated_at?
+          td
+            = link_to '編集', edit_admin_tax_class_path(tax_class), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, tax_class], method: :delete, data: { confirm: TaxClass.model_name.human + "「#{tax_class.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @tax_classes }
