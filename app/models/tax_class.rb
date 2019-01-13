@@ -1,4 +1,9 @@
 class TaxClass < ApplicationRecord
+  # 初期値で登録されているID
+  DEFAULT_TAX_CLASS_ID = 1
+
+  before_destroy :before_destroy_can_not_be_deleted
+
   has_many :tax_items, dependent: :restrict_with_error
 
   validates :name, presence: true
@@ -10,22 +15,10 @@ class TaxClass < ApplicationRecord
 
   private
 
-  def validate_exists_as_a_parent
-    parent = TaxItem.find(search_parent_id)
+  def before_destroy_can_not_be_deleted
+    return if id != DEFAULT_TAX_CLASS_ID
 
-
-      return if parent.nil? || parent.parent_id.nil?
-
-      if parent.parent_id == id
-        errors.add(:parent_id, I18n.t('errors.messages.exists_as_a_parent',
-                                      parent: Category.human_attribute_name(:parent_name)))
-        return
-      end
-
-      search_parent_id = parent.parent_id
-    end
-
-    errors.add(:parent_id, I18n.t('errors.messages.exists_as_a_parent',
-                                  parent: Category.human_attribute_name(:parent_name)))
-end
+    errors.add(:id, I18n.t('errors.messages.can_not_be_deleted',
+                           target: DEFAULT_TAX_CLASS_ID))
+  end
 end

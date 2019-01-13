@@ -14,7 +14,8 @@ RSpec.describe Category, type: :model do
         expect(category1).to be_valid
 
         category_child_name = 'テストカテゴリー2'
-        category_child = FactoryBot.create(:category, parent_id: Category.find_by(name: category1_name).id, name: category_child_name,
+        category_child = FactoryBot.create(:category, parent_id: Category.find_by(name: category1_name).id,
+                                                      name: category_child_name,
                                                       display_start_datetime: '2019-01-20 10:00:10',
                                                       display_end_datetime: '2019-01-31 10:00:10')
         expect(category_child).to be_valid
