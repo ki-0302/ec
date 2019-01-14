@@ -1,6 +1,11 @@
 class Category < ApplicationRecord
   paginates_per ADMIN_ROW_PER_PAGE
 
+  # 最小桁数
+  MINIMUM_NAME = 2
+  # 最大桁数
+  MAXIMUM_NAME = 40
+
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
   # 日と時間を分けて取得
@@ -16,7 +21,7 @@ class Category < ApplicationRecord
 
   validates :parent_id, numericality: true, allow_nil: true
   validates :name, presence: true
-  validates :name, length: { minimum: 2, maximum: 40 }
+  validates :name, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
   validates :display_start_datetime, datetime: true
   validates :display_end_datetime, datetime: true
 

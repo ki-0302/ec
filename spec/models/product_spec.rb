@@ -52,14 +52,14 @@ RSpec.describe Product, type: :model do
         expect(product.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it '商品名が2文字以上でなければ無効であること' do
-        product = FactoryBot.build(:product, name: 'A')
+        product = FactoryBot.build(:product, name: 'A' * (Product::MINIMUM_NAME - 1))
         product.valid?
-        expect(product.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        expect(product.errors[:name]).to include(I18n.t('errors.messages.too_short', count: Product::MINIMUM_NAME))
       end
       it '商品名が40文字以内でなければ無効であること' do
-        product = FactoryBot.build(:product, name: 'A' * 41)
+        product = FactoryBot.build(:product, name: 'A' * (Product::MAXIMUM_NAME + 1))
         product.valid?
-        expect(product.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(product.errors[:name]).to include(I18n.t('errors.messages.too_long', count: Product::MAXIMUM_NAME))
       end
     end
     describe 'カテゴリーの確認をおこなう' do
@@ -82,10 +82,10 @@ RSpec.describe Product, type: :model do
         expect(product).to be_valid
       end
       it 'メーカー名が40文字以内でなければ無効であること' do
-        product = FactoryBot.build(:product, manufacture_name: 'A' * 41)
+        product = FactoryBot.build(:product, manufacture_name: 'A' * (Product::MAXIMUM_MANUFACTURE_NAME + 1))
         product.valid?
         expect(product.errors[:manufacture_name]).to include(I18n.t('errors.messages.too_long',
-                                                                    count: 40))
+                                                                    count: Product::MAXIMUM_MANUFACTURE_NAME))
       end
     end
     describe '商品コードの確認をおこなう' do
@@ -94,10 +94,10 @@ RSpec.describe Product, type: :model do
         expect(product).to be_valid
       end
       it '商品コードが32文字以内でなければ無効であること' do
-        product = FactoryBot.build(:product, code: 'A' * 33)
+        product = FactoryBot.build(:product, code: 'A' * (Product::MAXIMUM_CODE + 1))
         product.valid?
         expect(product.errors[:code]).to include(I18n.t('errors.messages.too_long',
-                                                        count: 32))
+                                                        count: Product::MAXIMUM_CODE))
       end
     end
     describe '税率対象品目の確認をおこなう' do
@@ -196,19 +196,52 @@ RSpec.describe Product, type: :model do
       end
     end
     describe '掲載開始日時の確認をおこなう' do
-      it '掲載開始日時が日時でなければ無効であること' do
-      end
+      let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
+      let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
+
       it '掲載開始日時がnilを許容すること' do
+        product = FactoryBot.build(:product, display_end_datetime: nil)
+        expect(product).to be_valid
       end
-      it '掲載開始日時が掲載終了日時より小さくなければ無効であること' do
+
+      it '掲載開始日時がnilでも日時でもなければ無効であること' do
+        product = FactoryBot.build(:product, display_start_datetime: '2018-01-01 10:20',
+                                             display_end_datetime: '2018-01-02 10:20')
+        product.valid?
+        expect(product.errors[:display_start_datetime]).to_not include(I18n.t('errors.messages.not_a_datetime'))
+        product2 = FactoryBot.build(:product, display_start_datetime: '2018-01-01 77:33',
+                                              display_end_datetime: '2018-01-02 10:20',
+                                              tax_item: tax_item)
+        product2.valid?
+        expect(product2.errors[:display_start_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
+      end
+      it '掲載開始日時が掲載終了日時より大きい場合無効であること' do
+        product = FactoryBot.build(:product, display_start_datetime: '2019-01-01 00:02:00',
+                                             display_end_datetime: '2019-01-01 00:01:00')
+        product.valid?
+        comparison = Product.human_attribute_name(:display_start_datetime)
+        expect(product.errors[:display_end_datetime]).to include(I18n.t('errors.messages.greater_than',
+                                                                        count: comparison))
       end
     end
     describe '掲載終了日時の確認をおこなう' do
-      it '掲載終了日時が日時でなければ無効であること' do
-      end
+      let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
+      let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
+
       it '掲載終了日時がnilを許容すること' do
+        product = FactoryBot.build(:product, display_end_datetime: nil)
+        expect(product).to be_valid
       end
-      it '掲載終了日時が掲載開始日時より大きくなければ無効であること' do
+      it '掲載終了日時がnilでも日時でなければ無効であること' do
+        product = FactoryBot.build(:product, display_start_datetime: '2018-01-01 10:20',
+                                             display_end_datetime: '2018-01-02 10:20')
+        product.valid?
+        expect(product.errors[:display_end_datetime]).to_not include(I18n.t('errors.messages.not_a_datetime'))
+        product2 = FactoryBot.build(:product, display_start_datetime: '2018-01-01 10:33',
+                                              display_end_datetime: '2018-01-02 77:20',
+                                              tax_item: tax_item)
+        product2.valid?
+        expect(product2.errors[:display_end_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
     end
     describe '商品説明の確認をおこなう' do
@@ -217,6 +250,10 @@ RSpec.describe Product, type: :model do
         expect(product).to be_valid
       end
       it '商品説明が1000文字以内でなければ無効であること' do
+        product = FactoryBot.build(:product, description: 'A' * (Product::MAXIMUM_DESCRIPTION + 1))
+        product.valid?
+        expect(product.errors[:description]).to include(I18n.t('errors.messages.too_long',
+                                                               count: Product::MAXIMUM_DESCRIPTION))
       end
     end
     describe '検索文字列の確認をおこなう' do
@@ -225,6 +262,10 @@ RSpec.describe Product, type: :model do
         expect(product).to be_valid
       end
       it '検索文字列が40文字以内でなければ無効であること' do
+        product = FactoryBot.build(:product, search_term: 'A' * (Product::MAXIMUM_SEARCH_TERM + 1))
+        product.valid?
+        expect(product.errors[:search_term]).to include(I18n.t('errors.messages.too_long',
+                                                               count: Product::MAXIMUM_SEARCH_TERM))
       end
     end
     describe 'JANコードの確認をおこなう' do
@@ -233,6 +274,10 @@ RSpec.describe Product, type: :model do
         expect(product).to be_valid
       end
       it 'JANコードが32文字以内でなければ無効であること' do
+        product = FactoryBot.build(:product, jan_code: 'A' * (Product::MAXIMUM_JAN_CODE + 1))
+        product.valid?
+        expect(product.errors[:jan_code]).to include(I18n.t('errors.messages.too_long',
+                                                            count: Product::MAXIMUM_JAN_CODE))
       end
     end
     describe '商品状態の確認をおこなう' do

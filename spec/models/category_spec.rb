@@ -92,20 +92,20 @@ RSpec.describe Category, type: :model do
         expect(category.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it 'カテゴリー名が2文字以上でなければ無効であること' do
-        category = FactoryBot.build(:category, name: 'A')
+        category = FactoryBot.build(:category, name: 'A' * (Category::MINIMUM_NAME - 1))
         category.valid?
-        expect(category.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
-        category_ja = FactoryBot.build(:category, name: 'Ａ')
+        expect(category.errors[:name]).to include(I18n.t('errors.messages.too_short', count: Category::MINIMUM_NAME))
+        category_ja = FactoryBot.build(:category, name: 'Ａ' * (Category::MINIMUM_NAME - 1))
         category_ja.valid?
-        expect(category_ja.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        expect(category_ja.errors[:name]).to include(I18n.t('errors.messages.too_short', count: Category::MINIMUM_NAME))
       end
       it 'カテゴリー名が40文字以内でなければ無効であること' do
-        category = FactoryBot.build(:admin_user, name: 'A' * 41)
+        category = FactoryBot.build(:admin_user, name: 'A' * (Category::MAXIMUM_NAME + 1))
         category.valid?
-        expect(category.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
-        category_ja = FactoryBot.build(:admin_user, name: 'Ａ' * 41)
+        expect(category.errors[:name]).to include(I18n.t('errors.messages.too_long', count: Category::MAXIMUM_NAME))
+        category_ja = FactoryBot.build(:admin_user, name: 'Ａ' * (Category::MAXIMUM_NAME + 1))
         category_ja.valid?
-        expect(category_ja.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(category_ja.errors[:name]).to include(I18n.t('errors.messages.too_long', count: Category::MAXIMUM_NAME))
       end
     end
     describe '掲載開始日時の確認をおこなう' do

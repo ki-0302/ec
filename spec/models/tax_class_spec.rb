@@ -61,14 +61,14 @@ RSpec.describe TaxClass, type: :model do
         expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it '税区分名が2文字以上でなければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, name: 'A')
+        tax_class = FactoryBot.build(:tax_class, name: 'A' * (TaxClass::MINIMUM_NAME - 1))
         tax_class.valid?
         expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
       end
       it '税区分名が40文字以内でなければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, name: 'A' * 41)
+        tax_class = FactoryBot.build(:tax_class, name: 'A' * (TaxClass::MAXIMUM_NAME + 1))
         tax_class.valid?
-        expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(tax_class.errors[:name]).to include(I18n.t('errors.messages.too_long', count: TaxClass::MAXIMUM_NAME))
       end
     end
     describe '税率の確認をおこなう' do
@@ -83,16 +83,16 @@ RSpec.describe TaxClass, type: :model do
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.not_a_number'))
       end
       it '税率が0より小さければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, tax_rate: -0.01)
+        tax_class = FactoryBot.build(:tax_class, tax_rate: (TaxClass::MINIMUM_TAX_RATE - 0.1))
         tax_class.valid?
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.greater_than_or_equal_to',
-                                                              count: 0))
+                                                              count: TaxClass::MINIMUM_TAX_RATE))
       end
       it '税率が1より大きければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, tax_rate: 1.1)
+        tax_class = FactoryBot.build(:tax_class, tax_rate: (TaxClass::MAXIMUM_TAX_RATE + 0.1))
         tax_class.valid?
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.less_than_or_equal_to',
-                                                              count: 1))
+                                                              count: TaxClass::MAXIMUM_TAX_RATE))
       end
     end
   end

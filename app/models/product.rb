@@ -1,9 +1,19 @@
 class Product < ApplicationRecord
   paginates_per ADMIN_ROW_PER_PAGE
 
+  # 最大値
   MAXIMUM_SALES_PRICE = 99_999_999
   MAXIMUM_REGULAR_PRICE = 99_999_999
   MAXIMUM_NUMBER_OF_STOCKS = 99_999_999
+  # 最小桁数
+  MINIMUM_NAME = 2
+  # 最大桁数
+  MAXIMUM_NAME = 40
+  MAXIMUM_MANUFACTURE_NAME = 40
+  MAXIMUM_CODE = 32
+  MAXIMUM_DESCRIPTION = 1000
+  MAXIMUM_SEARCH_TERM = 40
+  MAXIMUM_JAN_CODE = 32
 
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
@@ -18,9 +28,9 @@ class Product < ApplicationRecord
 
   enum status: { normal: 0, sales_suspension: 9 }
 
-  validates :name, presence: true, length: { minimum: 2, maximum: 40 }
-  validates :manufacture_name, length: { maximum: 40 }
-  validates :code, length: { maximum: 32 }
+  validates :name, presence: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
+  validates :manufacture_name, length: { maximum: MAXIMUM_MANUFACTURE_NAME }
+  validates :code, length: { maximum: MAXIMUM_CODE }
   validates :tax_item_id, presence: true
   validates :sales_price, numericality: { greater_than_or_equal_to: 0,
                                           less_than_or_equal_to: MAXIMUM_SALES_PRICE },
@@ -34,9 +44,9 @@ class Product < ApplicationRecord
   validates :unlimited_stock, inclusion: { in: [true, false] }
   validates :display_start_datetime, datetime: true
   validates :display_end_datetime, datetime: true
-  validates :description, length: { maximum: 1000 }
-  validates :search_term, length: { maximum: 40 }
-  validates :jan_code, length: { maximum: 32 }
+  validates :description, length: { maximum: MAXIMUM_DESCRIPTION }
+  validates :search_term, length: { maximum: MAXIMUM_SEARCH_TERM }
+  validates :jan_code, length: { maximum: MAXIMUM_JAN_CODE }
   validates :status_code, numericality: true,
                           inclusion: { in: [Product.statuses[:normal], Product.statuses[:sales_suspension]] }
 
@@ -88,7 +98,7 @@ class Product < ApplicationRecord
 
     return if display_start_datetime <= display_end_datetime
 
-    caption_display_start_datetime = Category.human_attribute_name(:display_start_datetime)
+    caption_display_start_datetime = Product.human_attribute_name(:display_start_datetime)
     errors.add(:display_end_datetime, I18n.t('errors.messages.greater_than', count: caption_display_start_datetime))
   end
 

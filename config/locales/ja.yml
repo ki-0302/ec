@@ -61,8 +61,8 @@ ja:
         regular_price: 通常価格
         number_of_stocks: 在庫数
         unlimited_stock: 在庫無制限
-        display_start_datetime: 表示開始日時
-        display_end_datetime: 表示終了日時
+        display_start_datetime: 掲載開始日時
+        display_end_datetime: 掲載終了日時
         description: 商品説明
         search_term: 検索ワード
         search_term: JANコード
