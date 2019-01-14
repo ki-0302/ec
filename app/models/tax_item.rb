@@ -1,4 +1,6 @@
 class TaxItem < ApplicationRecord
+  paginates_per ADMIN_ROW_PER_PAGE
+
   belongs_to :tax_class
 
   validates :name, presence: true,

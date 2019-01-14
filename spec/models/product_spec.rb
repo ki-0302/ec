@@ -2,18 +2,45 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
   describe '追加・更新・削除' do
+    let(:product1_name) { 'テスト商品' }
+    let(:product2_name) { 'テスト商品２' }
+    let(:product1) { FactoryBot.create(:product) }
+    let(:product2) { FactoryBot.create(:product, name: product2_name, tax_item: tax_item) }
+    let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
+    let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
+
     describe '追加' do
       it '商品が追加できること' do
+        expect(product1).to be_valid
+        expect(Product.find_by(name: product1_name)).to be_truthy
       end
       it '商品が複数追加できること' do
+        expect(product1).to be_valid
+        expect(product2).to be_valid
+        expect(Product.all.size).to eq 2
+        expect(Product.find_by(name: product1_name)).to be_truthy
+        expect(Product.find_by(name: product2_name)).to be_truthy
       end
     end
     describe '更新' do
       it '商品が更新できること' do
+        expect(product1).to be_valid
+        update_product1 = Product.find_by(name: product1_name)
+        expect(update_product1).to be_truthy
+        update_product1_name = '更新商品'
+        update_product1.name = update_product1_name
+        update_product1.save
+        expect(update_product1).to be_valid
+        expect(Product.find_by(name: update_product1_name)).to be_truthy
       end
     end
     describe '削除' do
       it '商品が削除できること' do
+        expect(product1).to be_valid
+        delete_product1 = Product.find_by(name: product1_name)
+        expect(delete_product1).to be_truthy
+        delete_product1.destroy
+        expect(Product.all.size).to eq 0
       end
     end
   end

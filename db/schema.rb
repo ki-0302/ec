@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_130547) do
+ActiveRecord::Schema.define(version: 2019_01_13_153549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,28 @@ ActiveRecord::Schema.define(version: 2019_01_12_130547) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "category_id"
+    t.string "manufacture_name"
+    t.string "code"
+    t.bigint "tax_item_id"
+    t.integer "sales_price"
+    t.integer "regular_price"
+    t.integer "number_of_stocks"
+    t.boolean "unlimited_stock", default: true, null: false
+    t.datetime "display_start_datetime"
+    t.datetime "display_end_datetime"
+    t.string "description"
+    t.string "search_term"
+    t.string "jan_code"
+    t.integer "status_code", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["tax_item_id"], name: "index_products_on_tax_item_id"
+  end
+
   create_table "tax_classes", force: :cascade do |t|
     t.string "name"
     t.float "tax_rate", default: 0.0, null: false
@@ -50,5 +72,7 @@ ActiveRecord::Schema.define(version: 2019_01_12_130547) do
   end
 
   add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "products", "categories"
+  add_foreign_key "products", "tax_items"
   add_foreign_key "tax_items", "tax_classes"
 end

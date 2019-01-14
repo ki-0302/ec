@@ -1,13 +1,9 @@
 class Category < ApplicationRecord
-  paginates_per ROW_PER_PAGE
+  paginates_per ADMIN_ROW_PER_PAGE
 
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
-
-  after_initialize do
-    self.is_divide_by_date_and_time ||= false
-  end
-
+  # 日と時間を分けて取得
   attr_accessor :display_start_datetime_ymd, :display_start_datetime_hn
   attr_accessor :display_end_datetime_ymd, :display_end_datetime_hn
 
@@ -37,12 +33,17 @@ class Category < ApplicationRecord
   after_find :set_display_start_datetime_ymd_and_hn
   after_find :set_display_end_datetime_ymd_and_hn
 
+  after_initialize do
+    self.is_divide_by_date_and_time ||= false
+  end
+
   def parrent_name
     parent.name
   end
 
   private
 
+  # is_divide_by_date_and_timeの値によって、日と時間を分割するか、日と時間を結合した値をセットする
   def set_display_datetime
     if is_divide_by_date_and_time
       self.display_start_datetime = combine_display_datetime(display_start_datetime_ymd, display_start_datetime_hn)
@@ -53,28 +54,19 @@ class Category < ApplicationRecord
     end
   end
 
-  def combine_display_datetime(date, time)
-    if date.blank? || time.blank?
-      nil
-    else
-      begin
-        Time.zone.parse([date, time].join(' '))
-      rescue StandardError
-        nil
-      end
-    end
-  end
-
+  # 表示開始日時から表示開始日と表示開始時間を取得する
   def set_display_start_datetime_ymd_and_hn
     @display_start_datetime_ymd = display_start_datetime.to_s.present? ? display_start_datetime.to_s.split(' ').first : nil
     @display_start_datetime_hn = display_start_datetime.to_s.present? ? display_start_datetime.to_s.split(' ').second : nil
   end
 
+  # 表示終了日時から表示終了日と表示終了時間を取得する
   def set_display_end_datetime_ymd_and_hn
     @display_end_datetime_ymd = display_end_datetime.to_s.present? ? display_end_datetime.to_s.split(' ').first : nil
     @display_end_datetime_hn = display_end_datetime.to_s.present? ? display_end_datetime.to_s.split(' ').second : nil
   end
 
+  # 表示終了日時より表示開始日時が大きいかのバリデーション
   def validate_start_datetime_is_greater_than_end_datetime
     return if display_start_datetime.nil? || display_end_datetime.nil?
 
@@ -84,6 +76,7 @@ class Category < ApplicationRecord
     errors.add(:display_end_datetime, I18n.t('errors.messages.greater_than', count: caption_display_start_datetime))
   end
 
+  # 表示開始日と表示開始時間のバリデーション
   def validate_display_start_datetime_ymd_and_hn
     return if display_start_datetime_ymd.blank? && display_start_datetime_hn.blank?
 
@@ -94,6 +87,7 @@ class Category < ApplicationRecord
     end
   end
 
+  # 表示終了日と表示終了時間のバリデーション
   def validate_display_end_datetime_ymd_and_hn
     return if display_end_datetime_ymd.blank? && display_end_datetime_hn.blank?
 

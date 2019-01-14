@@ -14,6 +14,6 @@ FactoryBot.define do
     description { '商品説明です' }
     search_term { '冬 ライト' }
     jan_code { '4512345678901' }
-    status { 0 }
+    status_code { 0 }
   end
 end

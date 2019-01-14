@@ -1,4 +1,6 @@
 class AdminUser < ApplicationRecord
+  paginates_per ADMIN_ROW_PER_PAGE
+
   has_secure_password
 
   before_destroy :before_destroy_can_not_be_deleted

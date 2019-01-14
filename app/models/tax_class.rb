@@ -1,4 +1,6 @@
 class TaxClass < ApplicationRecord
+  paginates_per ADMIN_ROW_PER_PAGE
+
   before_destroy :before_destroy_can_not_be_deleted
 
   has_many :tax_items, dependent: :restrict_with_error
