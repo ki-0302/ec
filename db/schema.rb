@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2019_01_13_153549) do
     t.bigint "category_id"
     t.string "manufacture_name"
     t.string "code"
-    t.bigint "tax_item_id"
+    t.bigint "tax_item_id", null: false
     t.integer "sales_price"
     t.integer "regular_price"
     t.integer "number_of_stocks"

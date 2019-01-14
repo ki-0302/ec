@@ -50,6 +50,25 @@ ja:
         tax_class_id: 税区分ID
         created_at: 登録日時
         updated_at: 更新日時
+      product:
+        id: ID
+        name: 税率対象品目名
+        category_id: カテゴリー
+        manufacture_name: メーカー
+        code: 商品コード
+        tax_item_id: 税率対象品目
+        sales_price: 販売価格
+        regular_price: 通常価格
+        number_of_stocks: 在庫数
+        unlimited_stock: 在庫無制限
+        display_start_datetime: 表示開始日時
+        display_end_datetime: 表示終了日時
+        description: 商品説明
+        search_term: 検索ワード
+        search_term: JANコード
+        status_code: 商品状態
+        created_at: 登録日時
+        updated_at: 更新日時
   date:
     abbr_day_names:
     - 日

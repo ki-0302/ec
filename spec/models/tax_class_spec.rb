@@ -83,13 +83,13 @@ RSpec.describe TaxClass, type: :model do
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.not_a_number'))
       end
       it '税率が0より小さければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, tax_rate: '-0.01')
+        tax_class = FactoryBot.build(:tax_class, tax_rate: -0.01)
         tax_class.valid?
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.greater_than_or_equal_to',
                                                               count: 0))
       end
       it '税率が1より大きければ無効であること' do
-        tax_class = FactoryBot.build(:tax_class, tax_rate: '1.1')
+        tax_class = FactoryBot.build(:tax_class, tax_rate: 1.1)
         tax_class.valid?
         expect(tax_class.errors[:tax_rate]).to include(I18n.t('errors.messages.less_than_or_equal_to',
                                                               count: 1))

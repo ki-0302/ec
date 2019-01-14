@@ -1,6 +1,10 @@
 class Product < ApplicationRecord
   paginates_per ADMIN_ROW_PER_PAGE
 
+  MAXIMUM_SALES_PRICE = 99_999_999
+  MAXIMUM_REGULAR_PRICE = 99_999_999
+  MAXIMUM_NUMBER_OF_STOCKS = 99_999_999
+
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
   # 日と時間を分けて取得
@@ -10,26 +14,31 @@ class Product < ApplicationRecord
   before_validation :set_display_datetime
 
   belongs_to :category, optional: true
-  belongs_to :tax_item, optional: true
+  belongs_to :tax_item
 
   enum status: { normal: 0, sales_suspension: 9 }
 
   validates :name, presence: true, length: { minimum: 2, maximum: 40 }
-  validates :manufacture_name, length: { minimum: 0, maximum: 40 }
-  validates :code, length: { minimum: 0, maximum: 32 }
+  validates :manufacture_name, length: { maximum: 40 }
+  validates :code, length: { maximum: 32 }
+  validates :tax_item_id, presence: true
   validates :sales_price, numericality: { greater_than_or_equal_to: 0,
-                                          less_than_or_equal_to: 99_999_999 }
+                                          less_than_or_equal_to: MAXIMUM_SALES_PRICE },
+                          allow_nil: true
   validates :regular_price, numericality: { greater_than_or_equal_to: 0,
-                                            less_than_or_equal_to: 99_999_999 }
+                                            less_than_or_equal_to: MAXIMUM_REGULAR_PRICE },
+                            allow_nil: true
   validates :number_of_stocks, numericality: { greater_than_or_equal_to: 0,
-                                               less_than_or_equal_to: 99_999_999 }
+                                               less_than_or_equal_to: MAXIMUM_NUMBER_OF_STOCKS },
+                               allow_nil: true
   validates :unlimited_stock, inclusion: { in: [true, false] }
   validates :display_start_datetime, datetime: true
   validates :display_end_datetime, datetime: true
-  validates :description, length: { minimum: 0, maximum: 1000 }
-  validates :search_term, length: { minimum: 0, maximum: 40 }
-  validates :jan_code, length: { minimum: 0, maximum: 32 }
-  validates :status_code, inclusion: { in: [Product.statuses[:normal], Product.statuses[:sales_suspension]] }
+  validates :description, length: { maximum: 1000 }
+  validates :search_term, length: { maximum: 40 }
+  validates :jan_code, length: { maximum: 32 }
+  validates :status_code, numericality: true,
+                          inclusion: { in: [Product.statuses[:normal], Product.statuses[:sales_suspension]] }
 
   # startよりendが小さい場合のバリデーション
   validate :validate_start_datetime_is_greater_than_end_datetime

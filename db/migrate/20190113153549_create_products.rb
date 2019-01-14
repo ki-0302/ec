@@ -5,7 +5,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.references :category, foreign_key: true, default: nil
       t.string :manufacture_name
       t.string :code
-      t.references :tax_item, foreign_key: true, default: nil
+      t.references :tax_item, foreign_key: true, null: false
       t.integer :sales_price
       t.integer :regular_price
       t.integer :number_of_stocks
