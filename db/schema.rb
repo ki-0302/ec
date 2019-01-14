@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_01_13_153549) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["tax_item_id"], name: "index_products_on_tax_item_id"
   end
 
@@ -61,6 +62,7 @@ ActiveRecord::Schema.define(version: 2019_01_13_153549) do
     t.float "tax_rate", default: 0.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tax_classes_on_name", unique: true
   end
 
   create_table "tax_items", force: :cascade do |t|

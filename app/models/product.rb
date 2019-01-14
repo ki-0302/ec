@@ -28,7 +28,7 @@ class Product < ApplicationRecord
 
   enum status: { normal: 0, sales_suspension: 9 }
 
-  validates :name, presence: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
+  validates :name, uniqueness: true, presence: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
   validates :manufacture_name, length: { maximum: MAXIMUM_MANUFACTURE_NAME }
   validates :code, length: { maximum: MAXIMUM_CODE }
   validates :tax_item_id, presence: true

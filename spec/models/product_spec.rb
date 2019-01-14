@@ -24,6 +24,12 @@ RSpec.describe Product, type: :model do
         expect(Product.find_by(name: product1_name)).to be_truthy
         expect(Product.find_by(name: product2_name)).to be_truthy
       end
+      it '同名の商品の追加は無効であること' do
+        expect(product1).to be_valid
+        expect do
+          FactoryBot.create(:product)
+        end.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
     describe '更新' do
       it '商品が更新できること' do

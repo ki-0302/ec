@@ -5,5 +5,6 @@ class CreateTaxClasses < ActiveRecord::Migration[5.2]
       t.float :tax_rate, null: false, default: 0
       t.timestamps
     end
+    add_index :tax_classes, :name, unique: true
   end
 end

@@ -15,6 +15,12 @@ RSpec.describe TaxClass, type: :model do
         expect(tax_class1).to be_valid
         expect(TaxClass.find_by(name: tax_class1_name)).to be_truthy
       end
+      it '同名の税区分の追加は無効であること' do
+        expect(tax_class1).to be_valid
+        expect do
+          FactoryBot.create(:tax_class)
+        end.to raise_error(ActiveRecord::RecordInvalid)
+      end
       it '税区分が複数追加できること' do
         expect(tax_class1).to be_valid
         expect(tax_class2).to be_valid

@@ -18,5 +18,6 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.integer :status_code, null: false, default: 0
       t.timestamps
     end
+    add_index :products, :name, unique: true
   end
 end
