@@ -57,6 +57,7 @@ module Admin
     def fetch_select_data
       @select_category_id = Category.all
       @select_tax_item_id = TaxItem.all
+      @select_status = Product.select_from_enum(:status)
     end
 
     def redirect_index(message)
@@ -70,7 +71,7 @@ module Admin
                                       :display_start_datetime_ymd, :display_start_datetime_hn,
                                       :display_end_datetime_ymd, :display_end_datetime_hn,
                                       :description, :search_term, :jan_code,
-                                      :status_code).merge(is_divide_by_date_and_time: true)
+                                      :status).merge(is_divide_by_date_and_time: true)
     end
   end
 end

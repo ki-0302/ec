@@ -1,2 +1,44 @@
-h1 Admin::Products#index
-p Find me in app/views/admin/products/index.html.slim
+h1= Product.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: Product.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_product_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= sort_link(@q, :id)
+      th= sort_link(@q, :name)
+      th= sort_link(@q, :category_id)
+      th= sort_link(@q, :code)
+      th= sort_link(@q, :tax_item_id)
+      th= sort_link(@q, :sales_price)
+      th= sort_link(@q, :number_of_stocks)
+      th= sort_link(@q, :unlimited_stock)
+      th= sort_link(@q, :display_start_datetime)
+      th= sort_link(@q, :display_end_datetime)
+      th= sort_link(@q, :status_code)
+      th= sort_link(@q, :created_at)
+      th= sort_link(@q, :updated_at)
+      th
+    tbody
+      - @products.each do |product|
+        tr
+          td= link_to product.id, [:admin, product]
+          td= product.name
+          td= product.category_name if product.category_id?
+          td= product.code
+          td= product.tax_item_name if product.tax_item_id?
+          td= number_with_delimiter(product.sales_price)
+          td= number_with_delimiter(product.number_of_stocks) if product.number_of_stocks?
+
+
+          td= l(product.display_start_datetime, format: :long) if product.display_start_datetime?
+          td= l(product.display_end_datetime, format: :long) if product.display_end_datetime?
+          td= l(product.created_at, format: :long) if product.created_at?
+          td= l(product.updated_at, format: :long) if product.updated_at?
+          td
+            = link_to '編集', edit_admin_product_path(product), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, product], method: :delete, data: { confirm: Product.model_name.human + "「#{product.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @products }

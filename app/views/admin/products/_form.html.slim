@@ -1,0 +1,64 @@
+= render 'common/error_messages', target_class: product
+
+= form_with model: [:admin, product], local: true do |f|
+  .form-group
+    = f.label :name
+      = Product.human_attribute_name(:name)
+      = render 'common/label_required'
+    = f.text_field :name, class: 'form-control', id: 'product_name'
+  .form-group
+    = f.label :category
+      = Product.human_attribute_name(:category_id)
+    = f.collection_select :category_id, select_category_id, :id, :name, {include_blank: true}, {class: 'form-control', id: 'product_category_id'}
+  .form-group
+    = f.label :manufacture_name
+      = Product.human_attribute_name(:manufacture_name)
+    = f.text_field :manufacture_name, class: 'form-control', id: 'product_manufacture_name'
+  .form-group
+    = f.label :code
+      = Product.human_attribute_name(:code)
+    = f.text_field :code, class: 'form-control', id: 'product_code'
+  .form-group
+    = f.label :tax_item_id
+      = Product.human_attribute_name(:tax_item_id)
+      = render 'common/label_required'
+    = f.collection_select :tax_item_id, select_tax_item_id, :id, :name, {include_blank: true}, {class: 'form-control', id: 'product_tax_item_id'}
+  .form-group
+    = f.label :sales_price
+      = Product.human_attribute_name(:sales_price)
+    = f.number_field :sales_price, step: 1, class: 'form-control', id: 'product_sales_price'
+  .form-group
+    = f.label :regular_price
+      = Product.human_attribute_name(:regular_price)
+    = f.number_field :regular_price, step: 1, class: 'form-control', id: 'product_regular_price'
+  .form-group
+    .form-inline
+      = f.label :number_of_stocks
+        = Product.human_attribute_name(:number_of_stocks)
+      .form-inline.ml-5
+        = f.check_box :unlimited_stock, {class: 'form-control mr-2', id: 'product_unlimited_stock'}, true, false
+        = f.label :unlimited_stock
+          = Product.human_attribute_name(:unlimited_stock)
+    = f.number_field :number_of_stocks, step: 1, class: 'form-control', id: 'product_number_of_stocks'
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
+  .form-group
+    = f.label :description
+      = Product.human_attribute_name(:description)
+    = f.text_area :description, rows: 5, class: 'form-control', id: 'product_description'
+  .form-group
+    = f.label :search_term
+      = Product.human_attribute_name(:search_term)
+    = f.text_field :search_term, class: 'form-control', id: 'product_name'
+  .form-group
+    = f.label :jan_code
+      = Product.human_attribute_name(:jan_code)
+    = f.text_field :jan_code, class: 'form-control', id: 'product_name'
+  .form-group
+    = f.label :status
+      = Product.human_attribute_name(:status)
+    = f.select :status, select_status, {include_blank: false}, {class: 'form-control', id: 'product_status'}
+  = f.submit nil, class: 'btn btn-primary'
+
+= render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn' }
+= render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn' }

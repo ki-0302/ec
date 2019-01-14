@@ -7,6 +7,7 @@ class TaxItem < ApplicationRecord
   MAXIMUM_NAME = 40
 
   belongs_to :tax_class
+  has_many :products, dependent: :restrict_with_error
 
   validates :name, presence: true,
                    length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }

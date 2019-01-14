@@ -26,12 +26,11 @@ class Product < ApplicationRecord
   belongs_to :category, optional: true
   belongs_to :tax_item
 
-  enum status: { normal: 0, sales_suspension: 9 }
+  enum status: { normal: 0, sales_suspension: 9 }, _prefix: true
 
   validates :name, uniqueness: true, presence: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
   validates :manufacture_name, length: { maximum: MAXIMUM_MANUFACTURE_NAME }
   validates :code, length: { maximum: MAXIMUM_CODE }
-  validates :tax_item_id, presence: true
   validates :sales_price, numericality: { greater_than_or_equal_to: 0,
                                           less_than_or_equal_to: MAXIMUM_SALES_PRICE },
                           allow_nil: true
@@ -47,8 +46,7 @@ class Product < ApplicationRecord
   validates :description, length: { maximum: MAXIMUM_DESCRIPTION }
   validates :search_term, length: { maximum: MAXIMUM_SEARCH_TERM }
   validates :jan_code, length: { maximum: MAXIMUM_JAN_CODE }
-  validates :status_code, numericality: true,
-                          inclusion: { in: [Product.statuses[:normal], Product.statuses[:sales_suspension]] }
+  validates :status, presence: true
 
   # startよりendが小さい場合のバリデーション
   validate :validate_start_datetime_is_greater_than_end_datetime
@@ -65,6 +63,22 @@ class Product < ApplicationRecord
 
   after_initialize do
     self.is_divide_by_date_and_time ||= false
+  end
+
+  def category_name
+    category.name
+  end
+
+  def tax_item_name
+    tax_item.name
+  end
+
+  def unlimited_stock_name
+    human_attribute_boolean(:unlimited_stock)
+  end
+
+  def status_name
+    human_attribute_enum_value(:status)
   end
 
   private

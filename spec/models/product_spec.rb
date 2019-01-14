@@ -285,18 +285,13 @@ RSpec.describe Product, type: :model do
     end
     describe '商品状態の確認をおこなう' do
       it '商品状態がnilを許容しないこと' do
-        product = FactoryBot.build(:product, status_code: nil)
+        product = FactoryBot.build(:product, status: nil)
         expect(product).to_not be_valid
       end
-      it '商品状態が数値でなければ無効であること' do
-        product = FactoryBot.build(:product, status_code: '１')
-        product.valid?
-        expect(product.errors[:status_code]).to include(I18n.t('errors.messages.not_a_number'))
-      end
       it '有効な商品状態でなければ無効であること' do
-        product = FactoryBot.build(:product, status_code: 999)
-        product.valid?
-        expect(product.errors[:status_code]).to include(I18n.t('errors.messages.inclusion'))
+        expect do
+          FactoryBot.build(:product, status: 999)
+        end.to raise_error(ArgumentError)
       end
     end
   end

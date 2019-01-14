@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2019_01_13_153549) do
     t.string "description"
     t.string "search_term"
     t.string "jan_code"
-    t.integer "status_code", default: 0, null: false
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_products_on_category_id"

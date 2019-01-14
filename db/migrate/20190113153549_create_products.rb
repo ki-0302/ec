@@ -15,7 +15,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.string :description
       t.string :search_term
       t.string :jan_code
-      t.integer :status_code, null: false, default: 0
+      t.integer :status, null: false, default: 0
       t.timestamps
     end
     add_index :products, :name, unique: true

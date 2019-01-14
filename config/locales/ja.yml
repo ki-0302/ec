@@ -12,6 +12,7 @@ ja:
       category: カテゴリー
       tax_class: 税区分
       tax_item: 税率対象品目
+      product: 商品
     attributes:
       admin_user:
         admin_user: 管理ユーザー
@@ -52,11 +53,12 @@ ja:
         updated_at: 更新日時
       product:
         id: ID
-        name: 税率対象品目名
+        name: 商品名
         category_id: カテゴリー
         manufacture_name: メーカー
         code: 商品コード
         tax_item_id: 税率対象品目
+        tax_item: 税率対象品目
         sales_price: 販売価格
         regular_price: 通常価格
         number_of_stocks: 在庫数
@@ -66,9 +68,15 @@ ja:
         description: 商品説明
         search_term: 検索ワード
         search_term: JANコード
-        status_code: 商品状態
+        status: 商品状態
         created_at: 登録日時
         updated_at: 更新日時
+      product/status: 
+        normal: 通常
+        sales_suspension: 販売停止
+      product/unlimited_stock: 
+        true: 無制限
+        false: 
   date:
     abbr_day_names:
     - 日

@@ -1,2 +1,7 @@
-h1 Admin::Products#edit
-p Find me in app/views/admin/products/edit.html.slim
+h1= Product.model_name.human + 'の編集'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_products_path, class: 'nav-:link'
+
+= render 'form', product: @product, select_category_id: @select_category_id,
+         select_tax_item_id: @select_tax_item_id, select_status: @select_status
