@@ -1,13 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
+  let(:tax_item1) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class1) }
+  let(:tax_class1) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
+  let(:tax_item2) { FactoryBot.create(:tax_item, name: '酒類', tax_class: tax_class2) }
+  let(:tax_class2) { FactoryBot.create(:tax_class, name: '消費税10%', tax_rate: 0.1) }
+
   describe '追加・更新・削除' do
     let(:product1_name) { 'テスト商品' }
     let(:product2_name) { 'テスト商品２' }
-    let(:product1) { FactoryBot.create(:product) }
-    let(:product2) { FactoryBot.create(:product, name: product2_name, tax_item: tax_item) }
-    let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
-    let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
+    let(:product1) { FactoryBot.create(:product, name: product1_name) }
+    let(:product2) { FactoryBot.create(:product, name: product2_name, tax_item: tax_item1) }
 
     describe '追加' do
       it '商品が追加できること' do
@@ -196,9 +199,6 @@ RSpec.describe Product, type: :model do
       end
     end
     describe '掲載開始日時の確認をおこなう' do
-      let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
-      let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
-
       it '掲載開始日時がnilを許容すること' do
         product = FactoryBot.build(:product, display_end_datetime: nil)
         expect(product).to be_valid
@@ -211,7 +211,7 @@ RSpec.describe Product, type: :model do
         expect(product.errors[:display_start_datetime]).to_not include(I18n.t('errors.messages.not_a_datetime'))
         product2 = FactoryBot.build(:product, display_start_datetime: '2018-01-01 77:33',
                                               display_end_datetime: '2018-01-02 10:20',
-                                              tax_item: tax_item)
+                                              tax_item: tax_item1)
         product2.valid?
         expect(product2.errors[:display_start_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
@@ -225,9 +225,6 @@ RSpec.describe Product, type: :model do
       end
     end
     describe '掲載終了日時の確認をおこなう' do
-      let(:tax_item) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class) }
-      let(:tax_class) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
-
       it '掲載終了日時がnilを許容すること' do
         product = FactoryBot.build(:product, display_end_datetime: nil)
         expect(product).to be_valid
@@ -239,7 +236,7 @@ RSpec.describe Product, type: :model do
         expect(product.errors[:display_end_datetime]).to_not include(I18n.t('errors.messages.not_a_datetime'))
         product2 = FactoryBot.build(:product, display_start_datetime: '2018-01-01 10:33',
                                               display_end_datetime: '2018-01-02 77:20',
-                                              tax_item: tax_item)
+                                              tax_item: tax_item1)
         product2.valid?
         expect(product2.errors[:display_end_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
@@ -294,6 +291,128 @@ RSpec.describe Product, type: :model do
         product = FactoryBot.build(:product, status_code: 999)
         product.valid?
         expect(product.errors[:status_code]).to include(I18n.t('errors.messages.inclusion'))
+      end
+    end
+  end
+
+  describe '追加・更新・削除　日・時に別れた場合' do
+    let(:product1_name) { 'テスト商品' }
+    let(:product2_name) { 'テスト商品２' }
+    let(:product1) do
+      FactoryBot.create(:product, name: product1_name,
+                                  display_start_datetime_ymd: '2019-01-20',
+                                  display_start_datetime_hn: '10:00',
+                                  display_end_datetime_ymd: '2019-01-31',
+                                  display_end_datetime_hn: '12:22',
+                                  is_divide_by_date_and_time: true)
+    end
+    let(:product2) do
+      FactoryBot.create(:product, name: product2_name,
+                                  display_start_datetime_ymd: '2019-01-20',
+                                  display_start_datetime_hn: '10:00',
+                                  display_end_datetime_ymd: '2019-01-31',
+                                  display_end_datetime_hn: '12:22',
+                                  is_divide_by_date_and_time: true,
+                                  tax_item: tax_item1)
+    end
+
+    describe '追加' do
+      it '商品が追加できること' do
+        expect(product1).to be_valid
+        expect(Product.find_by(name: product1_name)).to be_truthy
+      end
+      it '商品が複数追加できること' do
+        expect(product1).to be_valid
+        expect(product2).to be_valid
+        expect(Product.find_by(name: product2_name)).to be_truthy
+      end
+    end
+
+    describe '更新' do
+      it '商品が更新できること' do
+        expect(product1).to be_valid
+        update_product1 = Product.find_by(name: product1_name)
+        expect(update_product1).to be_truthy
+        update_product1.name = '更新カテゴリー'
+        update_product1.is_divide_by_date_and_time = true
+        update_product1.save
+        expect(update_product1).to be_valid
+        expect(Product.find_by(name: '更新カテゴリー')).to be_truthy
+      end
+    end
+    describe '削除' do
+      it 'カテゴリーが削除できること' do
+        expect(product1).to be_valid
+        delete_product1 = Product.find_by(name: product1_name)
+        expect(delete_product1).to be_truthy
+        delete_product1.destroy
+        expect(Product.all.size).to eq 0
+      end
+    end
+  end
+
+  describe 'バリデーション 日・時に別れた場合' do
+    describe '掲載開始日時の確認をおこなう' do
+      it '掲載開始日・時がnilを許容すること' do
+        product = FactoryBot.build(:product, display_start_datetime_ymd: nil,
+                                             display_start_datetime_hn: nil,
+                                             is_divide_by_date_and_time: true)
+        expect(product).to be_valid
+      end
+      it '掲載開始日・時がnilでも日・時でもなければ無効であること' do
+        product1 = FactoryBot.build(:product, display_start_datetime_ymd: '2018-31-01',
+                                              display_start_datetime_hn: '20:11',
+                                              display_end_datetime_ymd: '2018-01-02',
+                                              display_end_datetime_hn: '10:20',
+                                              is_divide_by_date_and_time: true,
+                                              tax_item: tax_item1)
+        product1.valid?
+        expect(product1.errors[:display_start_datetime_ymd]).to include(I18n.t('errors.messages.not_a_date'))
+        product2 = FactoryBot.build(:product, display_start_datetime_ymd: '2018-01-01',
+                                              display_start_datetime_hn: '30:70',
+                                              display_end_datetime_ymd: '2018-01-02',
+                                              display_end_datetime_hn: '10:20',
+                                              is_divide_by_date_and_time: true,
+                                              tax_item: tax_item2)
+        product2.valid?
+        expect(product2.errors[:display_start_datetime_hn]).to include(I18n.t('errors.messages.not_a_time'))
+      end
+      it '掲載開始日時が掲載終了日時より大きい場合無効であること' do
+        product = FactoryBot.build(:product, display_start_datetime_ymd: '2018-01-03',
+                                             display_start_datetime_hn: '20:20',
+                                             display_end_datetime_ymd: '2018-01-02',
+                                             display_end_datetime_hn: '10:20',
+                                             is_divide_by_date_and_time: true)
+        product.valid?
+        comparison = Product.human_attribute_name(:display_start_datetime)
+        expect(product.errors[:display_end_datetime]).to include(I18n.t('errors.messages.greater_than',
+                                                                        count: comparison))
+      end
+    end
+    describe '掲載終了日時の確認をおこなう' do
+      it '掲載終了日時がnilを許容すること' do
+        product = FactoryBot.build(:product, display_end_datetime_ymd: nil,
+                                             display_end_datetime_hn: nil,
+                                             is_divide_by_date_and_time: true)
+        expect(product).to be_valid
+      end
+      it '掲載終了日時がnilでも日時でなければ無効であること' do
+        product1 = FactoryBot.build(:product, display_start_datetime_ymd: '2018-31-01',
+                                              display_start_datetime_hn: '20:11',
+                                              display_end_datetime_ymd: '2018-31-02',
+                                              display_end_datetime_hn: '10:20',
+                                              is_divide_by_date_and_time: true,
+                                              tax_item: tax_item1)
+        product1.valid?
+        expect(product1.errors[:display_end_datetime_ymd]).to include(I18n.t('errors.messages.not_a_date'))
+        product2 = FactoryBot.build(:product, display_start_datetime_ymd: '2018-01-01',
+                                              display_start_datetime_hn: '11:22',
+                                              display_end_datetime_ymd: '2018-01-02',
+                                              display_end_datetime_hn: '30:20',
+                                              is_divide_by_date_and_time: true,
+                                              tax_item: tax_item2)
+        product2.valid?
+        expect(product2.errors[:display_end_datetime_hn]).to include(I18n.t('errors.messages.not_a_time'))
       end
     end
   end
