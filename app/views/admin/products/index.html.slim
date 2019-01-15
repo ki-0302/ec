@@ -26,7 +26,7 @@ table.table.table-hover
           td= product.tax_item_name if product.tax_item_id?
           td= number_with_delimiter(product.sales_price)
           td= product.unlimited_stock? ? product.unlimited_stock_name : number_with_delimiter(product.number_of_stocks)
-          td= product.status_name 
+          td= product.status_name
           td
             = link_to '編集', edit_admin_product_path(product), class: 'btn btn-primary mr-3'
             = link_to '削除', [:admin, product], method: :delete, data: { confirm: Product.model_name.human + "「#{product.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
