@@ -230,7 +230,7 @@ display_end_datetime
 description
 search_term
 jan_code
-status_code
+status
 }
 
 class ProductImage {
@@ -319,9 +319,9 @@ User -{ Cart
 User -{ Address
 User - UsersPoint
 Cart -- Item
-Item -- Category
-Item --{ ItemImage
-Item -- TaxItem
+Item }- Category
+Item -{ ItemImage
+Item }- TaxItem
 TaxClass -{ TaxItem
 User -- Order
 Order -{ OrderLineItem
