@@ -165,16 +165,32 @@ display_start_date
 display_end_date
 }
 
-class TaxClass {
-id
-name
-tax_rate
-}
-
 class TaxItem {
 id
 name
 tax_class
+}
+
+class Product {
+id
+name
+category_id
+manufacture_name
+code
+tax_item_id
+sales_price
+regular_price
+number_of_stocks
+unlimited_stock
+display_start_datetime
+display_end_datetime
+description
+search_term
+jan_code
+status
+}
+
+class ActiveStorage {
 }
 
 class User {
@@ -214,31 +230,6 @@ item_quantity
 
 
 
-class Product {
-id
-name
-category_id
-manufacture_name
-code
-tax_item_id
-sales_price
-regular_price
-number_of_stocks
-unlimited_stock
-display_start_datetime
-display_end_datetime
-description
-search_term
-jan_code
-status
-}
-
-class ProductImage {
-id
-product_id
-image_file_path
-display_priority
-}
 
 
 
@@ -319,10 +310,9 @@ User -{ Cart
 User -{ Address
 User - UsersPoint
 Cart -- Item
-Item }- Category
-Item -{ ItemImage
-Item }- TaxItem
-TaxClass -{ TaxItem
+Product }-- Category
+Product }- TaxItem
+Product }--{ ActiveStorage
 User -- Order
 Order -{ OrderLineItem
 Order -- ShippingOption
