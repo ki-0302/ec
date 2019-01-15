@@ -1,6 +1,8 @@
 class Category < ApplicationRecord
   paginates_per ADMIN_ROW_PER_PAGE
 
+  include ValidateDatetime
+
   # 最小桁数
   MINIMUM_NAME = 2
   # 最大桁数
@@ -28,7 +30,7 @@ class Category < ApplicationRecord
   validates :display_end_datetime, datetime: true
 
   # startよりendが小さい場合のバリデーション
-  validate :validate_start_datetime_is_greater_than_end_datetime
+  validate :validate_display_start_datetime_is_greater_than_end_datetime
 
   # display_start_datetime, display_end_datetimeそれぞれのymdとhnのバリデーション
   validate :validate_display_start_datetime_ymd_and_hn
@@ -74,35 +76,22 @@ class Category < ApplicationRecord
   end
 
   # 表示終了日時より表示開始日時が大きいかのバリデーション
-  def validate_start_datetime_is_greater_than_end_datetime
-    return if display_start_datetime.nil? || display_end_datetime.nil?
-
-    return if display_start_datetime <= display_end_datetime
-
-    caption_display_start_datetime = Category.human_attribute_name(:display_start_datetime)
-    errors.add(:display_end_datetime, I18n.t('errors.messages.greater_than', count: caption_display_start_datetime))
+  def validate_display_start_datetime_is_greater_than_end_datetime
+    validate_start_datetime_is_greater_than_end_datetime display_start_datetime, display_end_datetime,
+                                                         Product.human_attribute_name(:display_start_datetime),
+                                                         :display_end_datetime
   end
 
   # 表示開始日と表示開始時間のバリデーション
   def validate_display_start_datetime_ymd_and_hn
-    return if display_start_datetime_ymd.blank? && display_start_datetime_hn.blank?
-
-    if !Common::Validation.date(display_start_datetime_ymd)
-      errors.add(:display_start_datetime_ymd, I18n.t('errors.messages.not_a_date'))
-    elsif !Common::Validation.time(display_start_datetime_hn)
-      errors.add(:display_start_datetime_hn, I18n.t('errors.messages.not_a_time'))
-    end
+    validate_datetime_ymd_and_hn(display_start_datetime_ymd, display_start_datetime_hn,
+                                 :display_start_datetime_ymd, :display_start_datetime_hn)
   end
 
   # 表示終了日と表示終了時間のバリデーション
   def validate_display_end_datetime_ymd_and_hn
-    return if display_end_datetime_ymd.blank? && display_end_datetime_hn.blank?
-
-    if !Common::Validation.date(display_end_datetime_ymd)
-      errors.add(:display_end_datetime_ymd, I18n.t('errors.messages.not_a_date'))
-    elsif !Common::Validation.time(display_end_datetime_hn)
-      errors.add(:display_end_datetime_hn, I18n.t('errors.messages.not_a_time'))
-    end
+    validate_datetime_ymd_and_hn(display_end_datetime_ymd, display_end_datetime_hn,
+                                 :display_end_datetime_ymd, :display_end_datetime_hn)
   end
 
   # 親IDに自身が割り当てらていないか

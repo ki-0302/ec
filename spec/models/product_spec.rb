@@ -247,6 +247,23 @@ RSpec.describe Product, type: :model do
         expect(product2.errors[:display_end_datetime]).to include(I18n.t('errors.messages.not_a_datetime'))
       end
     end
+
+    describe '商品画像の確認をおこなう' do
+      it '商品画像が登録できること' do
+        product = FactoryBot.build(:product)
+        product.image.attach(io: File.open(fixture_path + '/dummy_image.jpg'),
+                             filename: 'attachment.jpg', content_type: 'image/jpg')
+        expect(product.image).to be_attached
+      end
+      it '商品画像が削除できること' do
+        product = FactoryBot.build(:product)
+        product.image.attach(io: File.open(fixture_path + '/dummy_image.jpg'),
+                             filename: 'attachment.jpg', content_type: 'image/jpg')
+        product.delete_image = '1'
+        product.save
+        expect(product.image).to_not be_attached
+      end
+    end
     describe '商品説明の確認をおこなう' do
       it '商品説明がnilを許容すること' do
         product = FactoryBot.build(:product, description: nil)
