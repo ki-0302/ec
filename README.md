@@ -132,6 +132,19 @@ status
 class ActiveStorage {
 }
 
+class TaxRate {
+id
+name
+apply_start_date
+standard_tax_rate
+reduced_tax_rate
+}
+
+
+
+
+
+
 class User {
 id
 name
@@ -222,13 +235,7 @@ tax_category
 
  
 
-class TaxRate {
-id
-tax_rate_name
-apply_start_date
-standard_tax_rate
-reduced_tax_rate
-}
+
 
 class Slideshow {
 id
