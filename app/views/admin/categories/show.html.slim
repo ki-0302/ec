@@ -20,7 +20,7 @@ table.table.table-hover
       th= Category.human_attribute_name(:display_end_datetime)
       td= l(@category.display_end_datetime, format: :long) if @category.display_end_datetime?
     tr
-      th= Category.human_attribute_name(:start_)
+      th= Category.human_attribute_name(:created_at)
       td= l(@category.created_at, format: :long) if @category.created_at?
     tr
       th= Category.human_attribute_name(:updated_at)

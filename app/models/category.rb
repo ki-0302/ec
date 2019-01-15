@@ -19,6 +19,8 @@ class Category < ApplicationRecord
   has_many :category_id, class_name: 'Category', foreign_key: 'parent_id', dependent: :nullify
   belongs_to :parent, class_name: 'Category', optional: true
 
+  has_many :products, dependent: :nullify
+
   validates :parent_id, numericality: true, allow_nil: true
   validates :name, presence: true
   validates :name, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }

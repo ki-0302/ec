@@ -22,7 +22,6 @@ class Product < ApplicationRecord
   attr_accessor :display_end_datetime_ymd, :display_end_datetime_hn
 
   before_validation :set_display_datetime
-
   belongs_to :category, optional: true
   belongs_to :tax_item
 
@@ -66,11 +65,11 @@ class Product < ApplicationRecord
   end
 
   def category_name
-    category.name
+    category.name if category.present?
   end
 
   def tax_item_name
-    tax_item.name
+    tax_item.name if tax_item.present?
   end
 
   def unlimited_stock_name
@@ -78,7 +77,7 @@ class Product < ApplicationRecord
   end
 
   def status_name
-    human_attribute_enum_value(:status)
+    human_attribute_enum(:status)
   end
 
   private

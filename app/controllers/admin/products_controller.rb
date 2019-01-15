@@ -7,7 +7,8 @@ module Admin
     end
 
     def show
-      @product = Product.find(params[:id])
+      @product = Product.find_by(id: params[:id])
+      @product.nil? && redirect_index('対象の' + Product.model_name.human + 'は存在しません。')
     end
 
     def new
@@ -27,7 +28,8 @@ module Admin
     end
 
     def edit
-      @product = Product.find(params[:id])
+      @product = Product.find_by(id: params[:id])
+      @product.nil? && redirect_index('対象の' + Product.model_name.human + 'は存在しません。')
       fetch_select_data
     end
 

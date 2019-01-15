@@ -36,7 +36,7 @@
       = f.label :number_of_stocks
         = Product.human_attribute_name(:number_of_stocks)
       .form-inline.ml-5
-        = f.check_box :unlimited_stock, {class: 'form-control mr-2', id: 'product_unlimited_stock'}, true, false
+        = f.check_box :unlimited_stock, {class: 'form-control mr-2', id: 'product_unlimited_stock'}
         = f.label :unlimited_stock
           = Product.human_attribute_name(:unlimited_stock)
     = f.number_field :number_of_stocks, step: 1, class: 'form-control', id: 'product_number_of_stocks'
