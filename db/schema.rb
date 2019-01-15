@@ -78,25 +78,15 @@ ActiveRecord::Schema.define(version: 2019_01_15_015344) do
     t.index ["tax_item_id"], name: "index_products_on_tax_item_id"
   end
 
-  create_table "tax_classes", force: :cascade do |t|
-    t.string "name"
-    t.float "tax_rate", default: 0.0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_tax_classes_on_name", unique: true
-  end
-
   create_table "tax_items", force: :cascade do |t|
     t.string "name"
-    t.bigint "tax_class_id"
+    t.integer "tax", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["tax_class_id"], name: "index_tax_items_on_tax_class_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "tax_items"
-  add_foreign_key "tax_items", "tax_classes"
 end

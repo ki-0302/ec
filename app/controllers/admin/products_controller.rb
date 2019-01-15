@@ -13,7 +13,7 @@ module Admin
 
     def new
       @product = Product.new
-      fetch_select_data
+      fetch_data_for_select
     end
 
     def create
@@ -22,7 +22,7 @@ module Admin
       if @product.save
         redirect_to admin_products_path, notice: Product.model_name.human + "「#{@product.name}」を登録しました。"
       else
-        fetch_select_data
+        fetch_data_for_select
         render :new
       end
     end
@@ -30,7 +30,7 @@ module Admin
     def edit
       @product = Product.find_by(id: params[:id])
       @product.nil? && redirect_index('対象の' + Product.model_name.human + 'は存在しません。')
-      fetch_select_data
+      fetch_data_for_select
     end
 
     def update
@@ -38,7 +38,7 @@ module Admin
       if @product.update(product_params)
         redirect_to admin_products_path, notice: Product.model_name.human + "「#{@product.name}」を更新しました。"
       else
-        fetch_select_data
+        fetch_data_for_select
         render :edit
       end
     end
@@ -56,7 +56,7 @@ module Admin
 
     private
 
-    def fetch_select_data
+    def fetch_data_for_select
       @select_category_id = Category.all
       @select_tax_item_id = TaxItem.all
       @select_status = Product.select_from_enum(:status)

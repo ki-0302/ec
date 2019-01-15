@@ -12,7 +12,7 @@ module Admin
 
     def new
       @tax_item = TaxItem.new
-      fetch_select_tax_class
+      fetch_data_for_select
     end
 
     def create
@@ -21,14 +21,14 @@ module Admin
       if @tax_item.save
         redirect_to admin_tax_items_path, notice: TaxItem.model_name.human + "「#{@tax_item.name}」を登録しました。"
       else
-        fetch_select_tax_class
+        fetch_data_for_select
         render :new
       end
     end
 
     def edit
       @tax_item = TaxItem.find(params[:id])
-      fetch_select_tax_class
+      fetch_data_for_select
     end
 
     def update
@@ -36,7 +36,7 @@ module Admin
       if @tax_item.update(tax_item_params)
         redirect_to admin_tax_items_path, notice: TaxItem.model_name.human + "「#{@tax_item.name}」を更新しました。"
       else
-        fetch_select_tax_class
+        fetch_data_for_select
         render :edit
       end
     end
@@ -54,8 +54,8 @@ module Admin
 
     private
 
-    def fetch_select_tax_class
-      @select_tax_class_id = TaxClass.all
+    def fetch_data_for_select
+      @select_tax = TaxItem.select_from_enum(:tax)
     end
 
     def redirect_index(message)
@@ -63,7 +63,7 @@ module Admin
     end
 
     def tax_item_params
-      params.require(:tax_item).permit(:name, :tax_class_id)
+      params.require(:tax_item).permit(:name, :tax)
     end
   end
 end

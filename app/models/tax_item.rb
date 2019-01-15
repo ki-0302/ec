@@ -8,15 +8,14 @@ class TaxItem < ApplicationRecord
 
   has_many :products, dependent: :restrict_with_error
 
-#  enum tax: { standard: 0, reduced: 1, fee: 9 }, _prefix: true
+  enum tax: { standard: 0, reduced: 1, fee: 9 }, _prefix: true
 
   validates :name, presence: true,
                    length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
 
-  validates :tax_class_id, presence: true
-  validates :tax_class_id, numericality: { only_integer: true }
+  validates :tax, presence: true
 
-  def tax_class_name
-    tax_class.name
+  def tax_name
+    human_attribute_enum(:tax)
   end
 end

@@ -6,10 +6,7 @@ RSpec.describe TaxItem, type: :model do
     let(:tax_item2_name) { 'テスト税率対象品目２' }
 
     let(:tax_item1) { FactoryBot.create(:tax_item) }
-    let(:tax_item2) do
-      FactoryBot.create(:tax_item, name: tax_item2_name,
-                                   tax_class: FactoryBot.create(:tax_class, name: '消費税8%(軽)'))
-    end
+    let(:tax_item2) { FactoryBot.create(:tax_item, name: tax_item2_name, tax: TaxItem.taxes[:reduced]) }
 
     describe '追加' do
       it '税率対象品目が追加できること' do
@@ -64,23 +61,15 @@ RSpec.describe TaxItem, type: :model do
         expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.too_long', count: TaxItem::MAXIMUM_NAME))
       end
     end
-    describe '税率対象品目区分の確認をおこなう' do
-      it '税率対象品目区分が未入力であれば無効であること' do
-        tax_item = FactoryBot.build(:tax_item, tax_class_id: nil)
-        tax_item.valid?
-        expect(tax_item.errors[:tax_class_id]).to include(I18n.t('errors.messages.blank'))
-      end
-      it '税率対象品目区分が数値でなければ無効であること' do
-        tax_item = FactoryBot.build(:tax_item, tax_class_id: '１')
-        tax_item.valid?
-        expect(tax_item.errors[:tax_class_id]).to include(I18n.t('errors.messages.not_a_number'))
-      end
-      it '税率対象品目区分に存在しないidを入力すると無効であること' do
-        tax_item = FactoryBot.create(:tax_item)
-        expect(tax_item).to be_truthy
-        tax_item.tax_class_id += 1
-        tax_item.save
+    describe '税区分の確認をおこなう' do
+      it '税区分が未入力であれば無効であること' do
+        tax_item = FactoryBot.build(:tax_item, tax: nil)
         expect(tax_item).to_not be_valid
+      end
+      it '有効な税区分でなければ無効であること' do
+        expect do
+          FactoryBot.build(:tax_item, tax: 999)
+        end.to raise_error(ArgumentError)
       end
     end
   end
