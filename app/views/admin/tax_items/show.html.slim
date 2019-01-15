@@ -11,8 +11,8 @@ table.table.table-hover
       th= TaxItem.human_attribute_name(:name)
       td= @tax_item.name
     tr
-      th= TaxClass.model_name.human
-      td= @tax_item.tax_class_name
+      th= TaxItem.human_attribute_name(:tax)
+      td= @tax_item.tax_name
     tr
       th= TaxItem.human_attribute_name(:created_at)
       td= l(@tax_item.created_at, format: :long) if @tax_item.created_at?

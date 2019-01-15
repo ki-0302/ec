@@ -11,8 +11,3 @@ AdminUser.find_or_create_by!(name: I18n.t('admin_user.name_default')) do |admin_
   admin_user.email = 'admin@example.com'
   admin_user.password = 'Pass000'
 end
-
-TaxClass.find_or_create_by!(name: I18n.t('tax_class.name_default')) do |tax_class|
-  tax_class.name = I18n.t('tax_class.name_default')
-  tax_class.tax_rate = 0.08
-end

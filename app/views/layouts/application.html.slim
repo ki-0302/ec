@@ -17,7 +17,6 @@ html lang="ja"
         li.nav-item= link_to Product.model_name.human, admin_products_path, class: 'nav-link'
         li.nav-item= link_to AdminUser.model_name.human, admin_admin_users_path, class: 'nav-link'
         li.nav-item= link_to Category.model_name.human, admin_categories_path, class: 'nav-link'
-        li.nav-item= link_to TaxClass.model_name.human, admin_tax_classes_path, class: 'nav-link'
         li.nav-item= link_to TaxItem.model_name.human, admin_tax_items_path, class: 'nav-link'
     .container.mt-3
       -if flash.notice.present?

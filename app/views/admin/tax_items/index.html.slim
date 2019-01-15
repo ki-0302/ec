@@ -9,7 +9,7 @@ table.table.table-hover
     tr
       th= sort_link(@q, :id)
       th= sort_link(@q, :name)
-      th= sort_link(@q, :tax_class_id, TaxClass.model_name.human)
+      th= sort_link(@q, :tax)
       th= sort_link(@q, :created_at)
       th= sort_link(@q, :updated_at)
       th
@@ -18,7 +18,7 @@ table.table.table-hover
         tr
           td= link_to tax_item.id, [:admin, tax_item]
           td= tax_item.name
-          td= tax_item.tax_class_name if tax_item.tax_class_id?
+          td= tax_item.tax_name if tax_item.tax?
           td= l(tax_item.created_at, format: :long) if tax_item.created_at?
           td= l(tax_item.updated_at, format: :long) if tax_item.updated_at?
           td

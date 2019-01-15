@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  let(:tax_item1) { FactoryBot.create(:tax_item, name: '食料品', tax_class: tax_class1) }
-  let(:tax_class1) { FactoryBot.create(:tax_class, name: '消費税8%(軽)', tax_rate: 0.08) }
-  let(:tax_item2) { FactoryBot.create(:tax_item, name: '酒類', tax_class: tax_class2) }
-  let(:tax_class2) { FactoryBot.create(:tax_class, name: '消費税10%', tax_rate: 0.1) }
+  let(:tax_item1) { FactoryBot.create(:tax_item, name: '食料品', tax: TaxItem.taxes[:standard]) }
+  let(:tax_item2) { FactoryBot.create(:tax_item, name: '酒類', tax: TaxItem.taxes[:reduced]) }
 
   describe '追加・更新・削除' do
     let(:product1_name) { 'テスト商品' }
