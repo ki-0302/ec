@@ -84,67 +84,6 @@ https://xd.adobe.com/view/d687c39a-22be-4ea5-602e-b42616449c4c-a0b6/?hints=off
   - [ ] 会社情報管理*
 
 
-、商品検索、カート、新・旧税率の切り替え（10%・8%）、軽減税率をおおまかな
-
-modelの作成
-- [ ] admin_user：管理コンソールログインユーザー
-- [ ] user：エンドユーザー
-- [ ] item：商品
-- [ ] item_img：商品画像（複数登録するため）
-- [ ] category：カテゴリー
-- [ ] order：注文
-
-
-- [ ] AdminUser
-  - [ ] 新規登録
-    - [ ] 管理ユーザーが登録できること
-    - [ ] 管理ユーザーが複数登録できること
-  - [ ] 更新
-    - [ ] 管理ユーザーが更新できること
-    - [ ] 管理ユーザーが複数更新できること
-  - [ ] 削除
-    - [ ] 管理ユーザーが削除できること
-    - [ ] 管理ユーザーが複数削除できること
-  - [ ] バリデーションをおこなう
-    - [ ] ユーザー名の確認をおこなう
-      - [ ] ユーザー名が必須であること
-      - [ ] ユーザー名が2〜40文字であること
-    - [ ] メールアドレスの確認をおこなう
-      - [ ] メールアドレスが必須であること
-      - [ ] メールアドレスが半角であること
-      - [ ] メールアドレスが4〜64文字であること
-      - [ ] 有効なメールアドレスであること
-      - [ ] 重複したメールアドレスは許可しないこと
-    - [ ] パスワード項目の確認をおこなう
-      - [ ] パスワードが必須であること
-      - [ ] パスワードが半角英数字記号であること
-      - [ ] パスワードが6〜32文字であること
-      - [ ] パスワードがハッシュ化されていること
-
-
-
-id
-user_name
-email
-password
-
-
-
-- [ ] 商品データをDBから取得する
-  - [ ] SQLインジェクションを検証する
-    - [ ] 商品データを取得する
-
-  - [ ] 商品データを取得する
-    - [ ] 商品データを全件取得する
-    - [ ] 商品データを商品名を指定して取得する
-
-- [ ] 商品データを一覧形式で表示する
-  - [ ] 商品データを一覧形式で表示する
-- [ ] 商品データを一覧形式で表示する
-  - [ ] 商品データを取得する
-  　　- [ ] 商品データを全件取得する
-  　　- [ ] 商品データを全件取得する
-  - [ ] 商品データを一覧形式で表示する
 
 ```plantuml
 @startuml
@@ -324,6 +263,9 @@ OrderLineItem -- Item
 
 bin/rails g model item name:string, category_id:integer, manufacture_name:string, code:string, tax_item_id:integer, sales_price:integer, regular_price:integer, number_of_stocks:integer, unlimited_stock:boolean, display_start_date:datetime, display_end_date:datetime, description:string, search_term:string, jan_code:string, status:integer
 
+## MagicImage
+ActiveStrageでサムネイルを使用する時のGem mini_magickで必須。
+```$ brew install imagemagick```
 
 ## Tempus Dominus
 カレンダーコントール用
