@@ -72,7 +72,8 @@ module Admin
                                       :number_of_stocks, :unlimited_stock,
                                       :display_start_datetime_ymd, :display_start_datetime_hn,
                                       :display_end_datetime_ymd, :display_end_datetime_hn,
-                                      :description, :search_term, :jan_code,
+                                      :image, :delete_image, :description,
+                                      :search_term, :jan_code,
                                       :status).merge(is_divide_by_date_and_time: true)
     end
   end

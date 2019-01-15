@@ -65,6 +65,8 @@ ja:
         unlimited_stock: 在庫無制限
         display_start_datetime: 掲載開始日時
         display_end_datetime: 掲載終了日時
+        image: 商品画像
+        delete_image: 画像削除
         description: 商品説明
         search_term: 検索ワード
         search_term: JANコード

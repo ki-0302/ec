@@ -38,8 +38,11 @@ table.table.table-hover
       th= Product.human_attribute_name(:display_end_datetime)
       td= l(@product.display_end_datetime, format: :long) if @product.display_end_datetime?
     tr
+      th= Product.human_attribute_name(:image)
+      td= image_tag @product.image if @product.image.attached?
+    tr
       th= Product.human_attribute_name(:description)
-      td= @product.description
+      td= simple_format(h(@product.description), {}, sanitize: false, wrapper_tag: 'div')
     tr
       th= Product.human_attribute_name(:search_term)
       td= @product.search_term

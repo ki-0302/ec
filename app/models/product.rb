@@ -20,10 +20,13 @@ class Product < ApplicationRecord
   # 日と時間を分けて取得
   attr_accessor :display_start_datetime_ymd, :display_start_datetime_hn
   attr_accessor :display_end_datetime_ymd, :display_end_datetime_hn
+  # 画像削除用のID
+  attr_accessor :delete_image
 
   before_validation :set_display_datetime
   belongs_to :category, optional: true
   belongs_to :tax_item
+  has_one_attached :image
 
   enum status: { normal: 0, sales_suspension: 9 }, _prefix: true
 
@@ -59,6 +62,8 @@ class Product < ApplicationRecord
   after_save :set_display_end_datetime_ymd_and_hn
   after_find :set_display_start_datetime_ymd_and_hn
   after_find :set_display_end_datetime_ymd_and_hn
+  # 画像を削除
+  after_save :image_purge
 
   after_initialize do
     self.is_divide_by_date_and_time ||= false
@@ -81,6 +86,10 @@ class Product < ApplicationRecord
   end
 
   private
+
+  def image_purge
+    image.purge if delete_image == '1'
+  end
 
   # is_divide_by_date_and_timeの値によって、日と時間を分割するか、日と時間を結合した値をセットする
   def set_display_datetime
