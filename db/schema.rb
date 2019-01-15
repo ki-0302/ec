@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_15_015344) do
+ActiveRecord::Schema.define(version: 2019_01_15_140021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,16 @@ ActiveRecord::Schema.define(version: 2019_01_15_015344) do
     t.integer "tax", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tax_rates", force: :cascade do |t|
+    t.string "name", null: false
+    t.date "start_date", null: false
+    t.float "standard_tax_rate", default: 0.0, null: false
+    t.float "reduced_tax_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["start_date"], name: "index_tax_rates_on_start_date", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

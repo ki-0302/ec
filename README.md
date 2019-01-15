@@ -135,12 +135,17 @@ class ActiveStorage {
 class TaxRate {
 id
 name
-apply_start_date
+start_date
 standard_tax_rate
 reduced_tax_rate
 }
 
-
+class Slideshow {
+id
+name
+description
+url
+}
 
 
 
@@ -237,13 +242,7 @@ tax_category
 
 
 
-class Slideshow {
-id
-slideshow_name
-description
-image_file_path
-url
-}
+
 
 class WhatsNew {
 id
@@ -285,6 +284,7 @@ https://qiita.com/yaju/items/2cbe5e5914c5be08820a
 # FontAwesome
 WebFont
 https://fontawesome.com/
+
 
 
 
