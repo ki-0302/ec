@@ -8,7 +8,7 @@ class TaxItem < ApplicationRecord
 
   has_many :products, dependent: :restrict_with_error
 
-#  enum tax: { standard: 0, reduced: 1, fee: 9 }, _prefix: true
+  enum tax: { standard: 0, reduced: 1, fee: 9 }, _prefix: true
 
   validates :name, presence: true,
                    length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
