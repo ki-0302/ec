@@ -3,12 +3,19 @@
 # todo_to_spec クリップボードにあるTODOリストをspecに変換してコンソールへ出力。
 # spec_to_todo クリップボードにあるspecでの出力をTODOリストへ変換してコンソールへ出力。
 #
+# クリップボードに入れたい場合はプログラムコール時に | pbcopy をつける
 class SpecConvert
-  def spec_to_todo
+  def spec_to_todo(checked = false)
+    checked_text = if checked
+                     'x'
+                   else
+                     ' '
+                   end
+
     clipboard = `pbpaste | /usr/local/bin/nkf -w`
     clipboard.split(/\R/).each do |line|
       m = line.match(/\A(\s*)(.*)\z/)
-      puts m[1] + '- [ ] ' + m[2]
+      puts m[1] + '- [' + checked_text + '] ' + m[2]
     end
   end
 
@@ -62,9 +69,12 @@ end
 if $PROGRAM_NAME == __FILE__
   spec_convert = SpecConvert.new
 
-  if ARGV[0] == 'todo'
+  case ARGV[0]
+  when 'todo'  # RSpecの結果からTODOリストを出力
     spec_convert.spec_to_todo
-  else
+  when 'todox' # RSpecの結果からチェックしたTODOリストを出力
+    spec_convert.spec_to_todo(true)
+  else         # TODOリストからRSpecを出力
     spec_convert.todo_to_spec
   end
 

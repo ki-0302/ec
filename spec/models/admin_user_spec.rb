@@ -61,20 +61,20 @@ RSpec.describe AdminUser, type: :model do
         expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it 'ユーザー名が2文字以上でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, name: 'A')
+        admin_user = FactoryBot.build(:admin_user, name: 'A' * (AdminUser::MINIMUM_NAME - 1))
         admin_user.valid?
-        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
-        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ')
+        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_short', count: AdminUser::MINIMUM_NAME))
+        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ' * (AdminUser::MINIMUM_NAME - 1))
         admin_user_ja.valid?
-        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_short', count: AdminUser::MINIMUM_NAME))
       end
       it 'ユーザー名が40文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, name: 'A' * 41)
+        admin_user = FactoryBot.build(:admin_user, name: 'A' * (AdminUser::MAXIMUM_NAME + 1))
         admin_user.valid?
-        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
-        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ' * 41)
+        expect(admin_user.errors[:name]).to include(I18n.t('errors.messages.too_long', count: AdminUser::MAXIMUM_NAME))
+        admin_user_ja = FactoryBot.build(:admin_user, name: 'Ａ' * (AdminUser::MAXIMUM_NAME + 1))
         admin_user_ja.valid?
-        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(admin_user_ja.errors[:name]).to include(I18n.t('errors.messages.too_long', count: AdminUser::MAXIMUM_NAME))
       end
     end
 
@@ -85,9 +85,11 @@ RSpec.describe AdminUser, type: :model do
         expect(admin_user.errors[:email]).to include(I18n.t('errors.messages.blank'))
       end
       it 'メールアドレスが64文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, email: '1' * 53 + '@example.com')
+        domain = '@example.com'
+        email = '1' * (AdminUser::MAXIMUM_EMAIL - domain.length + 1)
+        admin_user = FactoryBot.build(:admin_user, email: email + domain)
         admin_user.valid?
-        expect(admin_user.errors[:email]).to include(I18n.t('errors.messages.too_long', count: 64))
+        expect(admin_user.errors[:email]).to include(I18n.t('errors.messages.too_long', count: AdminUser::MAXIMUM_EMAIL))
       end
       it '有効なメールアドレスでなければ無効であること' do
         admin_user = FactoryBot.build(:admin_user, email: 'testexample.com')
@@ -130,9 +132,11 @@ RSpec.describe AdminUser, type: :model do
         expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_short', count: 6))
       end
       it 'パスワードが32文字以内でなければ無効であること' do
-        admin_user = FactoryBot.build(:admin_user, password: 'Aa1' + '2' * 30)
+        password = 'Aa1'
+        password += '2' * (AdminUser::MAXIMUM_PASSWORD - password.length + 1)
+        admin_user = FactoryBot.build(:admin_user, password: password)
         admin_user.valid?
-        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_long', count: 32))
+        expect(admin_user.errors[:password]).to include(I18n.t('errors.messages.too_long', count: AdminUser::MAXIMUM_PASSWORD))
       end
       it '保存されるパスワードがハッシュ化されていなければ無効であること' do
         password = 'Password1'

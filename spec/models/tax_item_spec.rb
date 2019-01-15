@@ -54,14 +54,14 @@ RSpec.describe TaxItem, type: :model do
         expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
       it '税率対象品目名が2文字以上でなければ無効であること' do
-        tax_item = FactoryBot.build(:tax_item, name: 'A')
+        tax_item = FactoryBot.build(:tax_item, name: 'A' * (TaxItem::MINIMUM_NAME - 1))
         tax_item.valid?
-        expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.too_short', count: 2))
+        expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.too_short', count: TaxItem::MINIMUM_NAME))
       end
       it '税率対象品目名が40文字以内でなければ無効であること' do
-        tax_item = FactoryBot.build(:tax_item, name: 'A' * 41)
+        tax_item = FactoryBot.build(:tax_item, name: 'A' * (TaxItem::MAXIMUM_NAME + 1))
         tax_item.valid?
-        expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.too_long', count: 40))
+        expect(tax_item.errors[:name]).to include(I18n.t('errors.messages.too_long', count: TaxItem::MAXIMUM_NAME))
       end
     end
     describe '税率対象品目区分の確認をおこなう' do

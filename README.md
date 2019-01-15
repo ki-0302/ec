@@ -218,19 +218,19 @@ class Product {
 id
 name
 category_id
-manufacture_name
+manufacture_name
 code
 tax_item_id
 sales_price
 regular_price
 number_of_stocks
 unlimited_stock
-display_start_date
-display_end_date
+display_start_datetime
+display_end_datetime
 description
 search_term
 jan_code
-status
+status_code
 }
 
 class ProductImage {
@@ -319,14 +319,14 @@ User -{ Cart
 User -{ Address
 User - UsersPoint
 Cart -- Item
-Item - Category
+Item -- Category
 Item --{ ItemImage
 Item -- TaxItem
 TaxClass -{ TaxItem
 User -- Order
 Order -{ OrderLineItem
 Order -- ShippingOption
-OrderLineItem - Item
+OrderLineItem -- Item
 
 
 @enduml

@@ -1,17 +1,28 @@
 class AdminUser < ApplicationRecord
+  paginates_per ADMIN_ROW_PER_PAGE
+
+  # 最小桁数
+  MINIMUM_NAME = 2
+  MINIMUM_EMAIL = 5
+  MINIMUM_PASSWORD = 6
+  # 最大桁数
+  MAXIMUM_NAME = 40
+  MAXIMUM_EMAIL = 64
+  MAXIMUM_PASSWORD = 32
+
   has_secure_password
 
   before_destroy :before_destroy_can_not_be_deleted
 
   validates :name, presence: true
-  validates :name, length: { minimum: 2, maximum: 40 }
+  validates :name, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
 
   validates :email, presence: true
-  validates :email, length: { minimum: 5, maximum: 64 }
+  validates :email, length: { minimum: MINIMUM_EMAIL, maximum: MAXIMUM_EMAIL }
   validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates :email, uniqueness: true
 
-  validates :password, length: { minimum: 6, maximum: 32 }, if: :validate_password?
+  validates :password, length: { minimum: MINIMUM_PASSWORD, maximum: MAXIMUM_PASSWORD }, if: :validate_password?
   validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d!#$%&\(\)@{}]*\z/ }, if: :validate_password?
 
   private

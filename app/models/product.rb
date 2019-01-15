@@ -1,10 +1,19 @@
-class Category < ApplicationRecord
+class Product < ApplicationRecord
   paginates_per ADMIN_ROW_PER_PAGE
 
+  # 最大値
+  MAXIMUM_SALES_PRICE = 99_999_999
+  MAXIMUM_REGULAR_PRICE = 99_999_999
+  MAXIMUM_NUMBER_OF_STOCKS = 99_999_999
   # 最小桁数
   MINIMUM_NAME = 2
   # 最大桁数
   MAXIMUM_NAME = 40
+  MAXIMUM_MANUFACTURE_NAME = 40
+  MAXIMUM_CODE = 32
+  MAXIMUM_DESCRIPTION = 1000
+  MAXIMUM_SEARCH_TERM = 40
+  MAXIMUM_JAN_CODE = 32
 
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
@@ -13,19 +22,30 @@ class Category < ApplicationRecord
   attr_accessor :display_end_datetime_ymd, :display_end_datetime_hn
 
   before_validation :set_display_datetime
-  before_validation :validate_parrent_id_assigned_by_self
-  before_validation :validate_exists_as_a_parent
+  belongs_to :category, optional: true
+  belongs_to :tax_item
 
-  has_many :category_id, class_name: 'Category', foreign_key: 'parent_id', dependent: :nullify
-  belongs_to :parent, class_name: 'Category', optional: true
+  enum status: { normal: 0, sales_suspension: 9 }, _prefix: true
 
-  has_many :products, dependent: :nullify
-
-  validates :parent_id, numericality: true, allow_nil: true
-  validates :name, presence: true
-  validates :name, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
+  validates :name, uniqueness: true, presence: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
+  validates :manufacture_name, length: { maximum: MAXIMUM_MANUFACTURE_NAME }
+  validates :code, length: { maximum: MAXIMUM_CODE }
+  validates :sales_price, numericality: { greater_than_or_equal_to: 0,
+                                          less_than_or_equal_to: MAXIMUM_SALES_PRICE },
+                          allow_nil: true
+  validates :regular_price, numericality: { greater_than_or_equal_to: 0,
+                                            less_than_or_equal_to: MAXIMUM_REGULAR_PRICE },
+                            allow_nil: true
+  validates :number_of_stocks, numericality: { greater_than_or_equal_to: 0,
+                                               less_than_or_equal_to: MAXIMUM_NUMBER_OF_STOCKS },
+                               allow_nil: true
+  validates :unlimited_stock, inclusion: { in: [true, false] }
   validates :display_start_datetime, datetime: true
   validates :display_end_datetime, datetime: true
+  validates :description, length: { maximum: MAXIMUM_DESCRIPTION }
+  validates :search_term, length: { maximum: MAXIMUM_SEARCH_TERM }
+  validates :jan_code, length: { maximum: MAXIMUM_JAN_CODE }
+  validates :status, presence: true
 
   # startよりendが小さい場合のバリデーション
   validate :validate_start_datetime_is_greater_than_end_datetime
@@ -44,8 +64,20 @@ class Category < ApplicationRecord
     self.is_divide_by_date_and_time ||= false
   end
 
-  def parrent_name
-    parent.name
+  def category_name
+    category.name if category.present?
+  end
+
+  def tax_item_name
+    tax_item.name if tax_item.present?
+  end
+
+  def unlimited_stock_name
+    human_attribute_boolean(:unlimited_stock)
+  end
+
+  def status_name
+    human_attribute_enum(:status)
   end
 
   private
@@ -79,7 +111,7 @@ class Category < ApplicationRecord
 
     return if display_start_datetime <= display_end_datetime
 
-    caption_display_start_datetime = Category.human_attribute_name(:display_start_datetime)
+    caption_display_start_datetime = Product.human_attribute_name(:display_start_datetime)
     errors.add(:display_end_datetime, I18n.t('errors.messages.greater_than', count: caption_display_start_datetime))
   end
 
@@ -103,35 +135,5 @@ class Category < ApplicationRecord
     elsif !Common::Validation.time(display_end_datetime_hn)
       errors.add(:display_end_datetime_hn, I18n.t('errors.messages.not_a_time'))
     end
-  end
-
-  # 親IDに自身が割り当てらていないか
-  def validate_parrent_id_assigned_by_self
-    return if id.nil? || parent_id.nil? || id != parent_id
-
-    errors.add(:parent_id, I18n.t('errors.messages.assigned_by_self'))
-  end
-
-  # 自分より上位の親カテゴリーに自身が含まれていないかチェック。無限ループになるため
-  def validate_exists_as_a_parent
-    return if id.nil? || parent_id.nil?
-
-    search_parent_id = parent_id
-
-    10.times do
-      parent = Category.find_by(id: search_parent_id)
-      return if parent.nil? || parent.parent_id.nil?
-
-      if parent.parent_id == id
-        errors.add(:parent_id, I18n.t('errors.messages.exists_as_a_parent',
-                                      parent: Category.human_attribute_name(:parent_name)))
-        return
-      end
-
-      search_parent_id = parent.parent_id
-    end
-
-    errors.add(:parent_id, I18n.t('errors.messages.exists_as_a_parent',
-                                  parent: Category.human_attribute_name(:parent_name)))
   end
 end

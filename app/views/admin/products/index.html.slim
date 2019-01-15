@@ -1,0 +1,34 @@
+h1= Product.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: Product.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_product_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= sort_link(@q, :id)
+      th= sort_link(@q, :name)
+      th= sort_link(@q, :category_id)
+      th= sort_link(@q, :code)
+      th= sort_link(@q, :tax_item_id)
+      th= sort_link(@q, :sales_price)
+      th= sort_link(@q, :number_of_stocks)
+      th= sort_link(@q, :status)
+      th
+    tbody
+      - @products.each do |product|
+        tr
+          td= link_to product.id, [:admin, product]
+          td= product.name
+          td= product.category_name if product.category_id?
+          td= product.code
+          td= product.tax_item_name if product.tax_item_id?
+          td= number_with_delimiter(product.sales_price)
+          td= product.unlimited_stock? ? product.unlimited_stock_name : number_with_delimiter(product.number_of_stocks)
+          td= product.status_name
+          td
+            = link_to '編集', edit_admin_product_path(product), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, product], method: :delete, data: { confirm: Product.model_name.human + "「#{product.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @products }

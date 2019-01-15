@@ -1,0 +1,59 @@
+h1= Product.model_name.human + 'の詳細'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_products_path, class: 'nav-:link'
+table.table.table-hover
+  tbody
+    tr
+      th= Product.human_attribute_name(:id)
+      td= @product.id
+    tr
+      th= Product.human_attribute_name(:name)
+      td= @product.name
+    tr
+      th= Product.human_attribute_name(:category_id)
+      td= @product.category_name
+    tr
+      th= Product.human_attribute_name(:manufacture_name)
+      td= @product.manufacture_name
+    tr
+      th= Product.human_attribute_name(:code)
+      td= @product.code
+    tr
+      th= Product.human_attribute_name(:tax_item)
+      td= @product.tax_item_name
+    tr
+      th= Product.human_attribute_name(:sales_price)
+      td= number_with_delimiter(@product.sales_price)
+    tr
+      th= Product.human_attribute_name(:regular_price)
+      td= number_with_delimiter(@product.regular_price) if @product.regular_price?
+    tr
+      th= Product.human_attribute_name(:number_of_stocks)
+      td= @product.unlimited_stock? ? @product.unlimited_stock_name : number_with_delimiter(@product.number_of_stocks)
+    tr
+      th= Product.human_attribute_name(:display_start_datetime)
+      td= l(@product.display_start_datetime, format: :long) if @product.display_start_datetime?
+    tr
+      th= Product.human_attribute_name(:display_end_datetime)
+      td= l(@product.display_end_datetime, format: :long) if @product.display_end_datetime?
+    tr
+      th= Product.human_attribute_name(:description)
+      td= @product.description
+    tr
+      th= Product.human_attribute_name(:search_term)
+      td= @product.search_term
+    tr
+      th= Product.human_attribute_name(:jan_code)
+      td= @product.jan_code
+    tr
+      th= Product.human_attribute_name(:status)
+      td= @product.status_name
+    tr
+      th= Product.human_attribute_name(:created_at)
+      td= l(@product.created_at, format: :long) if @product.created_at?
+    tr
+      th= Product.human_attribute_name(:updated_at)
+      td= l(@product.updated_at, format: :long) if @product.updated_at?
+= link_to '編集', edit_admin_category_path(@product), class: 'btn btn-primary mr-3'
+= link_to '削除', [:admin, @product], method: :delete, data: { confirm: Product.model_name.human + "「#{@product.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
