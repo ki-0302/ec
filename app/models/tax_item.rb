@@ -6,8 +6,9 @@ class TaxItem < ApplicationRecord
   # 最大桁数
   MAXIMUM_NAME = 40
 
-  belongs_to :tax_class
   has_many :products, dependent: :restrict_with_error
+
+#  enum tax: { standard: 0, reduced: 1, fee: 9 }, _prefix: true
 
   validates :name, presence: true,
                    length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
