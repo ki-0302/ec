@@ -14,6 +14,7 @@ table.table.table-hover
       th= sort_link(@q, :tax_item_id)
       th= sort_link(@q, :sales_price)
       th= sort_link(@q, :number_of_stocks)
+      th= Product.human_attribute_name(:image)
       th= sort_link(@q, :status)
       th
     tbody
@@ -26,6 +27,7 @@ table.table.table-hover
           td= product.tax_item_name if product.tax_item_id?
           td= number_with_delimiter(product.sales_price)
           td= product.unlimited_stock? ? product.unlimited_stock_name : number_with_delimiter(product.number_of_stocks)
+          td= image_tag product.image.variant(resize:'200x200').processed if product.image.attached?
           td= product.status_name
           td
             = link_to '編集', edit_admin_product_path(product), class: 'btn btn-primary mr-3'

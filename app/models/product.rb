@@ -79,6 +79,8 @@ class Product < ApplicationRecord
 
   def image_purge
     image.purge if delete_image == '1'
+
+    image.variant(resize: '100x100') if image.attached?
   end
 
   # is_divide_by_date_and_timeの値によって、日と時間を分割するか、日と時間を結合した値をセットする
