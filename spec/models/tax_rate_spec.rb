@@ -50,12 +50,12 @@ RSpec.describe TaxRate, type: :model do
         tax_rate.valid?
         expect(tax_rate.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
-      it '名称が2文字以上でなければ無効であること' do
+      it '名称が最小文字以上でなければ無効であること' do
         tax_rate = FactoryBot.build(:tax_rate, name: 'A' * (TaxRate::MINIMUM_NAME - 1))
         tax_rate.valid?
         expect(tax_rate.errors[:name]).to include(I18n.t('errors.messages.too_short', count: TaxRate::MINIMUM_NAME))
       end
-      it '名称が40文字以内でなければ無効であること' do
+      it '名称が最大文字以内でなければ無効であること' do
         tax_rate = FactoryBot.build(:tax_rate, name: 'A' * (TaxRate::MAXIMUM_NAME + 1))
         tax_rate.valid?
         expect(tax_rate.errors[:name]).to include(I18n.t('errors.messages.too_long', count: TaxRate::MAXIMUM_NAME))
