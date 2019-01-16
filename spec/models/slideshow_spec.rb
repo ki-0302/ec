@@ -67,7 +67,8 @@ RSpec.describe Slideshow, type: :model do
       it 'スライドショー詳細が最大文字以内でなければ無効であること' do
         slideshow = FactoryBot.build(:slideshow, description: 'A' * (Slideshow::MAXIMUM_DESCRIPTION + 1))
         slideshow.valid?
-        expect(slideshow.errors[:description]).to include(I18n.t('errors.messages.too_long', count: Slideshow::MAXIMUM_DESCRIPTION))
+        expect(slideshow.errors[:description]).to include(I18n.t('errors.messages.too_long',
+                                                                 count: Slideshow::MAXIMUM_DESCRIPTION))
       end
     end
     describe 'URLの確認をおこなう' do
