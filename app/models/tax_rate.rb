@@ -15,5 +15,6 @@ class TaxRate < ApplicationRecord
                                                 less_than_or_equal_to: MAXIMUM_TAX_RATE },
                                 presence: true
   validates :reduced_tax_rate, numericality: { greater_than_or_equal_to: MINIMUM_TAX_RATE,
-                                               less_than_or_equal_to: MAXIMUM_TAX_RATE }
+                                               less_than_or_equal_to: MAXIMUM_TAX_RATE },
+                               allow_nil: true
 end

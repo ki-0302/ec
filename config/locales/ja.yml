@@ -12,6 +12,7 @@ ja:
       category: カテゴリー
       tax_item: 税率対象品目
       product: 商品
+      tax_rate: 税率管理
     attributes:
       admin_user:
         admin_user: 管理ユーザー
@@ -74,6 +75,12 @@ ja:
       product/unlimited_stock: 
         true: 無制限
         false: 
+      tax_rate:
+        id: ID
+        name: 名称
+        start_date: 税率適用開始日
+        standard_tax_rate: 標準税率
+        reduced_tax_rate: 軽減税率
   date:
     abbr_day_names:
     - 日
