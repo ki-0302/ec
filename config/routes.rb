@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :tax_items
     resources :products
     resources :tax_rates
+    resources :general_settings, except: %i[delete new index show]
     namespace :contents do
       resources :slideshows
     end

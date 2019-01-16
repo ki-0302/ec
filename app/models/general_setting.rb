@@ -1,6 +1,4 @@
 class GeneralSetting < ApplicationRecord
-  include Region
-
   # 最小桁数
   MINIMUM_SITE_NAME = 2
   # 最大桁数
@@ -9,6 +7,9 @@ class GeneralSetting < ApplicationRecord
   MAXIMUM_ADDRESS1 = 40
   MAXIMUM_ADDRESS2 = 40
   MAXIMUM_ADDRESS3 = 40
+
+  # 日付と時間を分割して設定する場合 true
+  attr_accessor :is_divide_by_postal_code
 
   validates :site_name, presence: true, length: { minimum: MINIMUM_SITE_NAME, maximum: MAXIMUM_SITE_NAME }
   validates :address1, length: { maximum: MAXIMUM_ADDRESS1 }
@@ -23,6 +24,6 @@ class GeneralSetting < ApplicationRecord
   def validate_region
     return if region.blank?
 
-    errors.add(:region, I18n.t('errors.messages.invalid')) unless region_hash.value?(region)
+    errors.add(:region, I18n.t('errors.messages.invalid')) unless Common::Region.hash.value?(region)
   end
 end
