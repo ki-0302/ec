@@ -147,7 +147,16 @@ description
 url
 }
 
-
+class GeneralSetting {
+id
+site_name
+postal_code
+region
+address1
+address2
+address3
+phone_number
+}
 
 
 class User {
@@ -225,18 +234,7 @@ shipping_cost
 
 
 
-class GeneralSetting {
-id
-site_name
-postal_code1
-postal_code2
-region
-address1
-address2
-address3
-phone_number
-tax_category
-}
+
 
  
 
