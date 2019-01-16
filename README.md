@@ -77,7 +77,7 @@ https://xd.adobe.com/view/d687c39a-22be-4ea5-602e-b42616449c4c-a0b6/?hints=off
     - [ ] 商品情報登録
     - [ ] 商品管理
     - [ ] カテゴリ管理
-  - [ ] コンテンツ管理*
+  - [ ] コンテンツ管理*
     - [ ] スライドショー登録
     - [ ] おすすめ商品登録
   - [ ] 税率管理*
@@ -93,7 +93,7 @@ class AdminUser {
 id
 name
 email
-password_digest
+password_digest
 }
 
 class Category {
@@ -116,7 +116,7 @@ name
 category_id
 manufacture_name
 code
-tax_item_id
+tax_item_id
 sales_price
 regular_price
 number_of_stocks
@@ -145,6 +145,7 @@ id
 name
 description
 url
+priority
 }
 
 class GeneralSetting {
@@ -164,9 +165,9 @@ id
 name
 kana
 email
-password
+password
 phone_number
-is_deleted
+is_deleted
 }
 
 class UsersPoint {
@@ -203,7 +204,7 @@ class Order {
 id
 user_id
 address_id
-shipping_option_id
+shipping_option_id
 payment_method_id
 usage_point
 get_point
@@ -219,7 +220,7 @@ tax_included_price
 tax_excluded_price
 tax_included_item_total
 tax_excluded_item_total
-sales_tax
+sales_tax
 tax_rate
 shipment_status
 is_canceled
@@ -228,7 +229,7 @@ is_canceled
 class ShippingOption {
 id
 name
-shipping_cost
+shipping_cost
 }
 
 
@@ -256,6 +257,7 @@ Cart -- Item
 Product }-- Category
 Product }- TaxItem
 Product }--{ ActiveStorage
+Slideshow }--{ ActiveStorage
 User -- Order
 Order -{ OrderLineItem
 Order -- ShippingOption

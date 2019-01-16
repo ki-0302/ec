@@ -1,0 +1,2 @@
+class Slideshow < ApplicationRecord
+end
