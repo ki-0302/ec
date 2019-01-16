@@ -1,0 +1,32 @@
+h1= TaxRate.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, @q], label: TaxRate.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_tax_rate_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= sort_link(@q, :id)
+      th= sort_link(@q, :name)
+      th= sort_link(@q, :start_date)
+      th= sort_link(@q, :standard_tax_rate)
+      th= sort_link(@q, :reduced_tax_rate)
+      th= sort_link(@q, :created_at)
+      th= sort_link(@q, :updated_at)
+      th
+    tbody
+      - @tax_rates.each do |tax_rate|
+        tr
+          td= link_to tax_rate.id, [:admin, tax_rate]
+          td= tax_rate.name
+          td= l(tax_rate.start_date) if tax_rate.start_date?
+          td= tax_rate.standard_tax_rate
+          td= tax_rate.reduced_tax_rate
+          td= l(tax_rate.created_at, format: :long) if tax_rate.created_at?
+          td= l(tax_rate.updated_at, format: :long) if tax_rate.updated_at?
+          td
+            = link_to '編集', edit_admin_tax_rate_path(tax_rate), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, tax_rate], method: :delete, data: { confirm: TaxRate.model_name.human + "「#{tax_rate.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @tax_rates }

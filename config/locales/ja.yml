@@ -81,6 +81,8 @@ ja:
         start_date: 税率適用開始日
         standard_tax_rate: 標準税率
         reduced_tax_rate: 軽減税率
+        created_at: 登録日時
+        updated_at: 更新日時
   date:
     abbr_day_names:
     - 日

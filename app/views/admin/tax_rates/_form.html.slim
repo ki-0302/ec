@@ -1,0 +1,21 @@
+= render 'common/error_messages', target_class: tax_rate
+
+= form_with model: [:admin, tax_rate], local: true do |f|
+  .form-group
+    = f.label :name
+      = TaxRate.human_attribute_name(:name)
+      = render 'common/label_required'
+    = f.text_field :name, class: 'form-control', id: 'tax_rate_name'
+  = render partial: 'common/date_picker', locals: { f: f, model: 'tax_rate', ymd_control_id: 'start_date', required: true, label: TaxRate.human_attribute_name(:start_date) }
+  .form-group
+    = f.label :standard_tax_rate
+      = TaxRate.human_attribute_name(:standard_tax_rate)
+      = render 'common/label_required'
+    = f.number_field :standard_tax_rate, step: 0.01, class: 'form-control', id: 'product_standard_tax_rate'
+  .form-group
+    = f.label :reduced_tax_rate
+      = TaxRate.human_attribute_name(:reduced_tax_rate)
+    = f.number_field :reduced_tax_rate, step: 0.01, class: 'form-control', id: 'product_reduced_tax_rate'
+  = f.submit nil, class: 'btn btn-primary'
+
+= render partial: 'common/date_picker_js', locals: { ymd_control_id: 'start_date' }
