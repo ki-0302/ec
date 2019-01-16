@@ -159,7 +159,6 @@ address3
 phone_number
 }
 
-
 class User {
 id
 name
