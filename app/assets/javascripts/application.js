@@ -18,4 +18,5 @@
 //= require popper.js/dist/umd/popper.min
 //= require moment/min/moment.min
 //= require moment/locale/ja
+//= require bootstrap-sprockets
 //= require tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4

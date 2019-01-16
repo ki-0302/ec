@@ -1,0 +1,6 @@
+h1= Slideshow.model_name.human + '登録'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_contents_slideshows_path, class: 'nav-link'
+
+= render 'form', slideshow: @slideshow

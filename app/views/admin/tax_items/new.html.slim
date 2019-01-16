@@ -1,6 +1,6 @@
 h1= TaxItem.model_name.human + '登録'
 
 .nav.justify-content-end
-  = link_to '一覧', admin_tax_items_path, class: 'nav-:link'
+  = link_to '一覧', admin_tax_items_path, class: 'nav-link'
 
 = render 'form', tax_item: @tax_item, select_tax: @select_tax
