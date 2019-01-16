@@ -19,6 +19,12 @@ html lang="ja"
         li.nav-item= link_to Category.model_name.human, admin_categories_path, class: 'nav-link'
         li.nav-item= link_to TaxItem.model_name.human, admin_tax_items_path, class: 'nav-link'
         li.nav-item= link_to TaxRate.model_name.human, admin_tax_rates_path, class: 'nav-link'
+        li.nav-item.dropdown
+          = link_to I18n.t('admin_menu.contents'), '#', class: 'nav-link dropdown-toggle', id: 'contentsDropdownMenu', data: { toggle: 'dropdown' }, aria: { haspopup: 'true', expanded: 'false' }
+          ul.dropdown-menu aria-labelledby='contentsDropdownMenu'
+            li
+              = link_to Slideshow.model_name.human, admin_contents_slideshows_path, class: 'dropdown-item'
+
     .container.mt-3
       -if flash.notice.present?
         .alert.alert-success= flash.notice

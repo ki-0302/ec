@@ -1,0 +1,30 @@
+h1= Slideshow.model_name.human + '一覧'
+
+= render partial: 'common/search_name_form', locals: { parameter: [:admin, :contents, @q], label: Slideshow.human_attribute_name(:name) }
+
+= link_to '新規登録', new_admin_contents_slideshow_path, class: 'btn btn-primary'
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= sort_link(@q, :id)
+      th= sort_link(@q, :name)
+      th= Slideshow.human_attribute_name(:image)
+      th= sort_link(@q, :priority)
+      th= sort_link(@q, :created_at)
+      th= sort_link(@q, :updated_at)
+      th
+    tbody
+      - @slideshows.each do |slideshow|
+        tr
+          td= link_to slideshow.id, [:admin, :contents, slideshow]
+          td= slideshow.name
+          td= image_tag slideshow.image.variant(resize:'200x200').processed if slideshow.image.attached?
+          td= slideshow.priority
+          td= l(slideshow.created_at, format: :long) if slideshow.created_at?
+          td= l(slideshow.updated_at, format: :long) if slideshow.updated_at?
+          td
+            = link_to '編集', edit_admin_contents_slideshow_path(slideshow), class: 'btn btn-primary mr-3'
+            = link_to '削除', [:admin, :contents, slideshow], method: :delete, data: { confirm: Slideshow.model_name.human + "「#{slideshow.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+= render partial: 'common/pagenation', locals: { model_instance: @slideshows }

@@ -25,12 +25,15 @@ class Slideshow < ApplicationRecord
 
   # 画像を削除
   after_save :image_purge
+  validate :image_save
 
   private
 
   def image_purge
     image.purge if delete_image == '1'
+  end
 
+  def image_save
     image.variant(resize: '100x100') if image.attached?
   end
 end

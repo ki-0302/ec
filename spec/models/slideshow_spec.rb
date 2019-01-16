@@ -42,29 +42,29 @@ RSpec.describe Slideshow, type: :model do
     end
   end
   describe 'バリデーション' do
-    describe '名称の確認をおこなう' do
-      it '名称が未入力であれば無効であること' do
+    describe 'スライドショー名の確認をおこなう' do
+      it 'スライドショー名が未入力であれば無効であること' do
         slideshow = FactoryBot.build(:slideshow, name: '')
         slideshow.valid?
         expect(slideshow.errors[:name]).to include(I18n.t('errors.messages.blank'))
       end
-      it '名称が最小文字以上でなければ無効であること' do
+      it 'スライドショー名が最小文字以上でなければ無効であること' do
         slideshow = FactoryBot.build(:slideshow, name: 'A' * (Slideshow::MINIMUM_NAME - 1))
         slideshow.valid?
         expect(slideshow.errors[:name]).to include(I18n.t('errors.messages.too_short', count: Slideshow::MINIMUM_NAME))
       end
-      it '名称が最大文字以内でなければ無効であること' do
+      it 'スライドショー名が最大文字以内でなければ無効であること' do
         slideshow = FactoryBot.build(:slideshow, name: 'A' * (Slideshow::MAXIMUM_NAME + 1))
         slideshow.valid?
         expect(slideshow.errors[:name]).to include(I18n.t('errors.messages.too_long', count: Slideshow::MAXIMUM_NAME))
       end
     end
-    describe 'スライドショー詳細の確認をおこなう' do
-      it 'スライドショー詳細がnilを許容すること' do
+    describe 'スライドショー詳細説明の確認をおこなう' do
+      it 'スライドショー詳細説明がnilを許容すること' do
         slideshow = FactoryBot.build(:slideshow, description: nil)
         expect(slideshow).to be_valid
       end
-      it 'スライドショー詳細が最大文字以内でなければ無効であること' do
+      it 'スライドショー詳細説明が最大文字以内でなければ無効であること' do
         slideshow = FactoryBot.build(:slideshow, description: 'A' * (Slideshow::MAXIMUM_DESCRIPTION + 1))
         slideshow.valid?
         expect(slideshow.errors[:description]).to include(I18n.t('errors.messages.too_long',

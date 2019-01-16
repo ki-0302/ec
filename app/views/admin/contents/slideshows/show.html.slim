@@ -1,0 +1,32 @@
+h1= Slideshow.model_name.human + 'の詳細'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_contents_slideshows_path, class: 'nav-link'
+table.table.table-hover
+  tbody
+    tr
+      th= Slideshow.human_attribute_name(:id)
+      td= @slideshow.id
+    tr
+      th= Slideshow.human_attribute_name(:name)
+      td= @slideshow.name
+    tr
+      th= Slideshow.human_attribute_name(:image)
+      td= image_tag @slideshow.image if @slideshow.image.attached?
+    tr
+      th= Slideshow.human_attribute_name(:description)
+      td= simple_format(h(@slideshow.description), {}, sanitize: false, wrapper_tag: 'div')
+    tr
+      th= Slideshow.human_attribute_name(:url)
+      td= @slideshow.url
+    tr
+      th= Slideshow.human_attribute_name(:priority)
+      td= @slideshow.priority
+    tr
+      th= Slideshow.human_attribute_name(:created_at)
+      td= l(@slideshow.created_at, format: :long) if @slideshow.created_at?
+    tr
+      th= Slideshow.human_attribute_name(:updated_at)
+      td= l(@slideshow.updated_at, format: :long) if @slideshow.updated_at?
+= link_to '編集', edit_admin_contents_slideshow_path(@slideshow), class: 'btn btn-primary mr-3'
+= link_to '削除', [:admin, :contents, @slideshow], method: :delete, data: { confirm: Slideshow.model_name.human + "「#{@slideshow.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

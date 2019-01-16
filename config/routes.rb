@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     resources :tax_items
     resources :products
     resources :tax_rates
+    namespace :contents do
+      resources :slideshows
+    end
   end
 
   root to: 'admin/admin_users#index'

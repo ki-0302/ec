@@ -1,0 +1,35 @@
+= render 'common/error_messages', target_class: slideshow
+
+= form_with model: [:admin, :contents, slideshow], local: true do |f|
+  .form-group
+    = f.label :name
+      = Slideshow.human_attribute_name(:name)
+      = render 'common/label_required'
+    = f.text_field :name, class: 'form-control', id: 'slideshow_name'
+  .form-group
+    = f.label :image
+      = Slideshow.human_attribute_name(:image)
+    = f.file_field :image, class: 'form-control pt-3 pb-5', id: 'slideshow_image'
+    - if slideshow.image.attached?
+      .card.mt-3
+        .card-body
+          .form-inline
+            = f.check_box :delete_image, {class: 'form-control mr-2', id: 'slideshow_delete_image'}
+            = f.label :delete_image
+              = Slideshow.human_attribute_name(:delete_image)
+          .mt-3
+            = image_tag slideshow.image
+  .form-group
+    = f.label :description
+      = Slideshow.human_attribute_name(:description)
+    = f.text_area :description, rows: 5, class: 'form-control', id: 'slideshow_description'
+  .form-group
+      = f.label :url
+        = Slideshow.human_attribute_name(:url)
+        = render 'common/label_required'
+      = f.text_field :url, class: 'form-control', id: 'slideshow_url'
+  .form-group
+    = f.label :priority
+      = Slideshow.human_attribute_name(:priority)
+    = f.number_field :priority, step: 1, class: 'form-control', id: 'slideshow_priority'
+  = f.submit nil, class: 'btn btn-primary'
