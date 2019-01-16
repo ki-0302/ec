@@ -14,6 +14,7 @@ ja:
       product: 商品
       tax_rate: 税率管理
       slideshow: スライドショー
+      general_setting: 一般設定
     attributes:
       admin_user:
         admin_user: 管理ユーザー
@@ -92,6 +93,16 @@ ja:
         description: 詳細説明
         url: リンクURL
         priority: 優先度
+        created_at: 登録日時
+        updated_at: 更新日時
+      general_setting:
+        site_name: サイト名
+        postal_code: 郵便番号
+        region: 都道府県
+        address1: 住所１
+        address2: 住所２
+        address3: 住所３
+        phone_number: 電話番号
         created_at: 登録日時
         updated_at: 更新日時
   date:
@@ -302,5 +313,7 @@ ja:
     pm: 午後
   admin_user:
     name_default: ユーザー
+  general_setting:
+    site_name_default: デモサイト
   admin_menu:
     contents: コンテンツ管理

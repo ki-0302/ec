@@ -27,6 +27,7 @@ AllCops:
 # Disabled "Line is too long."
 Metrics/LineLength:
   Max: 128
+  IgnoredPatterns: ['\A.*\/.*\/.*\z']
 
 # クラスの説明用のコメントの強制を無効化。
 # Disabled "Missing top-level class documentation comment."
