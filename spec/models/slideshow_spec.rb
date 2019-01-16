@@ -81,5 +81,21 @@ RSpec.describe Slideshow, type: :model do
         expect(slideshow.errors[:url]).to include(I18n.t('errors.messages.too_long', count: Slideshow::MAXIMUM_URL))
       end
     end
+    describe 'スライドショー画像の確認をおこなう' do
+      it 'スライドショー画像が登録できること' do
+        slideshow = FactoryBot.build(:slideshow)
+        slideshow.image.attach(io: File.open(fixture_path + '/dummy_image.jpg'),
+                               filename: 'attachment.jpg', content_type: 'image/jpg')
+        expect(slideshow.image).to be_attached
+      end
+      it 'スライドショー画像が削除できること' do
+        slideshow = FactoryBot.build(:slideshow)
+        slideshow.image.attach(io: File.open(fixture_path + '/dummy_image.jpg'),
+                               filename: 'attachment.jpg', content_type: 'image/jpg')
+        slideshow.delete_image = '1'
+        slideshow.save
+        expect(slideshow.image).to_not be_attached
+      end
+    end
   end
 end
