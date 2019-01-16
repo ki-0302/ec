@@ -1,0 +1,30 @@
+h1= TaxRate.model_name.human + 'の詳細'
+
+.nav.justify-content-end
+  = link_to '一覧', admin_tax_rates_path, class: 'nav-:link'
+table.table.table-hover
+  tbody
+    tr
+      th= TaxRate.human_attribute_name(:id)
+      td= @tax_rate.id
+    tr
+      th= TaxRate.human_attribute_name(:name)
+      td= @tax_rate.name
+    tr
+      th= TaxRate.human_attribute_name(:start_date)
+      td= l(@tax_rate.start_date) if @tax_rate.start_date?
+    tr
+      th= TaxRate.human_attribute_name(:standard_tax_rate)
+      td= @tax_rate.standard_tax_rate
+    tr
+      th= TaxRate.human_attribute_name(:reduced_tax_rate)
+      td= @tax_rate.reduced_tax_rate
+    tr
+      th= TaxRate.human_attribute_name(:created_at)
+      td= l(@tax_rate.created_at, format: :long) if @tax_rate.created_at?
+    tr
+      th= TaxRate.human_attribute_name(:updated_at)
+      td= l(@tax_rate.updated_at, format: :long) if @tax_rate.updated_at?
+
+= link_to '編集', edit_admin_tax_rate_path(@tax_rate), class: 'btn btn-primary mr-3'
+= link_to '削除', [:admin, @tax_rate], method: :delete, data: { confirm: TaxRate.model_name.human + "「#{@tax_rate.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

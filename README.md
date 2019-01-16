@@ -132,6 +132,24 @@ status
 class ActiveStorage {
 }
 
+class TaxRate {
+id
+name
+start_date
+standard_tax_rate
+reduced_tax_rate
+}
+
+class Slideshow {
+id
+name
+description
+url
+}
+
+
+
+
 class User {
 id
 name
@@ -222,21 +240,9 @@ tax_category
 
  
 
-class TaxRate {
-id
-tax_rate_name
-apply_start_date
-standard_tax_rate
-reduced_tax_rate
-}
 
-class Slideshow {
-id
-slideshow_name
-description
-image_file_path
-url
-}
+
+
 
 class WhatsNew {
 id
@@ -278,6 +284,7 @@ https://qiita.com/yaju/items/2cbe5e5914c5be08820a
 # FontAwesome
 WebFont
 https://fontawesome.com/
+
 
 
 

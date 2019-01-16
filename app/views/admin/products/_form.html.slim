@@ -40,8 +40,8 @@
         = f.label :unlimited_stock
           = Product.human_attribute_name(:unlimited_stock)
     = f.number_field :number_of_stocks, step: 1, class: 'form-control', id: 'product_number_of_stocks'
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', required: false, label: '掲載開始日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'product', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', required: false, label: '掲載終了日時' }
   .form-group
     = f.label :image
       = Product.human_attribute_name(:image)

@@ -11,8 +11,8 @@
       = Category.human_attribute_name(:parent_name)
     = f.collection_select :parent_id, select_parent_id, :id, :name, {include_blank: true}, {class: 'form-control'}
 
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', label: '掲載開始日時' }
-  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', label: '掲載終了日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn', required: false, label: '掲載開始日時' }
+  = render partial: 'common/datetime_picker', locals: { f: f, model: 'category', ymd_control_id: 'display_end_datetime_ymd', hn_control_id: 'display_end_datetime_hn', required: false, label: '掲載終了日時' }
   = f.submit nil, class: 'btn btn-primary'
 
 = render partial: 'common/datetime_picker_js', locals: { ymd_control_id: 'display_start_datetime_ymd', hn_control_id: 'display_start_datetime_hn' }

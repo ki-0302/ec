@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :tax_classes
     resources :tax_items
     resources :products
+    resources :tax_rates
   end
 
   root to: 'admin/admin_users#index'
