@@ -24,6 +24,7 @@ html lang="ja"
           ul.dropdown-menu aria-labelledby='contentsDropdownMenu'
             li
               = link_to Slideshow.model_name.human, admin_contents_slideshows_path, class: 'dropdown-item'
+        li.nav-item= link_to GeneralSetting.model_name.human, edit_admin_general_setting_path(GeneralSetting.first), class: 'nav-link'
 
     .container.mt-3
       -if flash.notice.present?

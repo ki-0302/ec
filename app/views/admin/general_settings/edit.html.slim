@@ -1,0 +1,39 @@
+h1= GeneralSetting.model_name.human + 'の編集'
+
+= render 'common/error_messages', target_class: @general_setting
+
+= javascript_include_tag 'https://yubinbango.github.io/yubinbango/yubinbango.js'
+
+= form_with model: [:admin, @general_setting], local: true, class: 'h-adr' do |f|
+  .form-group
+    = f.label :site_name
+      = GeneralSetting.human_attribute_name(:site_name)
+      = render 'common/label_required'
+    = f.text_field :site_name, class: 'form-control', id: 'general_setting_site_name'
+    = hidden_field_tag 'p-country-name', 'Japan', class: 'p-country-name'
+  .form-group
+    = f.label :postal_code
+      = GeneralSetting.human_attribute_name(:postal_code) + '　' + I18n.t('postal_code.example')
+    = f.text_field :postal_code, class: 'form-control p-postal-code', id: 'general_setting_site_name'
+  .form-group
+    = f.label :region
+      = GeneralSetting.human_attribute_name(:region)
+    = f.select :region, Common::Region.hash, {include_blank: true}, {class: 'form-control p-region', id: 'general_setting_region'}
+  .form-group
+    = f.label :address1
+      = GeneralSetting.human_attribute_name(:address1)
+    = f.text_field :address1, class: 'form-control p-locality p-street-address', id: 'general_setting_address1'
+  .form-group
+    = f.label :address2
+      = GeneralSetting.human_attribute_name(:address2)
+    = f.text_field :address2, class: 'form-control p-extended-address', id: 'general_setting_address2'
+  .form-group
+    = f.label :address3
+      = GeneralSetting.human_attribute_name(:address3)
+    = f.text_field :address3, class: 'form-control', id: 'general_setting_address3'
+  .form-group
+    = f.label :phone_number
+      = GeneralSetting.human_attribute_name(:phone_number)
+    = f.text_field :phone_number, class: 'form-control', id: 'general_setting_phone_number'
+
+  = f.submit nil, class: 'btn btn-primary'

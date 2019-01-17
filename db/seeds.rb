@@ -11,3 +11,13 @@ AdminUser.find_or_create_by!(name: I18n.t('admin_user.name_default')) do |admin_
   admin_user.email = 'admin@example.com'
   admin_user.password = 'Pass000'
 end
+
+GeneralSetting.find_or_create_by!(site_name: I18n.t('general_setting.site_name_default')) do |general_setting|
+  general_setting.site_name = I18n.t('general_setting.site_name_default')
+  general_setting.postal_code = ''
+  general_setting.region = ''
+  general_setting.address1 = ''
+  general_setting.address2 = ''
+  general_setting.address3 = ''
+  general_setting.phone_number = ''
+end
