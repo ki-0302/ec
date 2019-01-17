@@ -287,6 +287,8 @@ https://fontawesome.com/
 住所検索用JavaScriptライブラリ
 https://github.com/yubinbango/yubinbango
 
-
+# カルーセル
+トップページ用に追加（スライドショー）
+https://github.com/SSENSE/vue-carousel
 
 
