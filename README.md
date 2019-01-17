@@ -283,6 +283,10 @@ https://qiita.com/yaju/items/2cbe5e5914c5be08820a
 WebFont
 https://fontawesome.com/
 
+# YubinBango
+住所検索用JavaScriptライブラリ
+https://github.com/yubinbango/yubinbango
+
 
 
 
