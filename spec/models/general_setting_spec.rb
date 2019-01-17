@@ -61,6 +61,17 @@ RSpec.describe GeneralSetting, type: :model do
                                                                      count: GeneralSetting::MAXIMUM_SITE_NAME))
       end
     end
+    describe '郵便番号の確認をおこなう' do
+      it '郵便番号が未入力を許容すること' do
+        general_setting = FactoryBot.build(:general_setting, postal_code: '')
+        expect(general_setting).to be_valid
+      end
+      it '有効な郵便番号でなければ無効であること' do
+        general_setting = FactoryBot.build(:general_setting, postal_code: '3000-0000')
+        general_setting.valid?
+        expect(general_setting.errors[:postal_code]).to include(I18n.t('errors.messages.invalid'))
+      end
+    end
     describe '都道府県の確認をおこなう' do
       it '都道府県が未入力を許容すること' do
         general_setting = FactoryBot.build(:general_setting, region: nil)

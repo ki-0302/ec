@@ -311,6 +311,8 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  postal_code:
+    example: （例）1030012
   admin_user:
     name_default: ユーザー
   general_setting:
