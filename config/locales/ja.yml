@@ -67,7 +67,7 @@ ja:
         delete_image: 画像削除
         description: 商品説明
         search_term: 検索ワード
-        search_term: JANコード
+        jan_code: JANコード
         status: 商品状態
         created_at: 登録日時
         updated_at: 更新日時
@@ -255,12 +255,12 @@ ja:
     currency:
       format:
         delimiter: ","
-        format: "%n%u"
+        format: "%u %n"
         precision: 0
         separator: "."
         significant: false
         strip_insignificant_zeros: false
-        unit: 円
+        unit: ¥
     format:
       delimiter: ","
       precision: 3
