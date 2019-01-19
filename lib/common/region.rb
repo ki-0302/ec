@@ -14,5 +14,8 @@ module Common
       }
       hash
     end
+    def self.add(value1, value2)
+      value1 + value2
+    end
   end
 end

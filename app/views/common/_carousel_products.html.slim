@@ -1,0 +1,56 @@
+javascript:
+  $(function() {
+    $.ajax({	
+      url:"#{json_url}",
+      type:"GET",
+      data:"#{send_data}",
+      dataType:"json",
+      timespan:2000
+		}).done(function(data, textStatus, jqXHR) {
+      // ステータスコード：jqXHR.status
+
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+
+      // 3. キーを指定して値を表示 
+      //$("#span4").text(data1["products"][0]["url"]);
+
+
+
+
+
+    // 6. failは、通信に失敗した時に実行される
+    }).fail(function(jqXHR, textStatus, errorThrown ) {
+        $("#a").append(jqXHR.status); //例：404
+        $("#a").append(textStatus); //例：error
+        $("#a").append(errorThrown); //例：NOT FOUND
+
+    // 7. alwaysは、成功/失敗に関わらず実行される
+    }).always(function(){
+      $('#feature').fadeOut( function(){ 
+        $('.slick-box').fadeIn();
+        $('.slick-box').slick({
+          lazyLoad: 'ondemand',
+          infinite: true,
+          slidesToShow: 8,
+          slidesToScroll: 3
+        });
+      });
+    });
+  });

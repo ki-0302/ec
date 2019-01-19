@@ -20,3 +20,4 @@
 //= require moment/locale/ja
 //= require bootstrap-sprockets
 //= require tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4
+//= require vue-carousel.min

@@ -1,7 +1,6 @@
 
 .row.mb-4
 
-
   .col-md-5.order-md-1
     h1.mb-3= @product.name
     = number_to_currency(@product.sales_price)
@@ -12,40 +11,106 @@
   .col-md-3.order-md-2
     'aaa
 
-.row.mb-4
-  .col-md-12
-    #app
-      carousel :per-page-custom='[[480,4],[780,8]]'
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
-        slide
-          = image_tag @product.image.variant(resize:'150').processed if @product.image.attached?
+hr
+h5
+  'おすすめ商品
+.loader id="feature"
+.slick-box id="a"
 
+
+- @a = api_products_path
 javascript:
-  var app=new Vue({
-    el: "#app",
-    components: {
-      'carousel': VueCarousel.Carousel,
-      'slide': VueCarousel.Slide
-    },
+  $(function() {
+    $.ajax({	
+      url:"#{api_products_path}", // 通信先のURL
+      type:"GET",		// 使用するHTTPメソッド
+      //data:$("#form1").serialize(), // 送信するデータ
+      dataType:"json", // 応答のデータの種類 
+              // (xml/html/script/json/jsonp/text)
+      timespan:1000 		// 通信のタイムアウトの設定(ミリ秒)
+		}).done(function(data1,textStatus,jqXHR) {
+      $("#span1").text(jqXHR.status); //例：200
+      //$("#span2").text(textStatus); //例：success
+
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+      $.each(data1["products"],function(index,val){
+        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      });
+
+      // 3. キーを指定して値を表示 
+      //$("#span4").text(data1["products"][0]["url"]);
+
+
+
+
+
+    // 6. failは、通信に失敗した時に実行される
+    }).fail(function(jqXHR, textStatus, errorThrown ) {
+        $("#a").append(jqXHR.status); //例：404
+        $("#a").append(textStatus); //例：error
+        $("#a").append(errorThrown); //例：NOT FOUND
+
+    // 7. alwaysは、成功/失敗に関わらず実行される
+    }).always(function(){
+      $('#feature').fadeOut( function(){ 
+        $('.slick-box').fadeIn();
+        $('.slick-box').slick({
+          lazyLoad: 'ondemand',
+          infinite: true,
+          slidesToShow: 8,
+          slidesToScroll: 3
+        });
+      });
+    });
   });
+
+/ .py-4
+/   #app
+/     .loader v-show='loading'
+/     carousel v-if='!loading' :autoplay='true' :perPageCustom='[[480, 4], [768, 8]]'
+/       slide v-for='(product, index) in products' v-if='!loading'
+/         img v-bind:src='product.url' v-if='!loading'
+
+        / img v-bind:src='product.url'
+/ javascript:
+
+/   var app=new Vue({
+/     el: '#app',
+/     data:  ()=> {
+/       return {
+/         products: [],
+/         loading: true,
+/         test: false
+/       }
+/     },
+/     components: {
+/       'carousel': VueCarousel.Carousel,
+/       'slide': VueCarousel.Slide
+/     },
+/     async created() {
+/       try {
+/         let res = await axios.get('http://localhost:3000/api/products')
+/         this.products = res.data.products
+/         this.loading = false
+/         this.test = true
+/       } catch (e) {
+/         console.error(e)
+/       }
+/     }
+/   });
+
+
