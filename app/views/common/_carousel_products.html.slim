@@ -8,44 +8,18 @@ javascript:
       timespan:2000
 		}).done(function(data, textStatus, jqXHR) {
       // ステータスコード：jqXHR.status
-
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
+      $.each(data["products"],function(index,val){
+        $("#{id}").append("<div><img data-lazy=\"" + val["url"] + "\"></div>")
       });
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
-      });
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
-      });
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
-      });
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
-      });
-      $.each(data1["products"],function(index,val){
-        $("#a").append("<figure><img data-lazy=\"" + val["url"] + "\"></figure>")
-      });
-
-      // 3. キーを指定して値を表示 
-      //$("#span4").text(data1["products"][0]["url"]);
-
-
-
-
-
-    // 6. failは、通信に失敗した時に実行される
+    // 通信に失敗した時に実行される
     }).fail(function(jqXHR, textStatus, errorThrown ) {
-        $("#a").append(jqXHR.status); //例：404
-        $("#a").append(textStatus); //例：error
-        $("#a").append(errorThrown); //例：NOT FOUND
-
-    // 7. alwaysは、成功/失敗に関わらず実行される
+    // 完了時に実行
     }).always(function(){
-      $('#feature').fadeOut( function(){ 
-        $('.slick-box').fadeIn();
-        $('.slick-box').slick({
+      // ローディング用のオブジェクトを隠す
+      $('#{id}-loader').fadeOut( function(){
+        // app/stylesheets/fronts.scss でカルーセルは非表示にしておくこと
+        $('#{id}').fadeIn();
+        $('#{id}').slick({
           lazyLoad: 'ondemand',
           infinite: true,
           slidesToShow: 8,
