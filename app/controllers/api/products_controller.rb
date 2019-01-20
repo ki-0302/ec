@@ -1,38 +1,17 @@
 module Api
   class ProductsController < ApplicationController
+    include Rails.application.routes.url_helpers
     def index
-      hash = {} #Hash.new { |h, k| h[k] = {} }
-      @products = Product.all
+      api_product = ApiProduct.init_with_params(params)
+      return render json: api_product.generate_error_json if api_product.invalid?
 
-      url = []
-      @products.each do |product|
-        image_path = product.image.variant(resize: '150x150').processed
-        hash_item = {}
-        hash_item[:url] = rails_representation_url(image_path, only_path: false)
-        url << hash_item
-      end
-
-      hash[:products] = url
-      hash[:status] = '200'
-
-      render status: 200, json: hash.to_json
-
+      render json: api_product.generate_json
     end
 
-    def json_unescape(str)
-      str.gsub(/\\b\"/, '')
+    private
 
-      # str.gsub(/\\([\\\/]|u[0-9a-fA-F]{4})/) do
-      #   ustr = $1
-      #   if ustr.starts_with?('u')
-      #     [ustr[1..-1].to_i(16)].pack("U")
-      #   elsif ustr == '\\'
-      #     '\\\\'
-      #   else
-      #     ustr
-      #   end
-      # end
+    def products_params
+      params.permit(:name, :type)
     end
-
   end
 end

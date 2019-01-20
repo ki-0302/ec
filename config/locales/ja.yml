@@ -1,5 +1,12 @@
 ---
 ja:
+  activemodel:
+    models:
+      api_product: 商品API
+    attributes:
+      api_product:
+        name: 商品名
+        type: データ種類
   activerecord:
     errors:
       messages:
@@ -315,6 +322,8 @@ ja:
     example: （例）1030012
   admin_user:
     name_default: ユーザー
+  headline:
+    recommend_products: おすすめ商品
   general_setting:
     site_name_default: デモサイト
   admin_menu:

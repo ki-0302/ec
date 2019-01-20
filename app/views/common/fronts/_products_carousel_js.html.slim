@@ -1,9 +1,12 @@
+/ 下記のタグを呼び出し元に置くこと。"recommend"は用途によって変えること
+/ .loader id="#recommend-loader"
+/ .slick-box id="recommend"
 javascript:
   $(function() {
     $.ajax({	
-      url:"#{json_url}",
+      url:"#{api_products_path}",
       type:"GET",
-      data:"#{send_data}",
+      data:"type=#{type}",
       dataType:"json",
       timespan:2000
 		}).done(function(data, textStatus, jqXHR) {

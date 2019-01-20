@@ -1,0 +1,7 @@
+hr
+h2.h5
+  = I18n.t('headline.recommend_products')
+  .loader id='recommend-products-carousel-loader'
+  .slick-box id='recommend-products-carousel'
+
+= render partial: 'common/fronts/products_carousel_js', locals: { type: ApiProduct::TYPE_RECOMMEND, id: '#recommend-products-carousel' }

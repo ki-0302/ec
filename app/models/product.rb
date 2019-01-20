@@ -3,8 +3,11 @@ class Product < ApplicationRecord
 
   # 定数宣言
   include ConstantProduct
+  # 日時バリデーション
   include ValidateDatetime
 
+  # Api/productsの取得種類を設定
+  attr_writer :type
   # 日付と時間を分割して設定する場合 true
   attr_accessor :is_divide_by_date_and_time
   # 日と時間を分けて取得
@@ -12,6 +15,13 @@ class Product < ApplicationRecord
   attr_accessor :display_end_datetime_ymd, :display_end_datetime_hn
   # 画像削除用のID
   attr_accessor :delete_image
+
+  # お気入り商品
+  scope :serch_recommend, -> { order(updated_at: :desc) }
+  # ランキング
+  scope :serch_ranking, -> { order(updated_at: :desc) }
+  # 最近チェックした商品
+  scope :serch_recently_view, -> { order(updated_at: :desc) }
 
   before_validation :set_display_datetime
   belongs_to :category, optional: true
