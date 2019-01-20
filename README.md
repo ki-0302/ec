@@ -288,7 +288,5 @@ https://fontawesome.com/
 https://github.com/yubinbango/yubinbango
 
 # カルーセル
-トップページ用に追加（スライドショー）
-https://github.com/SSENSE/vue-carousel
-
-
+フロントページのおすすめ商品一覧用に追加
+https://github.com/kenwheeler/slick/
