@@ -1,4 +1,4 @@
-module Common
+module Ec
   class Region
     # 都道府県をハッシュで取得
     def self.hash
@@ -13,9 +13,6 @@ module Common
         福岡県: '福岡県', 佐賀県: '佐賀県', 長崎県: '長崎県', 熊本県: '熊本県', 大分県: '大分県', 宮崎県: '宮崎県', 鹿児島県: '鹿児島県', 沖縄県: '沖縄県'
       }
       hash
-    end
-    def self.add(value1, value2)
-      value1 + value2
     end
   end
 end

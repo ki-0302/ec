@@ -2,11 +2,6 @@ class ApiProduct
   include ActiveModel::Model
   include Rails.application.routes.url_helpers
 
-  # 最小桁数
-  MINIMUM_NAME = 2
-  # 最大桁数
-  MAXIMUM_NAME = 40
-
   # api/products 検索用の定数
   TYPE_RECOMMEND = 'recommend'.freeze # おすすめ商品
   TYPE_RANKING = 'ranking'.freeze # ランキング
@@ -15,11 +10,8 @@ class ApiProduct
   # JSONで取得するデータ種類
   attr_accessor :type
 
-  attr_accessor :name
-
   validates :type, presence: true,
                    inclusion: { in: [TYPE_RECOMMEND, TYPE_RANKING, TYPE_RECENTLY_VIEW] }
-  validates :name, allow_nil: true, length: { minimum: MINIMUM_NAME, maximum: MAXIMUM_NAME }
 
   # jsonを生成
   def generate_json
@@ -41,7 +33,7 @@ class ApiProduct
       hash[:status] = Ec::JsonStatus::SUCCESS
       hash[:message] = ''
     else
-      hash[:status] = Ec::JsonStatus::FAILS
+      hash[:status] = Ec::JsonStatus::FAIL
       hash[:message] = 'no record'
     end
 
@@ -58,8 +50,7 @@ class ApiProduct
 
   class << self
     def init_with_params(params)
-      new(params.permit(:type,
-                        :name))
+      new(params.permit(:type))
     end
   end
 

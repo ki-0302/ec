@@ -48,6 +48,6 @@ class GeneralSetting < ApplicationRecord
   def validate_region
     return if region.blank?
 
-    errors.add(:region, I18n.t('errors.messages.invalid')) unless Common::Region.hash.value?(region)
+    errors.add(:region, I18n.t('errors.messages.invalid')) unless Ec::Region.hash.value?(region)
   end
 end
