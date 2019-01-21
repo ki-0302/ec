@@ -7,11 +7,5 @@ module Api
 
       render json: api_product.generate_json
     end
-
-    private
-
-    def products_params
-      params.permit(:name, :type)
-    end
   end
 end
