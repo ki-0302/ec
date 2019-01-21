@@ -1,5 +1,12 @@
 ---
 ja:
+  activemodel:
+    models:
+      api_product: 商品API
+    attributes:
+      api_product:
+        name: 商品名
+        type: データ種類
   activerecord:
     errors:
       messages:
@@ -67,7 +74,7 @@ ja:
         delete_image: 画像削除
         description: 商品説明
         search_term: 検索ワード
-        search_term: JANコード
+        jan_code: JANコード
         status: 商品状態
         created_at: 登録日時
         updated_at: 更新日時
@@ -255,12 +262,12 @@ ja:
     currency:
       format:
         delimiter: ","
-        format: "%n%u"
+        format: "%u %n"
         precision: 0
         separator: "."
         significant: false
         strip_insignificant_zeros: false
-        unit: 円
+        unit: ¥
     format:
       delimiter: ","
       precision: 3
@@ -315,6 +322,8 @@ ja:
     example: （例）1030012
   admin_user:
     name_default: ユーザー
+  headline:
+    recommend_products: おすすめ商品
   general_setting:
     site_name_default: デモサイト
   admin_menu:

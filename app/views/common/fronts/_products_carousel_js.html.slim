@@ -1,0 +1,33 @@
+/ 下記のタグを呼び出し元に置くこと。"recommend"は用途によって変えること
+/ .loader id="#recommend-loader"
+/ .slick-box id="recommend"
+javascript:
+  $(function() {
+    $.ajax({	
+      url:"#{api_products_path}",
+      type:"GET",
+      data:"type=#{type}",
+      dataType:"json",
+      timespan:2000
+		}).done(function(data, textStatus, jqXHR) {
+      // ステータスコード：jqXHR.status
+      $.each(data["products"],function(index,val){
+        $("#{id}").append("<div><img data-lazy=\"" + val["url"] + "\"></div>")
+      });
+    // 通信に失敗した時に実行される
+    }).fail(function(jqXHR, textStatus, errorThrown ) {
+    // 完了時に実行
+    }).always(function(){
+      // ローディング用のオブジェクトを隠す
+      $('#{id}-loader').fadeOut( function(){
+        // app/stylesheets/fronts.scss でカルーセルは非表示にしておくこと
+        $('#{id}').fadeIn();
+        $('#{id}').slick({
+          lazyLoad: 'ondemand',
+          infinite: true,
+          slidesToShow: 8,
+          slidesToScroll: 3
+        });
+      });
+    });
+  });

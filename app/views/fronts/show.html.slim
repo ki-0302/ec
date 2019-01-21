@@ -1,0 +1,12 @@
+
+.row.mb-4
+
+  .col-md-5.order-md-1
+    h1.mb-3= @product.name
+    = number_to_currency(@product.sales_price)
+    = simple_format(h(@product.description), {}, sanitize: false, wrapper_tag: 'p')
+
+  .col-md-4.order-md-0.text-center
+    = image_tag @product.image.variant(resize:'300x300').processed if @product.image.attached?
+  .col-md-3.order-md-2
+    'aaa

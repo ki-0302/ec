@@ -1,4 +1,4 @@
-module Common
+module Ec
   class Region
     # 都道府県をハッシュで取得
     def self.hash

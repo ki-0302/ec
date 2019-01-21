@@ -18,7 +18,7 @@ h1= GeneralSetting.model_name.human + 'の編集'
   .form-group
     = f.label :region
       = GeneralSetting.human_attribute_name(:region)
-    = f.select :region, Common::Region.hash, {include_blank: true}, {class: 'form-control p-region', id: 'general_setting_region'}
+    = f.select :region, Ec::Region.hash, {include_blank: true}, {class: 'form-control p-region', id: 'general_setting_region'}
   .form-group
     = f.label :address1
       = GeneralSetting.human_attribute_name(:address1)

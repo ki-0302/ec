@@ -12,5 +12,12 @@ Rails.application.routes.draw do
     end
   end
 
-  root to: 'admin/admin_users#index'
+  namespace :api do
+    resources :products, only: %i[index]
+  end
+
+  get '/', to: 'fronts#index'
+  get '/:name', to: 'fronts#show'
+
+  root to: 'fronts#index'
 end
