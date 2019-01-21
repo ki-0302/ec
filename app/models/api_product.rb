@@ -22,9 +22,9 @@ class ApiProduct
                       when TYPE_RECOMMEND
                         convert_json(Product.serch_recommend)
                       when TYPE_RANKING
-                        convert_json(Product.serch_recommend)
+                        convert_json(Product.serch_ranking)
                       when TYPE_RECENTLY_VIEW
-                        convert_json(Product.serch_recommend)
+                        convert_json(Product.serch_recently_view)
                       else
                         convert_json(nil)
                       end

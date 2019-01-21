@@ -9,5 +9,4 @@ class ApplicationController < ActionController::Base
     end
     messages
   end
-
 end
