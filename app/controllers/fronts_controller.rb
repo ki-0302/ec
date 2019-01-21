@@ -8,10 +8,8 @@ class FrontsController < ApplicationController
     @product.nil? && redirect_index('対象の' + Product.model_name.human + 'は存在しません。')
     @products = Product.all
   end
-
   # def index
   # end
-
   def redirect_index(message)
     redirect_to :root, notice: message
   end
