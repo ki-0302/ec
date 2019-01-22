@@ -17,10 +17,7 @@ html lang="ja"
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css'
   body
 
-    .app-title.navbar.navbar-expand-md.navbar-light.bg-light
-      .nabvar-brand ECサイト
-
-    .container-fluid.mt-3
+    .container-fluid
       -if flash.notice.present?
         .alert.alert-success= flash.notice
       = yield
