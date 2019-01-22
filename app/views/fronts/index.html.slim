@@ -1,5 +1,14 @@
 h1 Fronts#index
 p Find me in app/views/fronts/index.html.slim
 
+header.py-4
+  .container.text-center
+    h1
+      = link_to 'ECサイト', root_path, class: 'nav-link'
+
+nav.navbar.navbar-expand-md.navbar-dark.bg-dark.sticky-top
+  .container
+
+
 = render partial: 'common/fronts/recommend_products_carousel'
 = render partial: 'common/fronts/slick_carousel_js'
