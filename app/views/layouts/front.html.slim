@@ -29,7 +29,10 @@ html lang="ja"
         .collapse.navbar-collapse id='navbar-content'
           ul.navbar-nav.mr-auto
             li.nav-item.dropdown.active
-              = link_to 'カテゴリー', root_path, class: 'nav-link dropdown-toggle'
+              = link_to 'カテゴリー', root_path, class: 'nav-link dropdown-toggle', data: {toggle: 'dropdown'}, id: 'navbarDropdown', role: 'button', aria: {haspopup: 'true', expanded: 'false'}
+              .dropdown-menu aria-labelledby='navbarDropdown'
+                = link_to '菓子', root_path, class: 'dropdown-item'
+                = link_to '酒類', root_path, class: 'dropdown-item'
             li.nav-item
               = link_to 'About', root_path, class: 'nav-link'
           ul.navbar-nav
