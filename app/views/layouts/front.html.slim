@@ -17,11 +17,32 @@ html lang="ja"
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css'
   body
 
-    .app-title.navbar.navbar-expand-md.navbar-light.bg-light
-      .nabvar-brand ECサイト
+    header.py-4
+      .container.text-center
+        h1
+          = link_to 'ECサイト', root_path, class: 'nav-link'
+    nav.navbar.navbar-expand-md.navbar-dark.bg-dark.sticky-top
+      .container
+        button.navbar-toggler type='button' data-toggle='collapse' data-traget='#navbar-content' aria-controls='navbar-content' aria-expanded='false' aria-label='Toggle Navigation'
+        span.navbar-toggler-icon
+        / ナビゲーション
+        .collapse.navbar-collapse id='navbar-content'
+          ul.navbar-nav.mr-auto
+            li.nav-item.dropdown.active
+              = link_to 'カテゴリー', root_path, class: 'nav-link dropdown-toggle', data: {toggle: 'dropdown'}, id: 'navbarDropdown', role: 'button', aria: {haspopup: 'true', expanded: 'false'}
+              .dropdown-menu aria-labelledby='navbarDropdown'
+                = link_to '菓子', root_path, class: 'dropdown-item'
+                = link_to '酒類', root_path, class: 'dropdown-item'
+            li.nav-item
+              = link_to 'About', root_path, class: 'nav-link'
+          ul.navbar-nav
+            li.nav-item
+              = link_to 'Contact', root_path, class: 'nav-link btn btn-info'
+    main
 
-    .container-fluid.mt-3
-      -if flash.notice.present?
-        .alert.alert-success= flash.notice
-      = yield
+      .container-fluid
+        -if flash.notice.present?
+          .alert.alert-success= flash.notice
+        = yield
 
+    footer
